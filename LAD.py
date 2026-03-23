@@ -6,7 +6,7 @@ def gerenciamento():
     print('''                                                                                                  
  ,----.                                      ,--.                                   ,--.          
 '  .-./    ,---. ,--.--. ,---. ,--,--,  ,---.`--' ,--,--.,--,--,--. ,---. ,--,--, ,-'  '-. ,---.  
-|  | .---.| .-. :|  .--'| .-. :|      \| .--',--.' ,-.  ||        || .-. :|      \'-.  .-'| .-. | 
+|  | .---.| .-. :|  .--'| .-. :|      \| .--',--.' ,-.  ||        || .-. :|      |'-.  .-'| .-. | 
 '  '--'  |\   --.|  |   \   --.|  ||  |\ `--.|  |\ '-'  ||  |  |  |\   --.|  ||  |  |  |  ' '-' ' 
  `------'  `----'`--'    `----'`--''--' `---'`--' `--`--'`--`--`--' `----'`--''--'  `--'   `---'  
                                                                                                   ''')
@@ -56,7 +56,7 @@ def mesario():
         1. Menu da Urna
         2. Resultados
         3. Auditoria
-        4. Sair
+        4. Voltar
     ''')
     n = int(input("-> "))
 
@@ -109,6 +109,9 @@ def mesario():
 
         auditoria_votacao()
     
+    elif (n == 4):
+        os.system('cls')
+        menu()
 
 def menu():
     os.system('cls')
@@ -128,11 +131,11 @@ def menu():
     elif n == 2:
         votacao()
     elif n == 3:
-        print('VLW')
+        print('\nSistema encerrado.\n')
         
     else:   
         while True: 
-            print('\nDigite alguma opção existente.\n')
+            print('\nDigite alguma das opções válidas.\n')
             n = int(input('-> '))
 
 menu()
