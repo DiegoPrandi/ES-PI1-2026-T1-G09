@@ -1,4 +1,5 @@
 import os
+import mysql.connector
 
 def gerenciamento():
     os.system('cls')
@@ -17,9 +18,9 @@ def gerenciamento():
     n = int(input('-> '))
 
     if n == 1:
-        eleitores()
+        gestao_eleitores()
     elif n == 2:
-        candidatos()
+        gestao_candidatos()
     elif n == 3:
         menu()
 
@@ -57,15 +58,55 @@ def mesario():
         3. Auditoria
         4. Sair
     ''')
-    n = input("-> ")
+    n = int(input("-> "))
 
     if (n == 1):
+        def menu_urna():
+            os.system('cls')
+
+            print('''
+                Menu da Urna
+
+                1. Votar
+                2. Encerrar
+            
+            ''')
+
+            n = int(input("-> "))
+
         menu_urna()
     
     elif (n == 2):
+        def resultados_votacao():
+            os.system('cls')
+
+            print('''
+                Resultados
+
+                1. Boletim de Urna
+                2. Estatísticas
+                3. Votos por Partido
+            
+            ''')
+
+            n = int(input("-> "))
+
         resultados_votacao()
 
     elif (n == 3):
+        def auditoria_votacao():
+            os.system('cls')
+
+            print('''
+                Auditoria
+
+                1. Ver Logs
+                2. Ver Protocolos
+            
+            ''')
+
+            n = int(input("-> "))
+
         auditoria_votacao()
     
 
