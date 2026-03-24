@@ -1,5 +1,5 @@
 import os
-import mysql.connector
+#import mysql.connector
 
 def gerenciamento():
     os.system('cls')
@@ -65,14 +65,35 @@ def mesario():
             os.system('cls')
 
             print('''
-                Menu da Urna
+                    Menu da Urna
 
-                1. Votar
-                2. Encerrar
+                    1. Votar
+                    2. Encerrar
             
-            ''')
+                ''')
 
             n = int(input("-> "))
+
+            if (n == 1):
+                print("Você votou!")
+
+            elif (n == 2):
+                print("Sistema encerrado.")
+
+            else:
+
+                while True:
+                    print("\nDigite uma opção válida.\n")
+                    n = int(input("-> "))
+
+                    if (n == 1):
+                        print("Você votou!")
+                        break
+
+                    elif (n == 2):
+                        print("\nSistema encerrado.\n")
+                        break
+                
 
         menu_urna()
     
@@ -137,5 +158,17 @@ def menu():
         while True: 
             print('\nDigite alguma das opções válidas.\n')
             n = int(input('-> '))
+            
+            if n == 1:
+                os.system('cls')
+                gerenciamento()
+                
+            elif n == 2:
+                os.system('cls')    
+                votacao()
+            
+            elif n == 3:
+                print('\nSistema encerrado.\n')
+                break
 
 menu()
