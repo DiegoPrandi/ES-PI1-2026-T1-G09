@@ -18,9 +18,200 @@ def gerenciamento():
     n = int(input('-> '))
 
     if n == 1:
+
+        os.system('cls')
+
+        def gestao_eleitores():
+
+            print('''
+                Digite o número da opção desejada:
+
+                1. Cadastrar Eleitor
+                2. Editar/Remover Eleitor
+                3. Buscar Eleitor
+                4. Listar Eleitores
+                5. Voltar
+            ''')
+
+            n = int(input("-> "))
+
+            if (n == 1):
+
+                os.system('cls')
+
+                def cadastrar_eleitor():
+                    n = input("\nPressione ENTER para cadastrar um eleitor.")
+                    print("\nEleitor cadastrado!\n")
+
+                cadastrar_eleitor()
+
+            elif (n == 2):
+
+                os.system('cls')
+
+                def editar_remover_eleitor():
+                    n = input("\nPressione ENTER para editar/remover um eleitor.")
+                    print("\nEleitor editado/removido!\n")
+
+                editar_remover_eleitor()
+
+            elif (n == 3):
+
+                os.system('cls')
+
+                def buscar_eleitor():
+                    n = input("\nPressione ENTER para buscar eleitores.")
+                    print("\nBuscando eleitores!\n")
+
+                buscar_eleitor()
+
+            elif (n == 4):
+
+                os.system('cls')
+
+                def listar_eleitores():
+                    n = input("\nPressione ENTER para listar todos os eleitores.")
+                    print('''
+                        - Diego Prandi
+                        - João Grisolia
+                        - Matheus Ribeiro
+                        - Rafael França
+                        - Felipe Oliveira
+                    ''')
+
+                listar_eleitores()
+
+            elif (n == 5):
+
+                os.system('cls')
+                gerenciamento()
+
+            else:
+
+                while True:
+
+                    os.system('cls')
+                    print("\nDigite alguma das opções válidas:\n")
+                    n = int(input("-> "))
+
+                    if (n == 1):
+                        os.system('cls')
+                        cadastrar_eleitor()
+                    
+                    elif (n == 2):
+                        os.system('cls')
+                        editar_remover_eleitor()
+
+                    elif (n == 3):
+                        os.system('cls')
+                        buscar_eleitores()
+
+                    elif (n == 4):
+                        os.system('cls')
+                        listar_eleitores()
+                    
+                    elif (n == 5):
+                        os.system('cls')
+                        gerenciamento()
+
         gestao_eleitores()
+
     elif n == 2:
+
+        def gestao_candidatos():
+
+            os.system('cls')
+            print('''
+            \nDigite o número da opção desejada.
+
+            1. Cadastrar Candidato
+            2. Editar Candidato
+            3. Buscar Candidato
+            4. Listar Candidatos
+            5. Voltar
+            ''')
+
+            n = int(input("-> "))
+
+            if (n == 1):
+
+                os.system('cls')
+                def cadastrar_candidato():
+
+                    n = input("\nPressione ENTER para cadastrar um candidato.")
+                    print("\nCandidato cadastrado!\n")
+
+                cadastrar_candidato()
+
+            elif (n == 2):
+
+                os.system('cls')
+                def editar_candidato():
+
+                    n = input("\nPressione ENTER para editar um candidato.")
+                    print("\nCandidato alterado!\n")
+
+                editar_candidato()
+
+            elif (n == 3):
+
+                os.system('cls')
+                def buscar_candidato():
+                    
+                    n = input("\nPressione ENTER para buscar um candidato.")
+                    print("\nBuscando Candidatos!\n")
+
+                buscar_candidato()
+
+            elif (n == 4):
+
+                os.system('cls')
+                def listar_candidatos():
+
+                    n = input("\nPressione ENTER para listar os candidatos.")
+                    print('''
+                        - Bolsomito
+                        - Lulalixo
+                    ''')
+
+                listar_candidatos()
+
+            elif (n == 5):
+
+                os.system('cls')
+                gerenciamento()
+
+            else:
+
+                while True:
+                    
+                    os.system('cls')
+                    print("\nDigite alguma das opções válidas.\n")
+                    n = int(input("-> "))
+
+                    if (n == 1):
+                        os.system('cls')
+                        cadastrar_candidato()
+
+                    if (n == 2):
+                        os.system('cls')
+                        editar_candidato()
+                    
+                    if (n == 3):
+                        os.system('cls')
+                        buscar_candidato()
+
+                    if (n == 4):
+                        os.system('cls')
+                        listar_candidatos()
+
+                    if (n == 5):
+                        os.system('cls')
+                        gerenciamento()
+
         gestao_candidatos()
+
+
     elif n == 3:
         menu()
 
