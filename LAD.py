@@ -177,8 +177,34 @@ def gerenciamento():
                 os.system('cls')
                 def editar_candidato():
 
-                    n = input("\nPressione ENTER para editar um candidato.")
-                    print("\nCandidato alterado!\n")
+                    nome = str(input("Digite o nome do candidato que deseja alterar: "))
+                    sql = 'SELECT * FROM candidatos'
+                    cursor.execute(sql)
+                    result = cursor.fetchall()
+
+                    if not result:
+                        print("\nNenhum candidato encontrado.\n")
+                        input("Pressione ENTER para voltar ao menu.")
+                        menu()
+
+                    for candidato in result:
+                        if nome == candidato[1]:
+                            name = str(input("Digite um novo nome para o candidato: "))
+                            number = int(input("Digite o número do partido: "))
+                            partido = str(input("Digite o nome do partido: "))
+
+                            sql = 'UPDATE candidatos SET nome_completo=%s, numero_votacao=%s, nome_partido=%s WHERE id=%s'
+                            values = (name, number, partido, candidato[0])
+
+                            cursor.execute(sql, values)
+                            conexao.commit()
+
+                            print("\nCandidato alterado!")
+                            input("\nPressione ENTER para voltar ao menu.")
+                            menu()
+
+
+
 
                 editar_candidato()
 
