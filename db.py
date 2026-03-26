@@ -16,8 +16,7 @@ def conexao():
     if conexao.is_connected():
         print('Banco conectado')
 
-    cursor = conexao.cursor()
-conexao()
+    return conexao
 """
     Para fazer a conexão com o banco precisa inicialmente instalar a 
     biblioteca mysql.connector, so digitar no terminal
