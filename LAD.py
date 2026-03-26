@@ -21,9 +21,13 @@ import ascii
     Por motivos de segurança usamos o .env para ocultar as informações
     De acesso ao banco, para somente a gente ter acesso.
 """
+conexao = conexao()
+cursor = conexao.cursor()
+
 
 def gerenciamento():
     os.system('cls')
+    
     ascii.gerenciamentoASCII()
     
     print('''
@@ -150,22 +154,57 @@ def gerenciamento():
             n = int(input("-> "))
 
             if (n == 1):
-
-                os.system('cls')
                 def cadastrar_candidato():
+                    os.system('cls')
+                    name = str(input('Digite o nome do candidato: '))
+                    number = int(input('Digite o número do candidato: '))
+                    partido = str(input('Digite o partido do candidato: '))
+                    
+                    sql = 'INSERT INTO candidatos (nome_completo, numero_votacao, nome_partido) VALUES (%s, %s, %s)'
+                    val = (name, number, partido)
 
-                    n = input("\nPressione ENTER para cadastrar um candidato.")
+                    cursor.execute(sql, val)
+                    conexao.commit()
+                    
                     print("\nCandidato cadastrado!\n")
-
+                    input('Pressione ENTER para voltar ao menu.')
+                    menu()
                 cadastrar_candidato()
+
 
             elif (n == 2):
 
                 os.system('cls')
                 def editar_candidato():
 
-                    n = input("\nPressione ENTER para editar um candidato.")
-                    print("\nCandidato alterado!\n")
+                    nome = str(input("Digite o nome do candidato que deseja alterar: "))
+                    sql = 'SELECT * FROM candidatos'
+                    cursor.execute(sql)
+                    result = cursor.fetchall()
+
+                    if not result:
+                        print("\nNenhum candidato encontrado.\n")
+                        input("Pressione ENTER para voltar ao menu.")
+                        menu()
+
+                    for candidato in result:
+                        if nome == candidato[1]:
+                            name = str(input("Digite um novo nome para o candidato: "))
+                            number = int(input("Digite o número do partido: "))
+                            partido = str(input("Digite o nome do partido: "))
+
+                            sql = 'UPDATE candidatos SET nome_completo=%s, numero_votacao=%s, nome_partido=%s WHERE id=%s'
+                            values = (name, number, partido, candidato[0])
+
+                            cursor.execute(sql, values)
+                            conexao.commit()
+
+                            print("\nCandidato alterado!")
+                            input("\nPressione ENTER para voltar ao menu.")
+                            menu()
+
+
+
 
                 editar_candidato()
 
@@ -173,21 +212,34 @@ def gerenciamento():
 
                 os.system('cls')
                 def buscar_candidato():
+                    nome = str(input("\nDigite o nome do candidato: "))
+                    sql = 'SELECT * FROM candidatos'
+                    cursor.execute(sql)
+                    result = cursor.fetchall()
                     
-                    n = input("\nPressione ENTER para buscar um candidato.")
-                    print("\nBuscando Candidatos!\n")
-
+                    print("\nCandidatos encontrados:\n")
+                    print('-' * 120)
+                    for candidato in result:
+                        if nome == candidato[1]:
+                            print(f"Nome: {candidato[1]} | Número: {candidato[2]} | Partido: {candidato[3]}")
+                    print('-' * 120)
+                    input('\nPressione ENTER para voltar ao menu.')
+                    menu()
                 buscar_candidato()
 
             elif (n == 4):
 
                 os.system('cls')
                 def listar_candidatos():
-                    print('Candidatos:')
-                    print('''
-                        - Bolsomito 22
-                        - Lulalixo  13
-                    ''')
+                    sql = 'SELECT * FROM candidatos'
+                    cursor.execute(sql)
+                    result = cursor.fetchall()
+
+                    print("\nCandidatos cadastrados:\n")
+                    print('-' * 120)
+                    for candidato in result:
+                        print(f"Nome: {candidato[1]} | Número: {candidato[2]} | Partido: {candidato[3]}")
+                    print('-' * 120)
 
                 listar_candidatos()
                 input('\nPressione ENTER para voltar ao menu.')
@@ -331,7 +383,6 @@ def mesario():
 def menu():
     os.system('cls')
     ascii.menuASCII()
-    conexao()
     print('BEM VINDO A VOTACAO')
     
     print('''
