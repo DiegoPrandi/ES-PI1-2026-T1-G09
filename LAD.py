@@ -1,15 +1,31 @@
 import os
-#import mysql.connector
+from db import conexao
+import ascii
+
+"""
+    Para fazer a conexão com o banco precisa inicialmente instalar a 
+    biblioteca mysql.connector, so digitar no terminal
+    pip install mysql-connector-python
+    
+    Depois cria na pasta raiz do projeto
+    um arquivo .env com as seguintes informações
+    
+    DB_HOST=mysql-247ea64d-pi.b.aivencloud.com
+    DB_PORT=15817
+    DB_USER=coloca user aqui
+    DB_PASSWORD=coloca pwd aqui
+    DB_NAME=projeto_teste
+    
+    Só trocar os valores da USEr e PASSWORD para o certo
+    Como é um repositorio publico e estamos usando um database remoto
+    Por motivos de segurança usamos o .env para ocultar as informações
+    De acesso ao banco, para somente a gente ter acesso.
+"""
 
 def gerenciamento():
     os.system('cls')
-    print('''                                                                                                  
- ,----.                                      ,--.                                   ,--.          
-'  .-./    ,---. ,--.--. ,---. ,--,--,  ,---.`--' ,--,--.,--,--,--. ,---. ,--,--, ,-'  '-. ,---.  
-|  | .---.| .-. :|  .--'| .-. :|      \| .--',--.' ,-.  ||        || .-. :|      |'-.  .-'| .-. | 
-'  '--'  |\   --.|  |   \   --.|  ||  |\ `--.|  |\ '-'  ||  |  |  |\   --.|  ||  |  |  |  ' '-' ' 
- `------'  `----'`--'    `----'`--''--' `---'`--' `--`--'`--`--`--' `----'`--''--'  `--'   `---'  
-                                                                                                  ''')
+    ascii.gerenciamentoASCII()
+    
     print('''
           1. Gestão de Eleitores
           2. Gestão de Candidatos
@@ -167,14 +183,16 @@ def gerenciamento():
 
                 os.system('cls')
                 def listar_candidatos():
-
-                    n = input("\nPressione ENTER para listar os candidatos.")
+                    print('Candidatos:')
                     print('''
-                        - Bolsomito
-                        - Lulalixo
+                        - Bolsomito 22
+                        - Lulalixo  13
                     ''')
 
                 listar_candidatos()
+                input('\nPressione ENTER para voltar ao menu.')
+                input('')
+                gestao_candidatos()
 
             elif (n == 5):
 
@@ -217,29 +235,14 @@ def gerenciamento():
 
 def votacao():
     os.system('cls')
-    print('''
-                                                    
-                                                                  
-,--.   ,--.       ,--.                                
- \  `.'  /,---. ,-'  '-. ,--,--. ,---. ,--,--. ,---.  
-  \     /| .-. |'-.  .-'' ,-.  || .--'' ,-.  || .-. | 
-   \   / ' '-' '  |  |  \ '-'  |\ `--.\ '-'  |' '-' ' 
-    `-'   `---'   `--'   `--`--' `---' `--`--' `---'  
-                                                    ''')
+    ascii.votacaoASCII()
 
     n = input("\nPressione ENTER para abrir o mesário.\n")
     mesario()
 
 def mesario():
     os.system('cls')
-    print('''
-                                                            
-,--.   ,--.                             ,--.        
-|   `.'   | ,---.  ,---.  ,--,--.,--.--.`--' ,---.  
-|  |'.'|  || .-. :(  .-' ' ,-.  ||  .--',--.| .-. | 
-|  |   |  |\   --..-'  `)\ '-'  ||  |   |  |' '-' ' 
-`--'   `--' `----'`----'  `--`--'`--'   `--' `---'  
-                                                    ''')
+    ascii.mesarioASCII()
 
     print('''
         Digite o valor da opção desejada:
@@ -327,6 +330,8 @@ def mesario():
 
 def menu():
     os.system('cls')
+    ascii.menuASCII()
+    conexao()
     print('BEM VINDO A VOTACAO')
     
     print('''
