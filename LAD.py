@@ -28,6 +28,7 @@ cursor = conexao.cursor()
 
 
 def gerenciamento():
+
     os.system('cls')
     
     ascii.gerenciamentoASCII()
@@ -136,13 +137,11 @@ def gerenciamento():
                         os.system('cls')
                         gerenciamento()
 
-        gestao_eleitores()
-
     elif n == 2:
 
-        login_adm_gerenciamento()
-
         def gestao_candidatos():
+
+            login_adm_gerenciamento()
 
             os.system('cls')
             print('''
@@ -291,9 +290,9 @@ def gerenciamento():
         menu()
 
 def login_adm_gerenciamento():
-        os.system('cls')
-
-        usuario_admin = str(input("\nDigite o usuário administrativo: "))
+    os.system('cls')
+    while True:
+        usuario_admin = input("\nDigite o usuário administrativo: ")
         senha_admin = input("Digite a senha administrativa: ")
 
         sql = 'SELECT * FROM usuario_adm'
@@ -301,24 +300,13 @@ def login_adm_gerenciamento():
         result = cursor.fetchall()
 
         for usuario in result:
-            if (usuario_admin == usuario[0]) and (usuario[1]):
+            if usuario_admin == usuario[0] and senha_admin == usuario[1]:
                 print("Logado.")
+                return
+                gestao_candidatos()
 
-                gerenciamento()
-        
-        
-            else:
-                while True:
-
-                    os.system('cls')
-                    print("\nUsuário e senha administrativa incorretos. Tente novamente.")
-                    usuario_admin = str(input("\nDigite o usuário administrativo: "))
-                    senha_admin = input("Digite a senha administrativa: ")
-
-                    if (usuario_admin == usuario[0]) and (senha_admin == usuario[1]):
-                        print("Logado.")
-
-                    gerenciamento()
+        os.system('cls')
+        print("\nUsuário e senha administrativa incorretos. Tente novamente.")
 
 def votacao():
     os.system('cls')
