@@ -4,8 +4,10 @@ import ascii
 
 """
     Para fazer a conexão com o banco precisa inicialmente instalar a 
-    biblioteca mysql.connector, so digitar no terminal
+    biblioteca mysql.connector e a dotenv, so digitar no terminal:
+
     pip install mysql-connector-python
+    python -m pip install python-dotenv
     
     Depois cria na pasta raiz do projeto
     um arquivo .env com as seguintes informações
@@ -137,6 +139,8 @@ def gerenciamento():
         gestao_eleitores()
 
     elif n == 2:
+
+        login_adm_gerenciamento()
 
         def gestao_candidatos():
 
@@ -279,11 +283,42 @@ def gerenciamento():
                         os.system('cls')
                         gerenciamento()
 
+        
         gestao_candidatos()
-
+                    
 
     elif n == 3:
         menu()
+
+def login_adm_gerenciamento():
+        os.system('cls')
+
+        usuario_admin = str(input("\nDigite o usuário administrativo: "))
+        senha_admin = input("Digite a senha administrativa: ")
+
+        sql = 'SELECT * FROM usuario_adm'
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+        for usuario in result:
+            if (usuario_admin == usuario[0]) and (usuario[1]):
+                print("Logado.")
+
+                gerenciamento()
+        
+        
+            else:
+                while True:
+
+                    os.system('cls')
+                    print("\nUsuário e senha administrativa incorretos. Tente novamente.")
+                    usuario_admin = str(input("\nDigite o usuário administrativo: "))
+                    senha_admin = input("Digite a senha administrativa: ")
+
+                    if (usuario_admin == usuario[0]) and (senha_admin == usuario[1]):
+                        print("Logado.")
+
+                    gerenciamento()
 
 def votacao():
     os.system('cls')
