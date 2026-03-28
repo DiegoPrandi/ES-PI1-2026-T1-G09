@@ -21,7 +21,8 @@ def conexao():
 """
     Para fazer a conexão com o banco precisa inicialmente instalar a 
     biblioteca mysql.connector, so digitar no terminal
-    pip install mysql-connector-python
+    
+    pip install mysql-connector-python python-dotenv
     
     Depois cria na pasta raiz do projeto
     um arquivo .env com as seguintes informações
@@ -36,4 +37,6 @@ def conexao():
     Como é um repositorio publico e estamos usando um database remoto
     Por motivos de segurança usamos o .env para ocultar as informações
     De acesso ao banco, para somente a gente ter acesso.
+    Se reparaem no arquivo .gitignore tem a linha .env
+    isso é para o git ignorar o arquivo e não subir ele para o repositorio
 """
