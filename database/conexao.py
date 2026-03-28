@@ -2,21 +2,22 @@ import mysql.connector
 import os
 from dotenv import load_dotenv
 
-def conexao():
-    load_dotenv()
+def conectar():
+    load_dotenv() # carrega oq ta escrito no .env, ou seja, as credenciais do banco
+    try: # tenta fazer a conexão com o banco
+        conexao = mysql.connector.connect(
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            port=os.getenv("DB_PORT"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB_NAME"),
+        )
 
-    conexao = mysql.connector.connect(
-        host = os.getenv("DB_HOST"),
-        user = os.getenv("DB_USER"),
-        port = os.getenv("DB_PORT"),
-        password = os.getenv("DB_PASSWORD"),
-        database = os.getenv("DB_NAME"),
-    )
+        return conexao # se der tudo certinho retorna a conexão
 
-    if conexao.is_connected():
-        print('Banco conectado')
-    
-    return conexao
+    except mysql.connector.Error as erro: # se a conexao der erro
+        print("Erro ao conectar no banco:", erro) # printa o erro
+        return None  # retorna nada pq deu erro 
 
 """
     Para fazer a conexão com o banco precisa inicialmente instalar a 
