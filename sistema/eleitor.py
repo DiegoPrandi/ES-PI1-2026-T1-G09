@@ -4,6 +4,7 @@ import funcoes.chaveDeAcesso as chaveDeAcesso
 import funcoes.criptografia as criptografia
 import funcoes.validacaoCPF as validacaoCPF
 from funcoes import ascii as ascii
+import sistema.adm as adm
 
 '''
     por enquanto nenhuma funcao esta implementada
@@ -58,8 +59,8 @@ def gestao_eleitores():
                 os.system('cls')
 
                 def editar_remover_eleitor():
-                    n = input("\nPressione ENTER para editar/remover um eleitor.")
-                    print("\nEleitor editado/removido!\n")
+                    adm.login_adm_gerenciamento()
+
 
                 editar_remover_eleitor()
 
