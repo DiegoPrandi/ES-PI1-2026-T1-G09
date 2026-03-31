@@ -6,19 +6,20 @@ import menu.menu_principal as menu
 from funcoes import ascii
 
 def gerenciamento():
-    # implementar loop para se digitar um numero diferente de 1 2 3
-    # pedir para digitar um numero valido
     os.system('cls')
     
     ascii.gerenciamentoASCII()
-    
-    print('''
+    n = 0
+    while n !=1 and n !=2 and n !=3:
+        print('''
           1. Gestão de Eleitores
           2. Gestão de Candidatos
           3. Voltar
           ''')
-    n = int(input('-> '))
-    
+        n = int(input('-> '))
+        if n !=1 and n !=2 and n !=3:
+            print("Digite um valor válido!")
+
     if n == 1:
         eleitor.gestao_eleitores()
     elif n == 2:
