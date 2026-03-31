@@ -21,6 +21,8 @@ def login_adm_gerenciamento():
 
         for usuario in result:
             if (usuario_admin == usuario[0]) and (senha_admin == usuario[1]):
+
+                os.system('cls')
                 print("Logado.")
                 return True
         

@@ -69,6 +69,8 @@ def gestao_eleitores():
                 os.system('cls')
 
                 def buscar_eleitores():
+                    adm.login_adm_gerenciamento()
+
                     n = input("\nPressione ENTER para buscar eleitores.")
                     print("\nBuscando eleitores!\n")
 
@@ -79,6 +81,8 @@ def gestao_eleitores():
                 os.system('cls')
 
                 def listar_eleitores():
+                    adm.login_adm_gerenciamento()
+
                     n = input("\nPressione ENTER para listar todos os eleitores.")
                     print('''
                         - Diego Prandi
