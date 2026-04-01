@@ -22,8 +22,9 @@ def mesario():
         3. Auditoria
         4. Voltar
     ''')
-    n = int(input("-> "))
     try:
+        n = int(input("-> "))
+    
         
         if (n == 1):
             def menu_urna():

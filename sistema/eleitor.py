@@ -42,9 +42,9 @@ def gestao_eleitores():
                 4. Listar Eleitores
                 5. Voltar
             ''')
-
-            n = int(input("-> "))
-            try: 
+            try:
+                n = int(input("-> "))
+             
                 if (n == 1):
 
                     os.system('cls')

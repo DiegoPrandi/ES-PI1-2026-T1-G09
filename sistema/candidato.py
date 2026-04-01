@@ -18,9 +18,9 @@ def gestao_candidatos():
             4. Listar Candidatos
             5. Voltar
             ''')
-
-            n = int(input("-> "))
             try:
+                n = int(input("-> "))
+            
 
                 if (n == 1):
                     # implementar a verificação para não adicionar
