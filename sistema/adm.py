@@ -4,14 +4,12 @@ from database.conexao import conectar
 conexao = conectar()
 cursor = conexao.cursor()
 
-
 def login_adm_gerenciamento():
 
     os.system('cls')
+    conectado = False
 
-    while True:
-        
-
+    while not conectado:
         usuario_admin = str(input("\nDigite o usuário administrativo: "))
         senha_admin = input("Digite a senha administrativa: ")
 
@@ -24,6 +22,7 @@ def login_adm_gerenciamento():
 
                 os.system('cls')
                 print("Logado.")
+                conectado = True
                 return True
         
         print("\nUsuário e senha administrativa incorretos. Tente novamente.")
