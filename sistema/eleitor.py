@@ -6,6 +6,7 @@ import funcoes.criptografia as criptografia
 import funcoes.validacaoCPF as validacaoCPF
 from funcoes import ascii as ascii
 import sistema.adm as adm
+from funcoes.validacaoCPF import primeiros_quatro_digitos
 
 '''
     por enquanto nenhuma funcao esta implementada

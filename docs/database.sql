@@ -4,7 +4,7 @@ USE projeto_teste;
 show DATABASES;
 
 CREATE TABLE eleitores (
-	id INT PRIMARY KEY,
+	id INT PRIMARY KEY AUTO_INCREMENT,
     chave_acesso VARCHAR(200) NOT NULL,
     nome_completo VARCHAR(50) NOT NULL,
     titulo_eleitor VARCHAR(12) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE candidatos (
 );
 
 CREATE TABLE registro_logs (
-	id_log INT PRIMARY KEY,
+	id_log INT PRIMARY KEY AUTO_INCREMENT,
     data_hora_log DATETIME NOT NULL,
     tipo VARCHAR(15) NOT NULL,
     descricao VARCHAR(50)
