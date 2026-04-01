@@ -43,107 +43,112 @@ def gestao_eleitores():
                 4. Listar Eleitores
                 5. Voltar
             ''')
-
-            n = int(input("-> "))
-
-            if (n == 1):
-
-                os.system('cls')
-
-                def cadastrar_eleitor():
-                    nome_completo = str(input("Digite seu nome completo: "))
-                    cpf = int(input("Digite seu CPF: "))
-                    titulo_eleitor = int(input("Digite seu título de eleitor: "))
-                    print('''
-                        Você atuará como mesário?
-                          1. Sim
-                          2. Não
-                    ''')
-                    n = int(input("-> "))
-
-                    if n == 1:
-                        chave_acesso = gerar_chave_acesso(nome_completo)
-                        print(f"Chave de acesso gerada: {chave_acesso}")
-
-                        print(primeiros_quatro_digitos(cpf))
-
-                    elif n == 2:
-                        print("Sistema Encerrado!")
-                    else:
-                        print("Opção inválida. Tente novamente.")
-
-
-                cadastrar_eleitor()
-
-            elif (n == 2):
-
-                os.system('cls')
-
-                def editar_remover_eleitor():
-                    adm.login_adm_gerenciamento()
-
-
-                editar_remover_eleitor()
-
-            elif (n == 3):
-
-                os.system('cls')
-
-                def buscar_eleitores():
-                    adm.login_adm_gerenciamento()
-
-                    n = input("\nPressione ENTER para buscar eleitores.")
-                    print("\nBuscando eleitores!\n")
-
-                buscar_eleitores()
-
-            elif (n == 4):
-
-                os.system('cls')
-
-                def listar_eleitores():
-                    adm.login_adm_gerenciamento()
-
-                    n = input("\nPressione ENTER para listar todos os eleitores.")
-                    print('''
-                        - Diego Prandi
-                        - João Grisolia
-                        - Matheus Ribeiro
-                        - Rafael França
-                        - Felipe Oliveira
-                    ''')
-
-                listar_eleitores()
-
-            elif (n == 5):
-
-                os.system('cls')
-                gerenciamento()
-
-            else:
-
-                while True:
+            try:
+                n = int(input("-> "))
+             
+                if (n == 1):
 
                     os.system('cls')
-                    print("\nDigite alguma das opções válidas:\n")
-                    n = int(input("-> "))
 
-                    if (n == 1):
-                        os.system('cls')
-                        cadastrar_eleitor()
+                    def cadastrar_eleitor():
+                        nome_completo = str(input("Digite seu nome completo: "))
+                        cpf = int(input("Digite seu CPF: "))
+                        titulo_eleitor = int(input("Digite seu título de eleitor: "))
+                        print('''
+                            Você atuará como mesário?
+                            1. Sim
+                            2. Não
+                        ''')
+                        n = int(input("-> "))
+
+                        if n == 1:
+                            chave_acesso = gerar_chave_acesso(nome_completo)
+                            print(f"Chave de acesso gerada: {chave_acesso}")
+                        elif n == 2:
+                            print("Sistema Encerrado!")
+                        else:
+                            print("Opção inválida. Tente novamente.")
+
+
+                    cadastrar_eleitor()
+
+                elif (n == 2):
+
+                    os.system('cls')
+
+                    def editar_remover_eleitor():
+                        adm.login_adm_gerenciamento()
+
+
+                    editar_remover_eleitor()
+
+                elif (n == 3):
+
+                    os.system('cls')
+
+                    def buscar_eleitores():
+                        adm.login_adm_gerenciamento()
+
+                        n = input("\nPressione ENTER para buscar eleitores.")
+                        print("\nBuscando eleitores!\n")
+
+                    buscar_eleitores()
+
+                elif (n == 4):
+
+                    os.system('cls')
+
+                    def listar_eleitores():
+                        adm.login_adm_gerenciamento()
+
+                        n = input("\nPressione ENTER para listar todos os eleitores.")
+                        print('''
+                            - Diego Prandi
+                            - João Grisolia
+                            - Matheus Ribeiro
+                            - Rafael França
+                            - Felipe Oliveira
+                        ''')
+
+                    listar_eleitores()
+
+                elif (n == 5):
+                    os.system('cls')
+                    gerenciamento.gerenciamento()
+                else:
+                    print("Opção inválida. Tente novamente.")
+                    input("\nPressione ENTER para continuar.")
+                    gestao_eleitores()
                     
-                    elif (n == 2):
-                        os.system('cls')
-                        editar_remover_eleitor()
+            except ValueError:
+                print("Opção inválida. Tente novamente.")
+                input("\nPressione ENTER para continuar.")
+                gestao_eleitores()
 
-                    elif (n == 3):
-                        os.system('cls')
-                        buscar_eleitores()
+            # else:
 
-                    elif (n == 4):
-                        os.system('cls')
-                        listar_eleitores()
+            #     while n not in [1, 2, 3, 4, 5]:
+
+            #         os.system('cls')
+            #         print("\nDigite alguma das opções válidas:\n")
+            #         n = int(input("-> "))
+
+            #         if (n == 1):
+            #             os.system('cls')
+            #             cadastrar_eleitor()
                     
-                    elif (n == 5):
-                        os.system('cls')
-                        gerenciamento()
+            #         elif (n == 2):
+            #             os.system('cls')
+            #             editar_remover_eleitor()
+
+            #         elif (n == 3):
+            #             os.system('cls')
+            #             buscar_eleitores()
+
+            #         elif (n == 4):
+            #             os.system('cls')
+            #             listar_eleitores()
+                    
+            #         elif (n == 5):
+            #             os.system('cls')
+            #             gerenciamento()

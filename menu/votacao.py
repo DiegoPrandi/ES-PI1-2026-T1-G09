@@ -22,78 +22,100 @@ def mesario():
         3. Auditoria
         4. Voltar
     ''')
-    n = int(input("-> "))
+    try:
+        n = int(input("-> "))
+    
+        
+        if (n == 1):
+            def menu_urna():
+                os.system('cls')
 
-    if (n == 1):
-        def menu_urna():
-            os.system('cls')
+                print('''
+                        Menu da Urna
 
-            print('''
-                    Menu da Urna
+                        1. Votar
+                        2. Encerrar
+                
+                    ''')
 
-                    1. Votar
-                    2. Encerrar
-            
-                ''')
-
-            n = int(input("-> "))
-
-            if (n == 1):
-                print("Você votou!")
-
-            elif (n == 2):
-                print("Sistema encerrado.")
-
-            else:
-
-                while True:
-                    print("\nDigite uma opção válida.\n")
-                    n = int(input("-> "))
-
+                n = int(input("-> "))
+                try:
                     if (n == 1):
                         print("Você votou!")
-                        break
 
                     elif (n == 2):
-                        print("\nSistema encerrado.\n")
-                        break
+                        print("Sistema encerrado.")
+                    else:
+                        print("Opção inválida. Tente novamente.")
+                        input("\nPressione ENTER para continuar.")
+                        menu_urna()
+                except ValueError:
+                    print("Opção inválida. Tente novamente.")
+                    input("\nPressione ENTER para continuar.")
+                    menu_urna()
+
+
+                # else:
+
+                #     while True:
+                #         print("\nDigite uma opção válida.\n")
+                #         n = int(input("-> "))
+
+                #         if (n == 1):
+                #             print("Você votou!")
+                #             break
+
+                #         elif (n == 2):
+                #             print("\nSistema encerrado.\n")
+                #             break
+                    
+
+            menu_urna()
+        
+        elif (n == 2):
+            def resultados_votacao():
+                os.system('cls')
+
+                print('''
+                    Resultados
+
+                    1. Boletim de Urna
+                    2. Estatísticas
+                    3. Votos por Partido
                 
+                ''')
 
-        menu_urna()
-    
-    elif (n == 2):
-        def resultados_votacao():
+                n = int(input("-> "))
+
+            resultados_votacao()
+
+        elif (n == 3):
+            def auditoria_votacao():
+                os.system('cls')
+
+                print('''
+                    Auditoria
+
+                    1. Ver Logs
+                    2. Ver Protocolos
+                
+                ''')
+
+                n = int(input("-> "))
+
+            auditoria_votacao()
+        
+        elif (n == 4):
             os.system('cls')
-
-            print('''
-                Resultados
-
-                1. Boletim de Urna
-                2. Estatísticas
-                3. Votos por Partido
+            menu.menu()
             
-            ''')
-
-            n = int(input("-> "))
-
-        resultados_votacao()
-
-    elif (n == 3):
-        def auditoria_votacao():
-            os.system('cls')
-
-            print('''
-                Auditoria
-
-                1. Ver Logs
-                2. Ver Protocolos
+        else:
+            print("Opção inválida. Tente novamente.")
+            input("\nPressione ENTER para continuar.")
+            mesario()  
             
-            ''')
-
-            n = int(input("-> "))
-
-        auditoria_votacao()
+    except ValueError:
+        print("Opção inválida. Tente novamente.")
+        input("\nPressione ENTER para continuar.")
+        mesario()
     
-    elif (n == 4):
-        os.system('cls')
-        menu.menu()
