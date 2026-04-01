@@ -1,6 +1,7 @@
 import os
 import menu.gerenciamento as gerenciamento
 import funcoes.chaveDeAcesso as chaveDeAcesso
+from funcoes.chaveDeAcesso import gerar_chave_acesso
 import funcoes.criptografia as criptografia
 import funcoes.validacaoCPF as validacaoCPF
 from funcoes import ascii as ascii
@@ -49,8 +50,24 @@ def gestao_eleitores():
                 os.system('cls')
 
                 def cadastrar_eleitor():
-                    n = input("\nPressione ENTER para cadastrar um eleitor.")
-                    print("\nEleitor cadastrado!\n")
+                    nome_completo = str(input("Digite seu nome completo: "))
+                    cpf = int(input("Digite seu CPF: "))
+                    titulo_eleitor = int(input("Digite seu título de eleitor: "))
+                    print('''
+                        Você atuará como mesário?
+                          1. Sim
+                          2. Não
+                    ''')
+                    n = int(input("-> "))
+
+                    if n == 1:
+                        chave_acesso = gerar_chave_acesso(nome_completo)
+                        print(f"Chave de acesso gerada: {chave_acesso}")
+                    elif n == 2:
+                        print("Sistema Encerrado!")
+                    else:
+                        print("Opção inválida. Tente novamente.")
+
 
                 cadastrar_eleitor()
 
