@@ -148,30 +148,4 @@ def gestao_candidatos():
                 input("\nPressione ENTER para continuar.")
                 gestao_candidatos()
 
-            # else:
-
-            #     while True:
-                    
-            #         os.system('cls')
-            #         print("\nDigite alguma das opções válidas.\n")
-            #         n = int(input("-> "))
-
-            #         if (n == 1):
-            #             os.system('cls')
-            #             cadastrar_candidato()
-
-            #         if (n == 2):
-            #             os.system('cls')
-            #             editar_candidato()
-                    
-            #         if (n == 3):
-            #             os.system('cls')
-            #             buscar_candidato()
-
-            #         if (n == 4):
-            #             os.system('cls')
-            #             listar_candidatos()
-
-            #         if (n == 5):
-            #             os.system('cls')
-            #             gerenciamento.gerenciamento()
+            

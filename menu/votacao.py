@@ -55,21 +55,6 @@ def mesario():
                     menu_urna()
 
 
-                # else:
-
-                #     while True:
-                #         print("\nDigite uma opção válida.\n")
-                #         n = int(input("-> "))
-
-                #         if (n == 1):
-                #             print("Você votou!")
-                #             break
-
-                #         elif (n == 2):
-                #             print("\nSistema encerrado.\n")
-                #             break
-                    
-
             menu_urna()
         
         elif (n == 2):

@@ -124,31 +124,3 @@ def gestao_eleitores():
                 print("Opção inválida. Tente novamente.")
                 input("\nPressione ENTER para continuar.")
                 gestao_eleitores()
-
-            # else:
-
-            #     while n not in [1, 2, 3, 4, 5]:
-
-            #         os.system('cls')
-            #         print("\nDigite alguma das opções válidas:\n")
-            #         n = int(input("-> "))
-
-            #         if (n == 1):
-            #             os.system('cls')
-            #             cadastrar_eleitor()
-                    
-            #         elif (n == 2):
-            #             os.system('cls')
-            #             editar_remover_eleitor()
-
-            #         elif (n == 3):
-            #             os.system('cls')
-            #             buscar_eleitores()
-
-            #         elif (n == 4):
-            #             os.system('cls')
-            #             listar_eleitores()
-                    
-            #         elif (n == 5):
-            #             os.system('cls')
-            #             gerenciamento()
