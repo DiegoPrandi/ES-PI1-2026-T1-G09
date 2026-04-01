@@ -7,7 +7,7 @@ def gerar_iniciais(nome_completo):
     if len(partes) >= 2:
         return partes[0][:2].upper() + partes[1][0].upper()
     else:
-        return partes[0][:2].upper()
+        return partes[0][:3].upper()
 
 
 # 2. Gera os 4 números aleatórios

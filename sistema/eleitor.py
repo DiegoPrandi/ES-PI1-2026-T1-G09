@@ -6,6 +6,7 @@ import funcoes.criptografia as criptografia
 import funcoes.validacaoCPF as validacaoCPF
 from funcoes import ascii as ascii
 import sistema.adm as adm
+from funcoes.validacaoCPF import primeiros_quatro_digitos
 
 '''
     por enquanto nenhuma funcao esta implementada
@@ -63,6 +64,9 @@ def gestao_eleitores():
                     if n == 1:
                         chave_acesso = gerar_chave_acesso(nome_completo)
                         print(f"Chave de acesso gerada: {chave_acesso}")
+
+                        print(primeiros_quatro_digitos(cpf))
+
                     elif n == 2:
                         print("Sistema Encerrado!")
                     else:
