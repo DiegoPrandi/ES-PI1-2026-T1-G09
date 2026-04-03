@@ -64,8 +64,10 @@ def gestao_eleitores():
                         if n == 1:
                             chave_acesso = gerar_chave_acesso(nome_completo)
                             print(f"Chave de acesso gerada: {chave_acesso}")
+                            #Adicionar que é mesário no banco
                         elif n == 2:
-                            print("Sistema Encerrado!")
+                            chave_acesso = gerar_chave_acesso(nome_completo)
+                            print(f"Chave de acesso gerada: {chave_acesso}")
                         else:
                             print("Opção inválida. Tente novamente.")
 

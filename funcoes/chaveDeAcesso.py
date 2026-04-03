@@ -1,5 +1,5 @@
 import random
-from criptografia import criptografia
+from .criptografia import criptografia
 
 # 1. Gera as partes necessárias dos nomes
 def gerar_iniciais(nome_completo):
