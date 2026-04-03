@@ -7,6 +7,9 @@ import funcoes.validacaoCPF as validacaoCPF
 from funcoes import ascii as ascii
 import sistema.adm as adm
 from funcoes.validacaoCPF import primeiros_quatro_digitos
+from database.conexao import conectar
+import mysql.connector
+from funcoes.criptografia import criptografia
 
 '''
     por enquanto nenhuma funcao esta implementada
@@ -52,8 +55,8 @@ def gestao_eleitores():
 
                     def cadastrar_eleitor():
                         nome_completo = str(input("Digite seu nome completo: "))
-                        cpf = int(input("Digite seu CPF: "))
-                        titulo_eleitor = int(input("Digite seu título de eleitor: "))
+                        cpf = str(input("Digite seu CPF: "))
+                        titulo_eleitor = str(input("Digite seu título de eleitor: "))
                         print('''
                             Você atuará como mesário?
                             1. Sim
@@ -62,15 +65,41 @@ def gestao_eleitores():
                         n = int(input("-> "))
 
                         if n == 1:
-                            chave_acesso = gerar_chave_acesso(nome_completo)
-                            print(f"Chave de acesso gerada: {chave_acesso}")
-                            #Adicionar que é mesário no banco
+                            mesario = 1
+
                         elif n == 2:
-                            chave_acesso = gerar_chave_acesso(nome_completo)
-                            print(f"Chave de acesso gerada: {chave_acesso}")
+                            mesario = 0
+                            
                         else:
                             print("Opção inválida. Tente novamente.")
+                            return
 
+                        status_voto = 0 # Variável de votação
+
+                        chave_normal = gerar_chave_acesso(nome_completo)
+                        print(f"Chave de acesso gerada: {chave_normal}")
+
+                        cpf_criptografado = criptografia(cpf) # Criptografa o cpf
+                        chave_acesso = criptografia(chave_normal) # Criptografa a chave de acesso
+
+                        conn = conectar() # Criação da conexão com o banco
+                        
+                        try: 
+                            cursor = conn.cursor() # Criando um "cursor" dentro do banco, para fazermos as modificações
+                            
+                            cursor.execute('''
+                                INSERT INTO eleitores (chave_acesso, nome_completo, titulo_eleitor, cpf_criptografado, mesario, status_voto)
+                                VALUES (%s, %s, %s, %s, %s, %s)
+                            ''', (chave_acesso, nome_completo, titulo_eleitor, cpf_criptografado, mesario, status_voto)) # Colocando os dados no banco
+
+                            conn.commit() # Commitando os dados no banco
+
+                        except  mysql.connector.IntegrityError: # Tratando erros de duplicidade
+                            print("\nErro: CPF já cadastrado no sistema!")
+                        
+                        finally: # Quando tudo acima tiver feito fecha o cursor e a conexão com o banco
+                            cursor.close()
+                            conn.close()
 
                     cadastrar_eleitor()
 
