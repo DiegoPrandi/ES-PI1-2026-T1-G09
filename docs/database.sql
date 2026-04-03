@@ -8,7 +8,7 @@ CREATE TABLE eleitores (
     chave_acesso VARCHAR(200) NOT NULL,
     nome_completo VARCHAR(50) NOT NULL,
     titulo_eleitor VARCHAR(12) NOT NULL,
-    cpf_criptografado VARCHAR(30) NOT NULL,
+    cpf_criptografado VARCHAR(30) NOT NULL UNIQUE,
     mesario BOOLEAN NOT NULL,
     status_voto BOOLEAN NOT NULL
 );

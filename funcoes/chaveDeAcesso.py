@@ -1,5 +1,4 @@
 import random
-from .criptografia import criptografia
 
 # 1. Gera as partes necessárias dos nomes
 def gerar_iniciais(nome_completo):
@@ -22,9 +21,5 @@ def gerar_chave_acesso(nome_completo):
     numeros = gerar_numeros()
 
     chave = iniciais + numeros
-
-    chave_criptografada = criptografia(chave) # Criptografa a chave de acesso do eleitor
-    
-    #Mandar a chave criptografada pro banco
 
     return chave
