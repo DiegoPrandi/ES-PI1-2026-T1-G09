@@ -10,6 +10,7 @@ from funcoes.validacaoCPF import primeiros_quatro_digitos
 from database.conexao import conectar
 import mysql.connector
 from funcoes.criptografia import criptografia
+from funcoes.validacaoCPF import validar_cpf  
 
 '''
     por enquanto nenhuma funcao esta implementada
@@ -55,7 +56,13 @@ def gestao_eleitores():
 
                     def cadastrar_eleitor():
                         nome_completo = str(input("Digite seu nome completo: "))
+                        
                         cpf = str(input("Digite seu CPF: "))
+                        while validar_cpf(cpf) ==False:
+                            print("CPF inválido. Tente novamente: ")
+                            cpf = str(input("Digite seu CPF: "))
+                        print("CPF válido!")
+                        
                         titulo_eleitor = str(input("Digite seu título de eleitor: "))
                         print('''
                             Você atuará como mesário?
