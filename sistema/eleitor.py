@@ -65,6 +65,11 @@ def gestao_eleitores():
                         print("CPF válido!")
                         
                         titulo_eleitor = str(input("Digite seu título de eleitor: "))
+                        while validar_titulo_eleitor(titulo_eleitor) == False:
+                            print("Título de eleitor inválido. Tente novamente:")
+                            titulo_eleitor = str(input("Digite seu título de eleitor: "))
+                        print("Título válido!")
+
                         print('''
                             Você atuará como mesário?
                             1. Sim
