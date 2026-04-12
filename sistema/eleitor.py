@@ -10,7 +10,8 @@ from funcoes.validacaoCPF import primeiros_quatro_digitos
 from database.conexao import conectar
 import mysql.connector
 from funcoes.criptografia import criptografia
-from funcoes.validacaoCPF import validar_cpf  
+from funcoes.validacaoCPF import validar_cpf
+from funcoes.validacao_TituloEleitor import validar_titulo_eleitor
 
 '''
     por enquanto nenhuma funcao esta implementada
