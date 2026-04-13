@@ -15,43 +15,81 @@ def primeiros_quatro_digitos(cpf):
 
 #------------------------------------------------------------------------
 def validar_cpf(cpf):
+    # Remove qualquer caractere que não seja número
     cpf_limpo = ""
     i = 0
     while i < len(cpf):
+        # Verifica se o caractere atual é um dígito de 0 a 9
         if cpf[i] >= '0' and cpf[i] <= '9':
-            cpf_limpo += cpf[i] 
+            cpf_limpo += cpf[i]
         i += 1
+
+    # CPF válido deve ter exatamente 11 dígitos
     if len(cpf_limpo) != 11:
         return False
-    if (cpf_limpo  == "00000000000" or cpf_limpo == "11111111111" or cpf_limpo == "22222222222" or cpf_limpo == "33333333333" or cpf_limpo == "44444444444" or cpf_limpo == "55555555555" or cpf_limpo == "66666666666" or cpf_limpo == "77777777777" or cpf_limpo == "88888888888" or cpf_limpo == "99999999999"):
+
+    # Verifica CPFs inválidos conhecidos (todos os dígitos iguais)
+    if (
+        cpf_limpo == "00000000000" or
+        cpf_limpo == "11111111111" or
+        cpf_limpo == "22222222222" or
+        cpf_limpo == "33333333333" or
+        cpf_limpo == "44444444444" or
+        cpf_limpo == "55555555555" or
+        cpf_limpo == "66666666666" or
+        cpf_limpo == "77777777777" or
+        cpf_limpo == "88888888888" or
+        cpf_limpo == "99999999999"
+    ):
         return False
-    soma = 0 
+
+    # -------- Cálculo do primeiro dígito verificador --------
+    soma = 0
     peso = 10
     i = 0
 
-    while i < 9:   
+    # Multiplica os 9 primeiros dígitos pelos pesos de 10 a 2
+    while i < 9:
         soma += int(cpf_limpo[i]) * peso
         peso -= 1
         i += 1
+
+    # Calcula o resto da divisão por 11
     resto = soma % 11
+
+    # Regra do primeiro dígito verificador
     if resto < 2:
         digito1 = 0
     else:
         digito1 = 11 - resto
+
+    # Verifica se o primeiro dígito calculado confere
     if digito1 != int(cpf_limpo[9]):
         return False
+
+    # -------- Cálculo do segundo dígito verificador --------
     soma = 0
     peso = 11
     i = 0
+
+    # Multiplica os 10 primeiros dígitos pelos pesos de 11 a 2
     while i < 10:
         soma += int(cpf_limpo[i]) * peso
         peso -= 1
         i += 1
+
+    # Calcula o resto da divisão por 11
     resto = soma % 11
+
+    # Regra do segundo dígito verificador
     if resto < 2:
         digito2 = 0
     else:
         digito2 = 11 - resto
+
+    # Verifica se o segundo dígito calculado confere
     if digito2 != int(cpf_limpo[10]):
         return False
+
+    # Se passou por todas as validações, o CPF é válido
     return True
