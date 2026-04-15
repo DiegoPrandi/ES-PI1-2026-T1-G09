@@ -10,6 +10,7 @@ def gerenciamento():
     
     ascii.gerenciamentoASCII()
     n = 0
+    #Adiciondo while que impede a digitação de opção inválida.
     while n !=1 and n !=2 and n !=3:
         print('''
           1. Gestão de Eleitores
