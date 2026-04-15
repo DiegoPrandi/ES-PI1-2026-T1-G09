@@ -24,6 +24,7 @@ Além disso, o projeto também trabalha com a ideia de rastreabilidade, registra
 
 * Python
 * MySQL
+* Git
 
 ---
 
