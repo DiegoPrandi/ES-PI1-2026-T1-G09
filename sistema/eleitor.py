@@ -64,6 +64,41 @@ def gestao_eleitores():
                             cpf = str(input("Digite seu CPF: "))
                         print("CPF válido!")
                         
+                        
+                        conn = conectar()
+                        cursor = conn.cursor()
+                        verificarCpfDuplicado = criptografia(cpf)
+                        
+                        try:
+                            '''
+                                pra verificar se ja tem cpf, eu to criptografando dnv o cpf que o cara digitou
+                                ai executa o sql pra ver o seguinte:
+                                "SELECT COUNT(*) FROM eleitores WHERE cpf_criptografado = %s", (verificarCpfDuplicado,)
+                                ou seja
+                                quantas linhas tem na tabela eleitores com o cpf criptografado igual ao cpf que o cara digitou 
+
+                                se for 1 ou por algum motivo desconhecido maior que 1, entao ja tem um cpf igual no banco
+                            '''
+                            cursor.execute("SELECT COUNT(*) FROM eleitores WHERE cpf_criptografado = %s", (verificarCpfDuplicado,))
+                            if cursor.fetchone()[0] > 0:
+                                '''
+                                entra no if, com isso oq o fetchone faz?
+                                resumindo pega o resultado que o banco retornou
+                                no caso o COUNT(*) contou da tabela eleitors quantos cpf iguais aquele que o cara digitou ele achou
+                                
+                                se o indice [0]  (oq o fetchone retorna) for maior que 0, entao ja existe no banco o cpf que a pessoa digitou
+                                retorna erro e volta pro gestao_eleitores
+                                '''
+                                print("\nCPF ja cadastrado")
+                                cursor.close()
+                                conn.close()
+                                input("Pressione ENTER para voltar.")
+                                gestao_eleitores()
+                                return
+                        finally:
+                            cursor.close()
+                            conn.close()
+                        
                         titulo_eleitor = str(input("Digite seu título de eleitor: "))
                         while validar_titulo_eleitor(titulo_eleitor) == False:
                             print("Título de eleitor inválido. Tente novamente:")
@@ -76,69 +111,54 @@ def gestao_eleitores():
                             2. Não
                         ''')
                         n = int(input("-> "))
-
+                        
                         if n == 1:
                             mesario = 1
-                            
-                            n = input("Pressione ENTER para voltar.")
-                            gestao_eleitores()
-
                         elif n == 2:
                             mesario = 0
-
-                            n = input("Pressione ENTER para voltar.")
-                            gestao_eleitores()
-                            
                         else:
                             print("Opção inválida. Tente novamente.")
                             return
-
-                        status_voto = 0 # Variável de votação
-
+                        
+                        status_voto = 0
                         chave_normal = gerar_chave_acesso(nome_completo)
                         print(f"Chave de acesso gerada: {chave_normal}")
-
-                        cpf_criptografado = criptografia(cpf) # Criptografa o cpf
-                        chave_acesso = criptografia(chave_normal) # Criptografa a chave de acesso
-
-                        conn = conectar() # Criação da conexão com o banco
+                        
+                        cpf_criptografado = criptografia(cpf)
+                        chave_acesso = criptografia(chave_normal)
+                        conn = conectar()
                         
                         try: 
-                            cursor = conn.cursor() # Criando um "cursor" dentro do banco, para fazermos as modificações
+                            cursor = conn.cursor()
                             
                             cursor.execute('''
                                 INSERT INTO eleitores (chave_acesso, nome_completo, titulo_eleitor, cpf_criptografado, mesario, status_voto)
                                 VALUES (%s, %s, %s, %s, %s, %s)
-                            ''', (chave_acesso, nome_completo, titulo_eleitor, cpf_criptografado, mesario, status_voto)) # Colocando os dados no banco
-
-                            conn.commit() # Commitando os dados no banco
-
-                        except  mysql.connector.IntegrityError: # Tratando erros de duplicidade
-                            print("\nErro: CPF já cadastrado no sistema!")
-                        
-                        finally: # Quando tudo acima tiver feito fecha o cursor e a conexão com o banco
+                            ''', (chave_acesso, nome_completo, titulo_eleitor, cpf_criptografado, mesario, status_voto))
+                            conn.commit()
+                            print("eleitor cadastrado com sucesso")
+                        except mysql.connector.IntegrityError as e:
+                            print(f"\nErro ao cadastrar: {e}")
+                        finally:
                             cursor.close()
                             conn.close()
-
+                            input("\nPressione ENTER para voltar.")
+                            gestao_eleitores()
                     cadastrar_eleitor()
 
                 elif (n == 2):
-
                     os.system('cls')
-
                     def editar_remover_eleitor():
                         adm.login_adm_gerenciamento()
-
-
                     editar_remover_eleitor()
 
                 elif (n == 3):
-
                     os.system('cls')
-
                     def buscar_eleitores():
                         adm.login_adm_gerenciamento()
-
+                        conexao = conectar()
+                        cursor = conexao.cursor()
+                        
                         nome = str(input("\nDigite o nome do eleitor: ")).strip()
                         sql = "SELECT * FROM eleitores WHERE LOWER(nome_completo) LIKE ?"
                         cursor.execute(sql, (f"%{nome.lower()}%",))
@@ -150,8 +170,9 @@ def gestao_eleitores():
                             print(f"Nome: {eleitor[2]}")
                         print('-' * 120)
                         input('\nPressione ENTER para voltar.')
-
                     buscar_eleitores()
+                    input("\nPressione ENTER para voltar.")
+                    gestao_eleitores()
 
                 elif (n == 4):
 
@@ -159,19 +180,23 @@ def gestao_eleitores():
 
                     def listar_eleitores():
                         adm.login_adm_gerenciamento()
-
-                        n = input("\nPressione ENTER para listar todos os eleitores.")
+                        conexao = conectar()
+                        cursor = conexao.cursor()
+                        
+                        input("\nPressione ENTER para listar todos os eleitores.")
                         sql = "SELECT * FROM eleitores"
                         cursor.execute(sql)
                         result = cursor.fetchall()
 
                         print("Lista de eleitores:")
-                        print('-' * 120)
+                        print('-' * 150)
                         for eleitor in result:
                             print(f"Nome Completo: {eleitor[2]} | Chave de Acesso: {eleitor[1]} | Título de Eleitor: {eleitor[3]} | CPF Criptografado: {eleitor[4]} | Mesário: {eleitor[5]} | Status do Voto: {eleitor[6]}")
-                        print('-' * 120)
+                        print('-' * 150)
 
                     listar_eleitores()
+                    input("\nPressione ENTER para voltar.")
+                    gestao_eleitores()
 
                 elif (n == 5):
                     os.system('cls')
