@@ -1,7 +1,8 @@
 CREATE DATABASE IF NOT EXISTS projeto_teste;
-USE projeto_teste;
+--USE projeto_teste;
+--show DATABASES;
 
-show DATABASES;
+USE freedb_projetoPI;
 
 CREATE TABLE eleitores (
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -27,15 +28,16 @@ CREATE TABLE registro_logs (
     descricao VARCHAR(50)
 );
 
+drop table tabela_votos;
 CREATE TABLE tabela_votos (
 	id_voto INT PRIMARY KEY AUTO_INCREMENT,
-    id_eleitor INT NOT NULL,
     id_candidato INT NOT NULL,
-    data_hora_voto INT NOT NULL,
+    data_hora_voto DATETIME NOT NULL,
     protocolo_criptografado VARCHAR(30) NOT NULL,
-    FOREIGN KEY (id_eleitor) REFERENCES eleitores(id),
     FOREIGN KEY (id_candidato) REFERENCES candidatos(id)
 );
 
-show TABLES from projeto_teste;
-select * from  tabela_votos;
+CREATE TABLE usuario_adm(
+    usuario_administrativo VARCHAR(20) PRIMARY KEY,
+    senha_administrativa VARCHAR(20) NOT NULL
+);
