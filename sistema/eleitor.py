@@ -79,9 +79,15 @@ def gestao_eleitores():
 
                         if n == 1:
                             mesario = 1
+                            
+                            n = input("Pressione ENTER para voltar.")
+                            gestao_eleitores()
 
                         elif n == 2:
                             mesario = 0
+
+                            n = input("Pressione ENTER para voltar.")
+                            gestao_eleitores()
                             
                         else:
                             print("Opção inválida. Tente novamente.")
@@ -133,8 +139,17 @@ def gestao_eleitores():
                     def buscar_eleitores():
                         adm.login_adm_gerenciamento()
 
-                        n = input("\nPressione ENTER para buscar eleitores.")
-                        print("\nBuscando eleitores!\n")
+                        nome = str(input("\nDigite o nome do eleitor: ")).strip()
+                        sql = "SELECT * FROM eleitores WHERE LOWER(nome_completo) LIKE ?"
+                        cursor.execute(sql, (f"%{nome.lower()}%",))
+                        result = cursor.fetchall()
+                        
+                        print("\nEleitores encontrados:\n")
+                        print('-' * 120)
+                        for eleitor in result:
+                            print(f"Nome: {eleitor[2]}")
+                        print('-' * 120)
+                        input('\nPressione ENTER para voltar.')
 
                     buscar_eleitores()
 
@@ -146,13 +161,15 @@ def gestao_eleitores():
                         adm.login_adm_gerenciamento()
 
                         n = input("\nPressione ENTER para listar todos os eleitores.")
-                        print('''
-                            - Diego Prandi
-                            - João Grisolia
-                            - Matheus Ribeiro
-                            - Rafael França
-                            - Felipe Oliveira
-                        ''')
+                        sql = "SELECT * FROM eleitores"
+                        cursor.execute(sql)
+                        result = cursor.fetchall()
+
+                        print("Lista de eleitores:")
+                        print('-' * 120)
+                        for eleitor in result:
+                            print(f"Nome Completo: {eleitor[2]} | Chave de Acesso: {eleitor[1]} | Título de Eleitor: {eleitor[3]} | CPF Criptografado: {eleitor[4]} | Mesário: {eleitor[5]} | Status do Voto: {eleitor[6]}")
+                        print('-' * 120)
 
                     listar_eleitores()
 
