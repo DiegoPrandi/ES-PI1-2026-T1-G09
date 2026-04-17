@@ -1,6 +1,7 @@
 import os
 import menu.menu_principal as menu
 import funcoes.ascii as ascii
+import funcoes.status_mesario as statusMesario
 
 def votacao():
     os.system('cls')
@@ -33,25 +34,87 @@ def mesario():
                 print('''
                         Menu da Urna
 
-                        1. Votar
-                        2. Encerrar
+                        1. Status da Urna
+                        2. Gerenciar Urna
+                        3. Voltar
                 
                     ''')
 
                 n = int(input("-> "))
                 try:
                     if (n == 1):
-                        print("Você votou!")
+
+                        os.system('cls')
+                        statusMesario.status_global()
+                        input("Pressione ENTER para voltar.")
+                        menu_urna()
 
                     elif (n == 2):
-                        print("Sistema encerrado.")
+                        os.system('cls')                        
+
+                        print('''
+
+                            Escolha uma das seguintes opções
+                              
+                            1. Abrir urna
+                            2. Fechar urna
+                            3. Voltar
+
+                        ''')
+
+                        n = int(input("-> "))
+
+                        try:
+                            
+                            if (n == 1):
+
+                                if (statusMesario.status_global() == 1):
+                                    print("A urna já se encontra aberta.")
+                                    input("Pressione ENTER para voltar.")
+                                    menu_urna()
+
+                                else:
+                                    os.system('cls')
+                                    statusMesario.abrirMesario()
+                                    input("Pressione ENTER para voltar.")
+                                    menu_urna()
+
+
+                            elif (n == 2):
+
+                                if (statusMesario.status_global() == 0):
+                                    print("A urna já se encontra fechada.")
+                                    input("Pressione ENTER para voltar.")
+                                    menu_urna()
+
+                                else:
+                                    os.system('cls')
+                                    statusMesario.fecharMesario()
+                                    input("Pressione ENTER para voltar.")
+                                    menu_urna()
+
+                            elif (n == 3):
+                                menu_urna()
+
+
+                            else:
+                                print("Opção inválida. Tente novamente.")
+                                input("\nPressione ENTER para continuar.")
+                                menu_urna()
+
+                        except ValueError:
+                            print("Opção inválida. Tente novamente")
+
+                    elif (n == 3):
+                        mesario()
+
                     else:
-                        print("Opção inválida. Tente novamente.")
+                        print("\nOpção inválida. Tente novamente.")
                         input("\nPressione ENTER para continuar.")
                         menu_urna()
+
                 except ValueError:
-                    print("Opção inválida. Tente novamente.")
-                    input("\nPressione ENTER para continuar.")
+                    print("\nOpção inválida. Tente novamente.")
                     menu_urna()
 
 
