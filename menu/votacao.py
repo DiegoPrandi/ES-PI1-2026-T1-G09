@@ -124,33 +124,34 @@ def mesario():
         elif (n == 2):
             def resultados_votacao():
                 os.system('cls')
-
-                print('''
+                n = 0
+                while n!= 1 and n!= 2 and n!= 3:
+                    print('''
                     Resultados
 
                     1. Boletim de Urna
                     2. Estatísticas
                     3. Votos por Partido
-                
-                ''')
-
-                n = int(input("-> "))
-
+                    ''')
+                    n = int(input("-> "))
+                    if n!= 1 and n!= 2 and n!= 3:
+                        print("Opção inválida. Tente novamente.")
             resultados_votacao()
 
         elif (n == 3):
             def auditoria_votacao():
                 os.system('cls')
-
-                print('''
+                n = 0
+                while n!= 1 and n!= 2:
+                    print('''
                     Auditoria
 
                     1. Ver Logs
                     2. Ver Protocolos
-                
-                ''')
-
-                n = int(input("-> "))
+                    ''')
+                    n = int(input("-> "))
+                    if n!= 1 and n!= 2:
+                     print("Opção inválida. Tente novamente.")
 
             auditoria_votacao()
         
