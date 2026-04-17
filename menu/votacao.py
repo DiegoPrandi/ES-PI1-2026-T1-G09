@@ -34,22 +34,23 @@ def mesario():
                 print('''
                         Menu da Urna
 
-                        1. Status da Urna
-                        2. Gerenciar Urna
-                        3. Voltar
+                        1. Votar
+                        2. Status da Urna
+                        3. Gerenciar Urna
+                        4. Voltar
                 
                     ''')
 
                 n = int(input("-> "))
                 try:
-                    if (n == 1):
+                    if (n == 2):
 
                         os.system('cls')
                         statusMesario.status_global()
                         input("Pressione ENTER para voltar.")
                         menu_urna()
 
-                    elif (n == 2):
+                    elif (n == 3):
                         os.system('cls')                        
 
                         print('''
@@ -105,7 +106,7 @@ def mesario():
                         except ValueError:
                             print("Opção inválida. Tente novamente")
 
-                    elif (n == 3):
+                    elif (n == 4):
                         mesario()
 
                     else:
