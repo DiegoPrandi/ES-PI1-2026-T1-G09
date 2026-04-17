@@ -104,13 +104,16 @@ def gestao_eleitores():
                             print("Título de eleitor inválido. Tente novamente:")
                             titulo_eleitor = str(input("Digite seu título de eleitor: "))
                         print("Título válido!")
-
-                        print('''
+                        n = 0
+                        while n!=1 and n!=2:
+                            print('''
                             Você atuará como mesário?
                             1. Sim
                             2. Não
-                        ''')
-                        n = int(input("-> "))
+                                ''')
+                            n = int(input("-> "))
+                            if n!=1 and n!=2:
+                                print("Digite uma opção válida!")
                         
                         if n == 1:
                             mesario = 1
