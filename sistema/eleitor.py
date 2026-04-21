@@ -36,7 +36,7 @@ from funcoes.validacao_TituloEleitor import validar_titulo_eleitor
     um eleitor buscar outro ou listar tlgd? entao faz essa validao antes
     igual no candidato que tem essa validacao de adm    
 '''
-def gestao_eleitores():
+def gestao_eleitores(conn):
             os.system('cls')
             
             print('''
@@ -55,7 +55,7 @@ def gestao_eleitores():
 
                     os.system('cls')
 
-                    def cadastrar_eleitor():
+                    def cadastrar_eleitor(conn):
                         nome_completo = str(input("Digite seu nome completo: "))
                         
                         cpf = str(input("Digite seu CPF: "))
@@ -65,7 +65,7 @@ def gestao_eleitores():
                         print("CPF válido!")
                         
                         
-                        conn = conectar()
+                       
                         cursor = conn.cursor()
                         verificarCpfDuplicado = criptografia(cpf)
                         
@@ -90,15 +90,12 @@ def gestao_eleitores():
                                 retorna erro e volta pro gestao_eleitores
                                 '''
                                 print("\nCPF ja cadastrado")
-                                cursor.close()
-                                conn.close()
                                 input("Pressione ENTER para voltar.")
-                                gestao_eleitores()
+                                gestao_eleitores(conn)
                                 return
                         finally:
                             cursor.close()
-                            conn.close()
-                        
+
                         titulo_eleitor = str(input("Digite seu título de eleitor: "))
                         while validar_titulo_eleitor(titulo_eleitor) == False:
                             print("Título de eleitor inválido. Tente novamente:")
@@ -129,7 +126,7 @@ def gestao_eleitores():
                         
                         cpf_criptografado = criptografia(cpf)
                         chave_acesso = criptografia(chave_normal)
-                        conn = conectar()
+
                         
                         try: 
                             cursor = conn.cursor()
@@ -144,23 +141,21 @@ def gestao_eleitores():
                             print(f"\nErro ao cadastrar: {e}")
                         finally:
                             cursor.close()
-                            conn.close()
                             input("\nPressione ENTER para voltar.")
-                            gestao_eleitores()
-                    cadastrar_eleitor()
+                            gestao_eleitores(conn)
+                    cadastrar_eleitor(conn)
 
                 elif (n == 2):
                     os.system('cls')
-                    def editar_remover_eleitor():
-                        adm.login_adm_gerenciamento()
-                    editar_remover_eleitor()
+                    def editar_remover_eleitor(conn):
+                        adm.login_adm_gerenciamento(conn)
+                    editar_remover_eleitor(conn)
 
                 elif (n == 3):
                     os.system('cls')
-                    def buscar_eleitores():
-                        adm.login_adm_gerenciamento()
-                        conexao = conectar()
-                        cursor = conexao.cursor()
+                    def buscar_eleitores(conn):
+                        adm.login_adm_gerenciamento(conn)
+                        cursor = conn.cursor()
                         
                         nome = str(input("\nDigite o nome do eleitor: ")).strip()
                         sql = "SELECT * FROM eleitores WHERE LOWER(nome_completo) LIKE ?"
@@ -173,18 +168,17 @@ def gestao_eleitores():
                             print(f"Nome: {eleitor[2]}")
                         print('-' * 120)
                         input('\nPressione ENTER para voltar.')
-                    buscar_eleitores()
+                    buscar_eleitores(conn)
                     input("\nPressione ENTER para voltar.")
-                    gestao_eleitores()
+                    gestao_eleitores(conn)
 
                 elif (n == 4):
 
                     os.system('cls')
 
-                    def listar_eleitores():
-                        adm.login_adm_gerenciamento()
-                        conexao = conectar()
-                        cursor = conexao.cursor()
+                    def listar_eleitores(conn):
+                        adm.login_adm_gerenciamento(conn)
+                        cursor = conn.cursor()
                         
                         input("\nPressione ENTER para listar todos os eleitores.")
                         sql = "SELECT * FROM eleitores"
@@ -197,19 +191,19 @@ def gestao_eleitores():
                             print(f"Nome Completo: {eleitor[2]} | Chave de Acesso: {eleitor[1]} | Título de Eleitor: {eleitor[3]} | CPF Criptografado: {eleitor[4]} | Mesário: {eleitor[5]} | Status do Voto: {eleitor[6]}")
                         print('-' * 150)
 
-                    listar_eleitores()
+                    listar_eleitores(conn)
                     input("\nPressione ENTER para voltar.")
-                    gestao_eleitores()
+                    gestao_eleitores(conn)
 
                 elif (n == 5):
                     os.system('cls')
-                    gerenciamento.gerenciamento()
+                    gerenciamento.gerenciamento(conn)
                 else:
                     print("Opção inválida. Tente novamente.")
                     input("\nPressione ENTER para continuar.")
-                    gestao_eleitores()
+                    gestao_eleitores(conn)
                     
             except ValueError:
                 print("Opção inválida. Tente novamente.")
                 input("\nPressione ENTER para continuar.")
-                gestao_eleitores()
+                gestao_eleitores(conn)

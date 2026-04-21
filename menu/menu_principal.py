@@ -4,7 +4,7 @@ from funcoes import ascii
 import menu.votacao as votacao
 
 
-def menu():
+def menu(conn):
     os.system('cls')
     ascii.menuASCII()
 #Adicionado while que evita a digitação de opção inválida!
@@ -19,8 +19,8 @@ def menu():
         if n !=1 and n !=2 and n!=3:
             print("Digite uma opção válida!")
     if n == 1:
-        gerenciamento.gerenciamento()
+        gerenciamento.gerenciamento(conn)
     elif n == 2:
-        votacao.votacao()
+        votacao.votacao(conn)
     elif n == 3:
         print("Sistema encerrado")
