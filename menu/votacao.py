@@ -2,6 +2,7 @@ import os
 import menu.menu_principal as menu
 import funcoes.ascii as ascii
 import funcoes.status_mesario as statusMesario
+from sistema.voto import cadastroVoto
 
 def votacao():
     os.system('cls')
@@ -43,6 +44,13 @@ def mesario():
 
                 n = int(input("-> "))
                 try:
+
+                    if (n == 1):
+
+                        os.system('cls')
+                        cadastroVoto()
+                        menu_urna()
+
                     if (n == 2):
 
                         os.system('cls')
