@@ -1,3 +1,7 @@
+from funcoes.criptografia import criptografia
+import mysql.connector
+from datetime import datetime
+
 '''
     menu -> votacao - > voto.py
     aqui tem que implementar a parte de votar
@@ -5,47 +9,92 @@
     validar no banco a senha, ver se ja votou, cpf e valido...
 '''
 
-import os
-from database.conexao import conectar
-import mysql.connector
-from funcoes.criptografia import criptografia
-from funcoes.validacaoCPF import validar_cpf
+def login(conn):
+    try:
+        cursor = conn.cursor() # Cria um cursor pra fazer as mudanças
 
-conexao = conectar()
-cursor = conexao.cursor()
+        cpf = str(input("Digite seu CPF: "))
+        cpf = criptografia(cpf) # Criptografa o cpf
 
-# Função para cadastro de voto
-    # - Pede o nome completo, a chave de acesso e o título de eleitor.
-    # - Faz uma leitura do banco na tabela de eleitores e retorna o resultado.
-    # - É criado um laço pra conseguir agrupar as colunas com os respectivos valores dos inputs.
-    # - Verifica se o eleitor possue voto ou não, e se as credenciais batem com as que existem no banco de dados.
-    # - Autoriza o cadastro do eleitor.
 
-def cadastroVoto():
+        chave = str(input("Digite a chave de acesso: "))
+        chave = criptografia(chave) # Criptografa a chave
 
-    nome = input("Digite seu nome completo: ").strip().lower()
-    chave_acesso = input("Digite sua chave de acesso: ").strip()
-    titulo_eleitor = input("Digite seu título de eleitor: ").strip()
+        cursor.execute('''
+            SELECT id FROM eleitores WHERE cpf_criptografado = %s AND chave_acesso = %s
+                     ''', (cpf, chave)) # Aqui basicamente o cursor executa um comando que seleciona o id do eleitor onde há o cpf e chave de acesso iguais
 
-    sql = ''' 
-        SELECT * FROM eleitores
-        WHERE nome_completo = %s
-        AND chave_acesso = %s
-        AND titulo_eleitor = %s
-        '''
+        resultado = cursor.fetchone() # Guarda o resultado do cursor em uma variável
 
-    val = (nome, criptografia(chave_acesso), titulo_eleitor)
-    cursor.execute(sql, val)
-    result_eleitor = cursor.fetchone()
-
-    if result_eleitor:
-        if result_eleitor[6] == False:
-            print("\nVoto cadastrado!")
-            input("Pressione ENTER para continuar.")
-            os.system('cls')
+        if resultado: # Se o resultado existir
+            id_eleitor = resultado[0] # Acessa o resultado anterior que era uma tupla em valor inteiro e guarda na variável id_eleitor
+            return id_eleitor # Retorna o id do eleitor 
         else:
-            print("O eleitor indicado já votou.")
-    else:
-        print("\nNome, chave de acesso ou título de eleitor inválido.\n")
-        cadastroVoto()
+            print("CPF ou CHAVE inválidos. Tente novamente.") # Se retornar nada, significa que o CPF ou CHAVE estão invalidas
+            return login(conn) # Retorna pra função novamente
 
+    except ValueError:
+        print("Erro. Tente novamente.")
+        return login(conn) # Em caso de erro, retorna pra função novamente
+    
+    finally: # Quando tudo acima terminar
+        cursor.close() # Fecha o cursor
+
+def verificar_voto(eleitor_id, conn): # Criação de uma função com um parâmetro
+
+    try:
+        cursor = conn.cursor() # Criação do cursor para modificação do banco
+
+        cursor.execute('''
+            SELECT status_voto FROM eleitores WHERE id = %s
+                       ''',(eleitor_id,)) # Seleciona o status do voto do eleitor em base de seu id
+        
+        voto_status = cursor.fetchone()[0] # Extrai o valor que está dentro da tupla para dentro da variável voto_status
+
+        return voto_status # Retorna o status do voto
+
+    except  mysql.connector.Error as e: # Tratando erros 
+        print(f"Erro no banco: {e}")
+                        
+    finally: # Quando tudo acima tiver feito fecha o cursor e a conexão com o banco
+        cursor.close()
+
+def adicionar_voto(eleitor_id, conn): # Criação de uma função com um parâmetro do id do eleitor
+
+    try:
+        cursor = conn.cursor() # Cria um cursor para modificação no banco
+        voto = int(input("Digite o número de seu candidato: ")) 
+
+        cursor.execute('''
+            SELECT id FROM candidatos WHERE numero_votacao = %s
+                       ''', (voto,)) # Seleciona o id do candidato em base do seu numero de voto
+        id_candidato = cursor.fetchone() # Atribui ao id_candidato a tupla 
+
+        if not id_candidato: # Se não retornar nada
+
+            print("Candidato inválido")
+            return adicionar_voto(eleitor_id, conn) # Retorna novamente a função
+        
+        id_candidato = id_candidato[0] # Extrai o valor id do candidato da tupla
+
+        data_atual = datetime.now() # Pega a data atual
+
+        cursor.execute('''
+            INSERT into tabela_votos (id_candidato, data_hora_voto, protocolo_criptografado)
+            VALUES (%s, %s, %s)
+                       ''', (id_candidato, data_atual, '1234A')) # Insere no banco as informações de votação
+        
+        conn.commit() # Comita tudo
+
+        print("Voto registrado com sucesso!")
+
+        cursor.execute('''
+            UPDATE eleitores SET status_voto = %s WHERE id = %s
+                       ''', (1, eleitor_id)) # Da update no status do eleitor
+        conn.commit() # Comita 
+        
+    except mysql.connector.IntegrityError as e:
+        print(f"\nErro ao votar: {e}") # Mostrando algum erro
+
+    finally:
+        cursor.close() # Fecha o cursor

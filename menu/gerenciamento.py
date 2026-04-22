@@ -5,7 +5,7 @@ import sistema.adm as adm
 import menu.menu_principal as menu
 from funcoes import ascii
 
-def gerenciamento():
+def gerenciamento(conn):
     os.system('cls')
     
     ascii.gerenciamentoASCII()
@@ -22,9 +22,9 @@ def gerenciamento():
             print("Digite um valor válido!")
 
     if n == 1:
-        eleitor.gestao_eleitores()
+        eleitor.gestao_eleitores(conn)
     elif n == 2:
-        if adm.login_adm_gerenciamento():
-            candidato.gestao_candidatos()
+        if adm.login_adm_gerenciamento(conn):
+            candidato.gestao_candidatos(conn)
     elif n == 3:
-        menu.menu()
+        menu.menu(conn)
