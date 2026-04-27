@@ -2,6 +2,7 @@ import os
 import menu.menu_principal as menu
 import funcoes.ascii as ascii
 import funcoes.status_mesario as statusMesario
+import funcoes.zerezima as zerezima
 from sistema.voto import login
 from sistema.voto import verificar_voto
 from sistema.voto import adicionar_voto
@@ -11,6 +12,7 @@ def votacao(conn):
     ascii.votacaoASCII()
 
     n = input("\nPressione ENTER para abrir a votação.\n")
+    
     mesario(conn)
 
 def mesario(conn):
@@ -92,6 +94,7 @@ def mesario(conn):
                                 else:
                                     os.system('cls')
                                     statusMesario.abrirMesario()
+                                    zerezima.zerezima(conn)
                                     input("Pressione ENTER para voltar.")
                                     menu_urna(conn)
 
