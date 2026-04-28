@@ -1,6 +1,9 @@
+import random
+import string
 from funcoes.criptografia import criptografia
 import mysql.connector
 from datetime import datetime
+
 
 '''
     menu -> votacao - > voto.py
@@ -70,23 +73,50 @@ def adicionar_voto(eleitor_id, conn): # Criação de uma função com um parâme
                        ''', (voto,)) # Seleciona o id do candidato em base do seu numero de voto
         id_candidato = cursor.fetchone() # Atribui ao id_candidato a tupla 
 
-        if not id_candidato: # Se não retornar nada
-
-            print("Candidato inválido")
-            return adicionar_voto(eleitor_id, conn) # Retorna novamente a função
+        if id_candidato: # Se a tupla id_candidato existir, ou seja, se o número do candidato for válido, extrai o valor do id do candidato da tupla e atribui à variável id_candidato
+            id_candidato = id_candidato[0] # Extrai o valor id do candidato da tupla
+        else:
+            id_candidato = None #None será salvo como NULL no banco de dados. 
         
         id_candidato = id_candidato[0] # Extrai o valor id do candidato da tupla
-
         data_atual = datetime.now() # Pega a data atual
 
+        #Criação do protocolo de votação
+        letra1 = random.choice(string.ascii_uppercase) # Gera uma letra maiúscula aleatória
+        letra2 = random.choice(string.ascii_uppercase) # Gera uma letra maiúscula aleatória
+        num1 = random.choice (string.digits) # Gera um número aleatório
+        num2 = random.choice (string.digits) # Gera um número aleatório
+        num3 = random.choice (string.digits) # Gera um número aleatório
+        num4 = random.choice (string.digits) # Gera um número aleatório
+        num5 = random.choice (string.digits) # Gera um número aleatório
+
+        ano = "26" # Define o ano como 2026
+        numero_candidato = str(voto) # Converte o número do candidato para string   
+
+        protocolo = (
+            "V" +
+            letra1 +
+            letra2 +
+            ano +
+            numero_candidato +
+            num1 +
+            num2 +
+            num3 +
+            num4 +
+            num5
+                ) # Cria o protocolo de votação juntando as partes  
+        
+        protocolo_criptografado = criptografia(protocolo)
+        
         cursor.execute('''
             INSERT into tabela_votos (id_candidato, data_hora_voto, protocolo_criptografado)
             VALUES (%s, %s, %s)
-                       ''', (id_candidato, data_atual, '1234A')) # Insere no banco as informações de votação
+                       ''', (id_candidato, data_atual, protocolo_criptografado)) # Insere no banco as informações de votação
         
         conn.commit() # Comita tudo
 
         print("Voto registrado com sucesso!")
+        print("Protocolo de votação:", protocolo) # Mostra o protocolo de votação para o eleitor
 
         cursor.execute('''
             UPDATE eleitores SET status_voto = %s WHERE id = %s
