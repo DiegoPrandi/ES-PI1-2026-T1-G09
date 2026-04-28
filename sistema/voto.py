@@ -1,6 +1,7 @@
 import random
 import string
 from funcoes.criptografia import criptografia
+from funcoes.validacaoCPF import validar_cpf, limpar_cpf
 import mysql.connector
 from datetime import datetime
 
@@ -17,6 +18,10 @@ def login(conn):
         cursor = conn.cursor() # Cria um cursor pra fazer as mudanças
 
         cpf = str(input("Digite seu CPF: "))
+        while not validar_cpf(cpf):
+                        print("CPF inválido. Tente novamente.")
+                        cpf = str(input("Digite seu CPF: "))
+        cpf = limpar_cpf(cpf)
         cpf = criptografia(cpf) # Criptografa o cpf
 
 

@@ -3,6 +3,7 @@ import menu.menu_principal as menu
 import funcoes.ascii as ascii
 import funcoes.status_mesario as statusMesario
 import funcoes.zerezima as zerezima
+from funcoes.criptografia import criptografia
 from sistema.voto import login
 from sistema.voto import verificar_voto
 from sistema.voto import adicionar_voto
@@ -10,15 +11,7 @@ from sistema.voto import adicionar_voto
 def votacao(conn):
     os.system('cls')
     ascii.votacaoASCII()
-
-    n = input("\nPressione ENTER para abrir a votação.\n")
     
-    mesario(conn)
-
-def mesario(conn):
-    os.system('cls')
-    ascii.mesarioASCII()
-
     print('''
         Digite o valor da opção desejada:
 
@@ -48,17 +41,22 @@ def mesario(conn):
                 n = int(input("-> "))
                 try:
                     if (n == 1):
-                        id_eleitor = login(conn) # Guardando o valor de retorno da função login
-                        status_voto = verificar_voto(id_eleitor, conn) #Guardando o valor de retorno da função verificar_voto e utilizando o parâmetro da variável acima
-                        if status_voto == 1: # Verifica se o status de voto do eleitor é igual a 1
-                            print("Você ja votou!")
+                        if statusMesario.status_global() == 0:
+                            print("Fale com algum mesário para abrir a urna")
                             input("Pressione ENTER para voltar.")
                             menu_urna(conn)
                         else:
-                            adicionar_voto(id_eleitor, conn) # Puxa a função adicionar_voto com o parâmetro do id do eleitor
+                            id_eleitor = login(conn) # Guardando o valor de retorno da função login
+                            status_voto = verificar_voto(id_eleitor, conn) #Guardando o valor de retorno da função verificar_voto e utilizando o parâmetro da variável acima
+                            if status_voto == 1: # Verifica se o status de voto do eleitor é igual a 1
+                                print("Você ja votou!")
+                                input("Pressione ENTER para voltar.")
+                                menu_urna(conn)
+                            else:
+                                adicionar_voto(id_eleitor, conn) # Puxa a função adicionar_voto com o parâmetro do id do eleitor
 
-                        input("Pressione ENTER para voltar.")
-                        menu_urna(conn)
+                            input("Pressione ENTER para voltar.")
+                            menu_urna(conn)
 
                     elif (n == 2):
 
@@ -68,7 +66,11 @@ def mesario(conn):
                         menu_urna(conn)
 
                     elif (n == 3):
-                        os.system('cls')                        
+                        os.system('cls')
+                        while not verificarMesario(conn):
+                            print("Chave de acesso inválida. Tente novamente.")
+                            input("Pressione ENTER para voltar")
+                            votacao(conn)                  
 
                         print('''
 
@@ -125,7 +127,7 @@ def mesario(conn):
                             print("Opção inválida. Tente novamente")
 
                     elif (n == 4):
-                        mesario(conn)
+                        votacao(conn)
 
                     else:
                         print("\nOpção inválida. Tente novamente.")
@@ -180,9 +182,21 @@ def mesario(conn):
         else:
             print("Opção inválida. Tente novamente.")
             input("\nPressione ENTER para continuar.")
-            mesario(conn)  
+            votacao(conn)  
             
     except ValueError:
         print("Opção inválida. Tente novamente.")
         input("\nPressione ENTER para continuar.")
-        mesario(conn)
+        votacao(conn)
+
+def verificarMesario(conn):
+    ascii.mesarioASCII()
+    chaveDeAcesso = input('Digite a chave de acesso do mesário: ')
+    chaveDeAcesso_Criptografada = criptografia(chaveDeAcesso)
+    
+    cursor = conn.cursor()
+    cursor.execute('SELECT mesario FROM eleitores WHERE chave_acesso = %s', (chaveDeAcesso_Criptografada,))
+    resultado = cursor.fetchone()
+    cursor.close() 
+    
+    return resultado[0] if resultado else None

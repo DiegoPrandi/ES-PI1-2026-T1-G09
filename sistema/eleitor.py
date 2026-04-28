@@ -63,12 +63,8 @@ def gestao_eleitores(conn):
                         cpf = limpar_cpf(cpf)
                         print("CPF válido!")
                         
-                        # Limpar o CPF removendo caracteres não numéricos
-                        cpf_clean = ''.join(c for c in cpf if c.isdigit())
-                        
                         cursor = conn.cursor()
-                        verificarCpfDuplicado = criptografia(cpf_clean)
-                        
+                        verificarCpfDuplicado = criptografia(cpf)
                         try:
                             '''
                                 pra verificar se ja tem cpf, eu to criptografando dnv o cpf que o cara digitou
@@ -124,7 +120,7 @@ def gestao_eleitores(conn):
                         chave_normal = gerar_chave_acesso(nome_completo)
                         print(f"Chave de acesso gerada: {chave_normal}")
                         
-                        cpf_criptografado = criptografia(cpf_clean)
+                        cpf_criptografado = criptografia(cpf)
                         chave_acesso = criptografia(chave_normal)
 
                         
