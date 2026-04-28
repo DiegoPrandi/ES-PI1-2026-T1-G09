@@ -1,16 +1,12 @@
 import os
 import menu.gerenciamento as gerenciamento
-import funcoes.chaveDeAcesso as chaveDeAcesso
 from funcoes.chaveDeAcesso import gerar_chave_acesso
 import funcoes.criptografia as criptografia
-import funcoes.validacaoCPF as validacaoCPF
 from funcoes import ascii as ascii
 import sistema.adm as adm
-from funcoes.validacaoCPF import primeiros_quatro_digitos
-from database.conexao import conectar
 import mysql.connector
 from funcoes.criptografia import criptografia
-from funcoes.validacaoCPF import validar_cpf
+from funcoes.validacaoCPF import validar_cpf, limpar_cpf
 from funcoes.validacao_TituloEleitor import validar_titulo_eleitor
 
 '''
@@ -60,9 +56,11 @@ def gestao_eleitores(conn):
                         
                         cpf = str(input("Digite seu CPF: "))
 
-                        while validar_cpf(cpf) == False:
-                            print("CPF inválido. Tente novamente: ")
+                        while not validar_cpf(cpf):
+                            print("CPF inválido. Tente novamente.")
                             cpf = str(input("Digite seu CPF: "))
+                        
+                        cpf = limpar_cpf(cpf)
                         print("CPF válido!")
                         
                         # Limpar o CPF removendo caracteres não numéricos
