@@ -59,15 +59,17 @@ def gestao_eleitores(conn):
                         nome_completo = str(input("Digite seu nome completo: "))
                         
                         cpf = str(input("Digite seu CPF: "))
-                        while validar_cpf(cpf) ==False:
+
+                        while validar_cpf(cpf) == False:
                             print("CPF inválido. Tente novamente: ")
                             cpf = str(input("Digite seu CPF: "))
                         print("CPF válido!")
                         
+                        # Limpar o CPF removendo caracteres não numéricos
+                        cpf_clean = ''.join(c for c in cpf if c.isdigit())
                         
-                       
                         cursor = conn.cursor()
-                        verificarCpfDuplicado = criptografia(cpf)
+                        verificarCpfDuplicado = criptografia(cpf_clean)
                         
                         try:
                             '''
@@ -124,7 +126,7 @@ def gestao_eleitores(conn):
                         chave_normal = gerar_chave_acesso(nome_completo)
                         print(f"Chave de acesso gerada: {chave_normal}")
                         
-                        cpf_criptografado = criptografia(cpf)
+                        cpf_criptografado = criptografia(cpf_clean)
                         chave_acesso = criptografia(chave_normal)
 
                         
@@ -158,16 +160,16 @@ def gestao_eleitores(conn):
                         cursor = conn.cursor()
                         
                         nome = str(input("\nDigite o nome do eleitor: ")).strip()
-                        sql = "SELECT * FROM eleitores WHERE LOWER(nome_completo) LIKE ?"
-                        cursor.execute(sql, (f"%{nome.lower()}%",))
+                        sql = "SELECT * FROM eleitores WHERE LOWER(nome_completo) LIKE %s"
+                        cursor.execute(sql, ('%' + nome.lower() + '%',))
                         result = cursor.fetchall()
                         
                         print("\nEleitores encontrados:\n")
-                        print('-' * 120)
+                        print('-' * 150)
                         for eleitor in result:
-                            print(f"Nome: {eleitor[2]}")
-                        print('-' * 120)
-                        input('\nPressione ENTER para voltar.')
+                            print(f"Nome: {eleitor[2]} |", f"Chave de acesso: {eleitor[1]} |", f"Título de eleitor: {eleitor[3]} |", f"CPF Criptografado: {eleitor[4]} |", f"Mesário: {eleitor[5]} |", f"Status do voto: {eleitor[6]}")
+                        print('-' * 150)
+                        
                     buscar_eleitores(conn)
                     input("\nPressione ENTER para voltar.")
                     gestao_eleitores(conn)
