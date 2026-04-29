@@ -24,13 +24,14 @@ def login(conn):
         cpf = limpar_cpf(cpf)
         cpf = criptografia(cpf) # Criptografa o cpf
 
+        titulo = str(input("Digite seu título de eleitor: "))
 
         chave = str(input("Digite a chave de acesso: "))
         chave = criptografia(chave) # Criptografa a chave
 
         cursor.execute('''
-            SELECT id FROM eleitores WHERE cpf_criptografado = %s AND chave_acesso = %s
-                     ''', (cpf, chave)) # Aqui basicamente o cursor executa um comando que seleciona o id do eleitor onde há o cpf e chave de acesso iguais
+            SELECT id FROM eleitores WHERE cpf_criptografado = %s AND chave_acesso = %s AND titulo_eleitor = %s
+                     ''', (cpf, chave, titulo)) # Aqui basicamente o cursor executa um comando que seleciona o id do eleitor onde há o cpf e chave de acesso iguais
 
         resultado = cursor.fetchone() # Guarda o resultado do cursor em uma variável
 
@@ -38,7 +39,7 @@ def login(conn):
             id_eleitor = resultado[0] # Acessa o resultado anterior que era uma tupla em valor inteiro e guarda na variável id_eleitor
             return id_eleitor # Retorna o id do eleitor 
         else:
-            print("CPF ou CHAVE inválidos. Tente novamente.") # Se retornar nada, significa que o CPF ou CHAVE estão invalidas
+            print("CPF, TÍTULO ou CHAVE inválidos. Tente novamente.") # Se retornar nada, significa que o CPF, TÍTULO ou CHAVE estão invalidas
             return login(conn) # Retorna pra função novamente
 
     except ValueError:

@@ -7,6 +7,7 @@ from funcoes.criptografia import criptografia
 from sistema.voto import login
 from sistema.voto import verificar_voto
 from sistema.voto import adicionar_voto
+from funcoes.validacaoCPF import validar_cpf, limpar_cpf
 
 def votacao(conn):
     os.system('cls')
@@ -28,117 +29,212 @@ def votacao(conn):
             def menu_urna(conn):
                 os.system('cls')
 
-                print('''
-                        Menu da Urna
+                if statusMesario.status_global() == 0:
+                    print('''
+                            Menu da Urna
 
-                        1. Votar
-                        2. Status da Urna
-                        3. Gerenciar Urna
-                        4. Voltar
-                
-                    ''')
-
-                n = int(input("-> "))
-                try:
-                    if (n == 1):
-                        if statusMesario.status_global() == 0:
-                            print("Fale com algum mesário para abrir a urna")
-                            input("Pressione ENTER para voltar.")
-                            menu_urna(conn)
-                        else:
-                            id_eleitor = login(conn) # Guardando o valor de retorno da função login
-                            status_voto = verificar_voto(id_eleitor, conn) #Guardando o valor de retorno da função verificar_voto e utilizando o parâmetro da variável acima
-                            if status_voto == 1: # Verifica se o status de voto do eleitor é igual a 1
-                                print("Você ja votou!")
-                                input("Pressione ENTER para voltar.")
-                                menu_urna(conn)
-                            else:
-                                adicionar_voto(id_eleitor, conn) # Puxa a função adicionar_voto com o parâmetro do id do eleitor
-
-                            input("Pressione ENTER para voltar.")
-                            menu_urna(conn)
-
-                    elif (n == 2):
-
-                        os.system('cls')
-                        statusMesario.status_global()
-                        input("Pressione ENTER para voltar.")
-                        menu_urna(conn)
-
-                    elif (n == 3):
-                        os.system('cls')
-                        while not verificarMesario(conn):
-                            print("Chave de acesso inválida. Tente novamente.")
-                            input("Pressione ENTER para voltar")
-                            votacao(conn)                  
-
-                        print('''
-
-                            Escolha uma das seguintes opções
-                              
-                            1. Abrir urna
-                            2. Fechar urna
+                            1. Status da Urna
+                            2. Gerenciar Urna
                             3. Voltar
-
+                    
                         ''')
 
-                        n = int(input("-> "))
+                    n = int(input("-> "))
+                    try:
 
-                        try:
-                            
-                            if (n == 1):
+                        if (n == 1):
 
-                                if (statusMesario.status_global() == 1):
-                                    print("A urna já se encontra aberta.")
-                                    input("Pressione ENTER para voltar.")
-                                    menu_urna(conn)
-
-                                else:
-                                    os.system('cls')
-                                    statusMesario.abrirMesario()
-                                    zerezima.zerezima(conn)
-                                    input("Pressione ENTER para voltar.")
-                                    menu_urna(conn)
-
-
-                            elif (n == 2):
-
-                                if (statusMesario.status_global() == 0):
-                                    print("A urna já se encontra fechada.")
-                                    input("Pressione ENTER para voltar.")
-                                    menu_urna(conn)
-
-                                else:
-                                    os.system('cls')
-                                    statusMesario.fecharMesario()
-                                    input("Pressione ENTER para voltar.")
-                                    menu_urna(conn)
-
-                            elif (n == 3):
-                                menu_urna(conn)
-
-
+                            os.system('cls')
+                            if statusMesario.status_global() == 0:
+                                print("\nA urna está fechada.")
                             else:
-                                print("Opção inválida. Tente novamente.")
-                                input("\nPressione ENTER para continuar.")
-                                menu_urna(conn)
+                                print("\nA urna está aberta.")
+                            input("Pressione ENTER para voltar.")
+                            return menu_urna(conn)
 
-                        except ValueError:
-                            print("Opção inválida. Tente novamente")
+                        elif (n == 2):
+                            os.system('cls')
+                            while not verificarMesario(conn):
+                                print("CPF, Chave de acesso ou Título inválidos. Tente novamente.")
+                                input("Pressione ENTER para voltar")
+                                return votacao(conn)                  
 
-                    elif (n == 4):
-                        votacao(conn)
+                            print('''
 
-                    else:
+                                Escolha uma das seguintes opções
+                                
+                                1. Abrir urna
+                                2. Fechar urna
+                                3. Voltar
+
+                            ''')
+
+                            n = int(input("-> "))
+
+                            try:
+                                
+                                if (n == 1):
+
+                                    if (statusMesario.status_global() == 1):
+                                        print("A urna já se encontra aberta.")
+                                        input("Pressione ENTER para voltar.")
+                                        return menu_urna(conn)
+
+                                    else:
+                                        os.system('cls')
+                                        statusMesario.abrirMesario()
+                                        zerezima.zerezima(conn)
+                                        input("Pressione ENTER para voltar.")
+                                        return menu_urna(conn)
+
+
+                                elif (n == 2):
+
+                                    if (statusMesario.status_global() == 0):
+                                        print("A urna já se encontra fechada.")
+                                        input("Pressione ENTER para voltar.")
+                                        return menu_urna(conn)
+
+                                    else:
+                                        os.system('cls')
+                                        statusMesario.fecharMesario()
+                                        input("Pressione ENTER para voltar.")
+                                        return menu_urna(conn)
+
+                                elif (n == 3):
+                                    return menu_urna(conn)
+
+
+                                else:
+                                    print("Opção inválida. Tente novamente.")
+                                    input("\nPressione ENTER para continuar.")
+                                    return menu_urna(conn)
+
+                            except ValueError:
+                                print("Opção inválida. Tente novamente")
+
+                        elif (n == 3):
+                            return votacao(conn)
+
+                        else:
+                            print("\nOpção inválida. Tente novamente.")
+                            input("\nPressione ENTER para continuar.")
+                            return menu_urna(conn)
+
+                    except ValueError:
                         print("\nOpção inválida. Tente novamente.")
-                        input("\nPressione ENTER para continuar.")
-                        menu_urna(conn)
-
-                except ValueError:
-                    print("\nOpção inválida. Tente novamente.")
-                    menu_urna(conn)
+                        return menu_urna(conn)
 
 
+                elif statusMesario.status_global() == 1:
+                    print('''
+                            Menu da Urna
+
+                            1. Votar
+                            2. Status da Urna
+                            3. Gerenciar Urna
+                            4. Voltar
+                    
+                        ''')
+
+                    n = int(input("-> "))
+                    try:
+                        
+                        if (n == 1):
+                                id_eleitor = login(conn) # Guardando o valor de retorno da função login
+                                status_voto = verificar_voto(id_eleitor, conn) #Guardando o valor de retorno da função verificar_voto e utilizando o parâmetro da variável acima
+                                if status_voto == 1: # Verifica se o status de voto do eleitor é igual a 1
+                                    print("Você ja votou!")
+                                    input("Pressione ENTER para voltar.")
+                                    return menu_urna(conn)
+                                else:
+                                    adicionar_voto(id_eleitor, conn) # Puxa a função adicionar_voto com o parâmetro do id do eleitor
+
+                                input("Pressione ENTER para voltar.")
+                                return menu_urna(conn)
+
+                        elif (n == 2):
+
+                            os.system('cls')
+                            if statusMesario.status_global() == 0:
+                                print("\nA urna está fechada.")
+                            else:
+                                print("\nA urna está aberta.")
+                            input("Pressione ENTER para voltar.")
+                            return menu_urna(conn)
+
+                        elif (n == 3):
+                            os.system('cls')
+                            while not verificarMesario(conn):
+                                print("Chave de acesso inválida. Tente novamente.")
+                                input("Pressione ENTER para voltar")
+                                return votacao(conn)                  
+
+                            print('''
+
+                                Escolha uma das seguintes opções
+                                
+                                1. Abrir urna
+                                2. Fechar urna
+                                3. Voltar
+
+                            ''')
+
+                            n = int(input("-> "))
+
+                            try:
+                                
+                                if (n == 1):
+
+                                    if (statusMesario.status_global() == 1):
+                                        print("A urna já se encontra aberta.")
+                                        input("Pressione ENTER para voltar.")
+                                        return menu_urna(conn)
+
+                                    else:
+                                        os.system('cls')
+                                        statusMesario.abrirMesario()
+                                        zerezima.zerezima(conn)
+                                        input("Pressione ENTER para voltar.")
+                                        return menu_urna(conn)
+
+
+                                elif (n == 2):
+
+                                    if (statusMesario.status_global() == 0):
+                                        print("A urna já se encontra fechada.")
+                                        input("Pressione ENTER para voltar.")
+                                        return menu_urna(conn)
+
+                                    else:
+                                        os.system('cls')
+                                        statusMesario.fecharMesario()
+                                        input("Pressione ENTER para voltar.")
+                                        return menu_urna(conn)
+
+                                elif (n == 3):
+                                    return menu_urna(conn)
+
+
+                                else:
+                                    print("Opção inválida. Tente novamente.")
+                                    input("\nPressione ENTER para continuar.")
+                                    return menu_urna(conn)
+
+                            except ValueError:
+                                print("Opção inválida. Tente novamente")
+
+                        elif (n == 4):
+                            return votacao(conn)
+
+                        else:
+                            print("\nOpção inválida. Tente novamente.")
+                            input("\nPressione ENTER para continuar.")
+                            return menu_urna(conn)
+
+                    except ValueError:
+                        print("\nOpção inválida. Tente novamente.")
+                        return menu_urna(conn)
             menu_urna(conn)
         
         elif (n == 2):
@@ -160,7 +256,7 @@ def votacao(conn):
 
                     elif (n == 4):
                         os.system('cls')
-                        votacao(conn)
+                        return votacao(conn)
 
             resultados_votacao(conn)
 
@@ -182,31 +278,41 @@ def votacao(conn):
 
                     elif (n == 3):
                         os.system()
-                        votacao(conn)
+                        return votacao(conn)
 
             auditoria_votacao(conn)
         
         elif (n == 4):
             os.system('cls')
-            menu.menu(conn)
+            return menu.menu(conn)
             
         else:
             print("Opção inválida. Tente novamente.")
             input("\nPressione ENTER para continuar.")
-            votacao(conn)  
+            return votacao(conn)  
             
     except ValueError:
         print("Opção inválida. Tente novamente.")
         input("\nPressione ENTER para continuar.")
-        votacao(conn)
+        return votacao(conn)
 
 def verificarMesario(conn):
     ascii.mesarioASCII()
+
+    cpf_crip = str(input("Digite seu CPF: "))
+    while not validar_cpf(cpf_crip):
+                print("CPF inválido. Tente novamente.")
+                cpf_crip = str(input("Digite seu CPF: "))
+    cpf_crip = limpar_cpf(cpf_crip)
+    cpf_crip = criptografia(cpf_crip) # Criptografa o cpf
+
+    titulo = str(input("Digite seu título de eleitor: "))
+
     chaveDeAcesso = input('Digite a chave de acesso do mesário: ')
     chaveDeAcesso_Criptografada = criptografia(chaveDeAcesso)
     
     cursor = conn.cursor()
-    cursor.execute('SELECT mesario FROM eleitores WHERE chave_acesso = %s', (chaveDeAcesso_Criptografada,))
+    cursor.execute('SELECT mesario FROM eleitores WHERE chave_acesso = %s AND cpf_criptografado = %s AND titulo_eleitor = %s', (chaveDeAcesso_Criptografada, cpf_crip, titulo))
     resultado = cursor.fetchone()
     cursor.close() 
     
