@@ -9,29 +9,7 @@ from funcoes.criptografia import criptografia
 from funcoes.validacaoCPF import validar_cpf, limpar_cpf
 from funcoes.validacao_TituloEleitor import validar_titulo_eleitor
 
-'''
-    por enquanto nenhuma funcao esta implementada
-    aqui tem que fazer tudo, e tem a parte  da criptograffia
-    e a parte de validao do cpf criacao da chave de acesso
-    tem umas coisinha aqui
-    
-    eu fiz 3 arquivos na pasta funcoes
-    chaveDeAcesso.py
-    criptografia.py
-    validacaoCPF.py
-    
-    ai usa esses arquivos para fazer a logica
-    e fazer funfar    
-    essas funcoes fazem na hora de cadastrar um eleitor
-    criptografar a chave de acesso, validar o cpf e criar a chave de acesso
-    
-    na parte de editar, tem que solicitar o cpf do eleitor
-    a senha dele,  tudo dele, pq se nao ele pode editar o usuario de outra pessoa
-    
-    ai buscar e listar, acredito que seja ja opcao de adm, pq nao faz sentido
-    um eleitor buscar outro ou listar tlgd? entao faz essa validao antes
-    igual no candidato que tem essa validacao de adm    
-'''
+
 def gestao_eleitores(conn):
             os.system('cls')
             
@@ -63,12 +41,8 @@ def gestao_eleitores(conn):
                         cpf = limpar_cpf(cpf)
                         print("CPF válido!")
                         
-                        # Limpar o CPF removendo caracteres não numéricos
-                        cpf_clean = ''.join(c for c in cpf if c.isdigit())
-                        
                         cursor = conn.cursor()
-                        verificarCpfDuplicado = criptografia(cpf_clean)
-                        
+                        verificarCpfDuplicado = criptografia(cpf)
                         try:
                             '''
                                 pra verificar se ja tem cpf, eu to criptografando dnv o cpf que o cara digitou
@@ -124,7 +98,7 @@ def gestao_eleitores(conn):
                         chave_normal = gerar_chave_acesso(nome_completo)
                         print(f"Chave de acesso gerada: {chave_normal}")
                         
-                        cpf_criptografado = criptografia(cpf_clean)
+                        cpf_criptografado = criptografia(cpf)
                         chave_acesso = criptografia(chave_normal)
 
                         

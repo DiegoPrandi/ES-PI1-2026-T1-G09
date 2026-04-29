@@ -34,6 +34,8 @@ def status_global():
 
     if status_mesario == 0:
         print("\nA urna está fechada.")
+        return 0
 
     elif status_mesario == 1:
         print("\nA urna está aberta.")
+        return 1
