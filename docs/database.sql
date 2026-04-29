@@ -36,8 +36,3 @@ CREATE TABLE tabela_votos (
     protocolo_criptografado VARCHAR(30) NOT NULL,
     FOREIGN KEY (id_candidato) REFERENCES candidatos(id)
 );
-
-CREATE TABLE usuario_adm(
-    usuario_administrativo VARCHAR(20) PRIMARY KEY,
-    senha_administrativa VARCHAR(20) NOT NULL
-);

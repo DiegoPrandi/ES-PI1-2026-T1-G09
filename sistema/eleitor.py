@@ -3,7 +3,6 @@ import menu.gerenciamento as gerenciamento
 from funcoes.chaveDeAcesso import gerar_chave_acesso
 import funcoes.criptografia as criptografia
 from funcoes import ascii as ascii
-import sistema.adm as adm
 import mysql.connector
 from funcoes.criptografia import criptografia
 from funcoes.validacaoCPF import validar_cpf, limpar_cpf
@@ -122,13 +121,13 @@ def gestao_eleitores(conn):
                 elif (n == 2):
                     os.system('cls')
                     def editar_remover_eleitor(conn):
-                        adm.login_adm_gerenciamento(conn)
+                        print("Em processo de construção!")
+                        
                     editar_remover_eleitor(conn)
 
                 elif (n == 3):
                     os.system('cls')
                     def buscar_eleitores(conn):
-                        adm.login_adm_gerenciamento(conn)
                         cursor = conn.cursor()
                         
                         nome = str(input("\nDigite o nome do eleitor: ")).strip()
@@ -151,7 +150,6 @@ def gestao_eleitores(conn):
                     os.system('cls')
 
                     def listar_eleitores(conn):
-                        adm.login_adm_gerenciamento(conn)
                         cursor = conn.cursor()
                         
                         input("\nPressione ENTER para listar todos os eleitores.")
