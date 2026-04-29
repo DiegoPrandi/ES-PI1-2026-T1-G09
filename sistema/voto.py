@@ -83,7 +83,6 @@ def adicionar_voto(eleitor_id, conn): # Criação de uma função com um parâme
         else:
             id_candidato = None #None será salvo como NULL no banco de dados. 
         
-        id_candidato = id_candidato[0] # Extrai o valor id do candidato da tupla
         data_atual = datetime.now() # Pega a data atual
 
         #Criação do protocolo de votação
