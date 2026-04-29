@@ -21,6 +21,3 @@ INSERT INTO tabela_votos (id_candidato, data_hora_voto, protocolo_criptografado)
 VALUES (7, NOW(), '123ABC');
 SELECT * FROM tabela_votos;
 
-INSERT INTO usuario_adm (usuario_administrativo, senha_administrativa) 
-VALUES ('admin', 'admin123');
-SELECT * FROM usuario_adm;

@@ -254,6 +254,15 @@ def votacao(conn):
                     if n!= 1 and n!= 2 and n!= 3 and n!= 4:
                         print("Opção inválida. Tente novamente.")
 
+                    elif (n == 1):
+                        print('Em produção...')
+
+                    elif (n == 2):
+                        print('Em produção...')
+
+                    elif (n == 3):
+                        print('Em produção...')
+
                     elif (n == 4):
                         os.system('cls')
                         return votacao(conn)
@@ -276,8 +285,14 @@ def votacao(conn):
                     if n!= 1 and n!= 2 and n!= 3:
                      print("Opção inválida. Tente novamente.")
 
+                    elif (n == 1):
+                        print('Em produção...')
+
+                    elif (n == 2):
+                        print('Em produção...')
+
                     elif (n == 3):
-                        os.system()
+                        os.system('cls')
                         return votacao(conn)
 
             auditoria_votacao(conn)
