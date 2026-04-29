@@ -145,33 +145,44 @@ def votacao(conn):
             def resultados_votacao(conn):
                 os.system('cls')
                 n = 0
-                while n!= 1 and n!= 2 and n!= 3:
+                while n!= 1 and n!= 2 and n!= 3 and n!= 4:
                     print('''
                     Resultados
 
                     1. Boletim de Urna
                     2. Estatísticas
                     3. Votos por Partido
+                    4. Voltar
                     ''')
                     n = int(input("-> "))
-                    if n!= 1 and n!= 2 and n!= 3:
+                    if n!= 1 and n!= 2 and n!= 3 and n!= 4:
                         print("Opção inválida. Tente novamente.")
+
+                    elif (n == 4):
+                        os.system('cls')
+                        votacao(conn)
+
             resultados_votacao(conn)
 
         elif (n == 3):
             def auditoria_votacao(conn):
                 os.system('cls')
                 n = 0
-                while n!= 1 and n!= 2:
+                while n!= 1 and n!= 2 and n!= 3:
                     print('''
                     Auditoria
 
                     1. Ver Logs
                     2. Ver Protocolos
+                    3. Voltar
                     ''')
                     n = int(input("-> "))
-                    if n!= 1 and n!= 2:
+                    if n!= 1 and n!= 2 and n!= 3:
                      print("Opção inválida. Tente novamente.")
+
+                    elif (n == 3):
+                        os.system()
+                        votacao(conn)
 
             auditoria_votacao(conn)
         
