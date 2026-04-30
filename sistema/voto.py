@@ -138,18 +138,6 @@ def adicionar_voto(eleitor_id, conn): # Criação de uma função com um parâme
                 print("Voto registrado com sucesso!")
                 print("Protocolo de votação:", protocolo) # Mostra o protocolo de votação para o eleitor
 
-                # busca os dados do candidato votado
-                if id_candidato != None:
-                    cursor.execute('''
-                        SELECT nome_completo, numero_votacao, nome_partido 
-                        FROM candidatos 
-                        WHERE id = %s
-                    ''', (id_candidato,))
-                    candidato = cursor.fetchone()
-
-                    if candidato:
-                        print(f"| Nome: {candidato[0]}", f"Número: {candidato[1]} |", f"Partido: {candidato[2]} |")
-
                 cursor.execute('''
                     UPDATE eleitores SET status_voto = %s WHERE id = %s
                             ''', (1, eleitor_id)) # Da update no status do eleitor

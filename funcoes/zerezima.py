@@ -1,5 +1,3 @@
-import os
-
 def zerezima(conn):
     cursor = conn.cursor()
     cursor.execute('DELETE FROM tabela_votos') # apaga tudao da tabela voto
@@ -14,14 +12,5 @@ def zerezima(conn):
     ''') # busca os cara
     
     candidatos = cursor.fetchall()
-    
-    os.system('cls')
-    
-    print('-' * 40)
+
     print('\t\tzerézima\n')
-    
-    for i in candidatos:
-        print(f'{i[1]} - {i[0]} ({i[2]}) --> 0 votos')
-    
-    print('-' * 40)
-    print('urna liberada')
