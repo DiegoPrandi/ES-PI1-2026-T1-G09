@@ -72,75 +72,95 @@ def adicionar_voto(eleitor_id, conn): # Criação de uma função com um parâme
 
     try:
         cursor = conn.cursor() # Cria um cursor para modificação no banco
-        voto = int(input("Digite o número de seu candidato: ")) 
+        voto = int(input("Digite o número de seu candidato: "))
 
-        cursor.execute('''
-            SELECT id FROM candidatos WHERE numero_votacao = %s
-                       ''', (voto,)) # Seleciona o id do candidato em base do seu numero de voto
-        id_candidato = cursor.fetchone() # Atribui ao id_candidato a tupla 
+        sql = 'SELECT nome_completo, numero_votacao, nome_partido FROM candidatos WHERE numero_votacao = %s'
+        cursor.execute(sql,(voto,))
 
-        if id_candidato: # Se a tupla id_candidato existir, ou seja, se o número do candidato for válido, extrai o valor do id do candidato da tupla e atribui à variável id_candidato
-            id_candidato = id_candidato[0] # Extrai o valor id do candidato da tupla
-        else:
-            id_candidato = None #None será salvo como NULL no banco de dados. 
-        
-        data_atual = datetime.now() # Pega a data atual
+        resultado = cursor.fetchone()
+        if resultado:
+            print(f"Nome: {resultado[0]}")
+            print(f"Número: {resultado[1]}")
+            print(f"Partido: {resultado[2]}")
 
-        #Criação do protocolo de votação
-        letra1 = random.choice(string.ascii_uppercase) # Gera uma letra maiúscula aleatória
-        letra2 = random.choice(string.ascii_uppercase) # Gera uma letra maiúscula aleatória
-        num1 = random.choice (string.digits) # Gera um número aleatório
-        num2 = random.choice (string.digits) # Gera um número aleatório
-        num3 = random.choice (string.digits) # Gera um número aleatório
-        num4 = random.choice (string.digits) # Gera um número aleatório
-        num5 = random.choice (string.digits) # Gera um número aleatório
+        n = str(input("Deseja confirmar seu voto no seguinte candidato? (S/N) ->")).lower()
 
-        ano = "26" # Define o ano como 2026
-        numero_candidato = str(voto) # Converte o número do candidato para string   
+        while n != "s" and n != "n":
 
-        protocolo = (
-            "V" +
-            letra1 +
-            letra2 +
-            ano +
-            numero_candidato +
-            num1 +
-            num2 +
-            num3 +
-            num4 +
-            num5
-                ) # Cria o protocolo de votação juntando as partes  
-        
-        protocolo_criptografado = criptografia(protocolo)
-        
-        cursor.execute('''
-            INSERT into tabela_votos (id_candidato, data_hora_voto, protocolo_criptografado)
-            VALUES (%s, %s, %s)
-                       ''', (id_candidato, data_atual, protocolo_criptografado)) # Insere no banco as informações de votação
-        
-        conn.commit() # Comita tudo
+            if (n == "s"):
+                
+                cursor.execute('''
+                    SELECT id FROM candidatos WHERE numero_votacao = %s
+                            ''', (voto,)) # Seleciona o id do candidato em base do seu numero de voto
+                id_candidato = cursor.fetchone() # Atribui ao id_candidato a tupla 
 
-        print("Voto registrado com sucesso!")
-        print("Protocolo de votação:", protocolo) # Mostra o protocolo de votação para o eleitor
+                if id_candidato: # Se a tupla id_candidato existir, ou seja, se o número do candidato for válido, extrai o valor do id do candidato da tupla e atribui à variável id_candidato
+                    id_candidato = id_candidato[0] # Extrai o valor id do candidato da tupla
+                else:
+                    id_candidato = None #None será salvo como NULL no banco de dados. 
+                
+                data_atual = datetime.now() # Pega a data atual
 
-        # busca os dados do candidato votado
-        if id_candidato is not None:
-            cursor.execute('''
-                SELECT nome_completo, numero_votacao, nome_partido 
-                FROM candidatos 
-                WHERE id = %s
-            ''', (id_candidato,))
-            candidato = cursor.fetchone()
+                #Criação do protocolo de votação
+                letra1 = random.choice(string.ascii_uppercase) # Gera uma letra maiúscula aleatória
+                letra2 = random.choice(string.ascii_uppercase) # Gera uma letra maiúscula aleatória
+                num1 = random.choice (string.digits) # Gera um número aleatório
+                num2 = random.choice (string.digits) # Gera um número aleatório
+                num3 = random.choice (string.digits) # Gera um número aleatório
+                num4 = random.choice (string.digits) # Gera um número aleatório
+                num5 = random.choice (string.digits) # Gera um número aleatório
 
-            if candidato:
-                print(f"Nome: {candidato[0]}")
-                print(f"Número: {candidato[1]}")
-                print(f"Partido: {candidato[2]}")
+                ano = "26" # Define o ano como 2026
+                numero_candidato = str(voto) # Converte o número do candidato para string   
 
-        cursor.execute('''
-            UPDATE eleitores SET status_voto = %s WHERE id = %s
-                       ''', (1, eleitor_id)) # Da update no status do eleitor
-        conn.commit() # Comita 
+                protocolo = (
+                    "V" +
+                    letra1 +
+                    letra2 +
+                    ano +
+                    numero_candidato +
+                    num1 +
+                    num2 +
+                    num3 +
+                    num4 +
+                    num5
+                        ) # Cria o protocolo de votação juntando as partes  
+                
+                protocolo_criptografado = criptografia(protocolo)
+                
+                cursor.execute('''
+                    INSERT into tabela_votos (id_candidato, data_hora_voto, protocolo_criptografado)
+                    VALUES (%s, %s, %s)
+                            ''', (id_candidato, data_atual, protocolo_criptografado)) # Insere no banco as informações de votação
+                
+                conn.commit() # Comita tudo
+
+                print("Voto registrado com sucesso!")
+                print("Protocolo de votação:", protocolo) # Mostra o protocolo de votação para o eleitor
+
+                # busca os dados do candidato votado
+                if id_candidato != None:
+                    cursor.execute('''
+                        SELECT nome_completo, numero_votacao, nome_partido 
+                        FROM candidatos 
+                        WHERE id = %s
+                    ''', (id_candidato,))
+                    candidato = cursor.fetchone()
+
+                    if candidato:
+                        print(f"| Nome: {candidato[0]}", f"Número: {candidato[1]} |", f"Partido: {candidato[2]} |")
+
+                cursor.execute('''
+                    UPDATE eleitores SET status_voto = %s WHERE id = %s
+                            ''', (1, eleitor_id)) # Da update no status do eleitor
+                conn.commit() # Comita
+
+            elif (n == "n"):
+                n = input("Seu voto não será computado. Pressione ENTER para voltar.")
+                return None
+
+                from menu.votacao import menu_urna
+                menu_urna(conn)
         
     except mysql.connector.IntegrityError as e:
         print(f"\nErro ao votar: {e}") # Mostrando algum erro
