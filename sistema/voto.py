@@ -1,7 +1,8 @@
 import random
 import string
 from funcoes.criptografia import criptografia
-from funcoes.validacaoCPF import validar_cpf, limpar_cpf
+from funcoes.descriptografia import descriptografia
+from funcoes.validacaoCPF import validar_cpf, limpar_cpf, primeiros_quatro_digitos
 import mysql.connector
 from datetime import datetime
 
@@ -17,12 +18,11 @@ def login(conn):
     try:
         cursor = conn.cursor() # Cria um cursor pra fazer as mudanças
 
-        cpf = str(input("Digite seu CPF: "))
-        while not validar_cpf(cpf):
-                        print("CPF inválido. Tente novamente.")
-                        cpf = str(input("Digite seu CPF: "))
+        cpf = str(input("Digite os 4 primeiros dígitos do CPF: "))
+        while not cpf.isdigit() or len(cpf) != 4:
+            print("Digite exatamente 4 números.")
+            cpf = input("Digite os 4 primeiros dígitos do CPF: ")
         cpf = limpar_cpf(cpf)
-        cpf = criptografia(cpf) # Criptografa o cpf
 
         titulo = str(input("Digite seu título de eleitor: "))
 
@@ -30,17 +30,19 @@ def login(conn):
         chave = criptografia(chave) # Criptografa a chave
 
         cursor.execute('''
-            SELECT id FROM eleitores WHERE cpf_criptografado = %s AND chave_acesso = %s AND titulo_eleitor = %s
-                     ''', (cpf, chave, titulo)) # Aqui basicamente o cursor executa um comando que seleciona o id do eleitor onde há o cpf e chave de acesso iguais
+            SELECT id, cpf_criptografado FROM eleitores 
+            WHERE chave_acesso = %s AND titulo_eleitor = %s
+            ''', (chave, titulo))
 
-        resultado = cursor.fetchone() # Guarda o resultado do cursor em uma variável
+        resultado = cursor.fetchall() # Guarda o resultado do cursor em uma variável
 
-        if resultado: # Se o resultado existir
-            id_eleitor = resultado[0] # Acessa o resultado anterior que era uma tupla em valor inteiro e guarda na variável id_eleitor
-            return id_eleitor # Retorna o id do eleitor 
-        else:
-            print("CPF, TÍTULO ou CHAVE inválidos. Tente novamente.") # Se retornar nada, significa que o CPF, TÍTULO ou CHAVE estão invalidas
-            return login(conn) # Retorna pra função novamente
+        for eleitor in resultado:
+            cpf_descriptografado = descriptografia(eleitor[1])
+            if primeiros_quatro_digitos(cpf_descriptografado) == cpf:
+                return eleitor[0]  # id do eleitor
+            
+        print("CPF, TÍTULO ou CHAVE inválidos. Tente novamente.") # Se retornar nada, significa que o CPF, TÍTULO ou CHAVE estão invalidas
+        return login(conn) # Retorna pra função novamente
 
     except ValueError:
         print("Erro. Tente novamente.")
