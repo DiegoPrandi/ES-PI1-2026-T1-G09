@@ -28,8 +28,31 @@ def gestao_candidatos(conn):
                             number = int(input('Digite o número do candidato: '))
                             partido = str(input('Digite o partido do candidato: '))
                             
-                            sql = 'INSERT INTO candidatos (nome_completo, numero_votacao, nome_partido) VALUES (%s, %s, %s)'
-                            val = (name, number, partido)
+                            fotoASCII = str(input('Deseja adicionar foto ASCII para o candidato (s/n): ')).lower()
+                            while fotoASCII != 's' and fotoASCII != 'n':
+                                print('Digite somente "s" ou "n"')
+                                fotoASCII = input('Deseja adicionar foto ASCII (s/n): ').lower()
+                                
+                            asciiFOTO = None
+                            if fotoASCII == 's':
+                                os.system('cls')
+                                print("\nCole a arte ASCII (digite FIM para terminar):\n")
+                                
+                                linhas = []
+                                while True:
+                                    linha = input()
+                                    if linha == 'FIM':
+                                        break
+                                    linhas.append(linha)
+                                
+                                asciiFOTO = '\n'.join(linhas)
+                                pastaASCII = f'ascii/ascii_candidato{number}.txt'
+                                
+                                with open(pastaASCII, 'w', encoding='utf-8') as f:
+                                    f.write(asciiFOTO)
+                            
+                            sql = 'INSERT INTO candidatos (nome_completo, numero_votacao, nome_partido, foto_ascii) VALUES (%s, %s, %s, %s)'
+                            val = (name, number, partido, pastaASCII)
 
                             cursor.execute(sql, val)
                             conn.commit()
@@ -109,11 +132,27 @@ def gestao_candidatos(conn):
                             cursor.execute(sql)
                             result = cursor.fetchall()
                             
+                            encontrado = False
                             print("\nCandidatos encontrados:\n")
                             print('-' * 120)
+                            
                             for candidato in result:
-                                if nome == candidato[1]:
+                                if nome.lower() == candidato[1].lower():
+                                    encontrado = True
+                                    
+                                    if len(candidato) > 4 and candidato[4]:
+                                        try:
+                                            with open(candidato[4], 'r', encoding='utf-8') as f:
+                                                print(f.read())
+                                        except:
+                                            print('Erro ao carregar ASCII')
+                                    else:
+                                        print('Sem Imagem')
+                                        
                                     print(f"Nome: {candidato[1]} | Número: {candidato[2]} | Partido: {candidato[3]}")
+                                    
+                            if not encontrado:
+                                print('Nenhum candidato encontrado')
                             print('-' * 120)
                             input('\nPressione ENTER para voltar.')
                         finally:
