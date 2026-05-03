@@ -1,5 +1,5 @@
 --USE projeto_teste;
-USE freedb_projetoPI;
+USE freedb_NE3kXWaf;
 INSERT INTO eleitores (chave_acesso, nome_completo, titulo_eleitor, cpf_criptografado, mesario, status_voto) 
 VALUES 
 ('JOD1234', 'João do Grau', '123456789012', '12312312312', 0, 0),
@@ -18,6 +18,6 @@ VALUES(NOW(), 'INFO', 'LOG EXEMPLO');
 SELECT * FROM registro_logs;
 
 INSERT INTO tabela_votos (id_candidato, data_hora_voto, protocolo_criptografado) 
-VALUES (7, NOW(), '123ABC');
+VALUES (1, NOW(), '123ABC');
 SELECT * FROM tabela_votos;
 
