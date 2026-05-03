@@ -2,11 +2,9 @@ import os
 import menu.gerenciamento as gerenciamento
 from funcoes import ascii
 import menu.votacao as votacao
-import funcoes.zerezima as zerezima
 
 def menu(conn):
     os.system('cls')
-    zerezima.zerezima(conn)
     ascii.menuASCII()
 #Adicionado while que evita a digitação de opção inválida!
     n = 0

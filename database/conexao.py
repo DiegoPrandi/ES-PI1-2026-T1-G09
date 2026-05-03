@@ -30,9 +30,9 @@ def conectar():
     
     DB_HOST=sql.freedb.tech
     DB_PORT=3306
-    DB_USER=freedb_prandi1
+    DB_USER=u_MnZ7dC
     DB_PASSWORD=coloca pwd aqui
-    DB_NAME=freedb_projetoPI
+    DB_NAME=freedb_NE3kXWaf
     
     Só trocar os valores da USEr e PASSWORD para o certo
     Como é um repositorio publico e estamos usando um database remoto

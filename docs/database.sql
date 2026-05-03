@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS projeto_teste;
 --USE projeto_teste;
 --show DATABASES;
 
-USE freedb_projetoPI;
+USE freedb_NE3kXWaf;
 
 CREATE TABLE eleitores (
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -18,7 +18,8 @@ CREATE TABLE candidatos (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     nome_completo VARCHAR(50) NOT NULL,
     numero_votacao INT NOT NULL,
-    nome_partido VARCHAR(20)
+    nome_partido VARCHAR(20),
+    foto_ascii VARCHAR(255)
 );
 
 CREATE TABLE registro_logs (
