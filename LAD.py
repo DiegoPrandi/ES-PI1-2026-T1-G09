@@ -6,8 +6,8 @@ import funcoes.zerezima as zerezima
 conn = conectar()
 
 try:
-    menu(conn)
     zerezima.zerezima(conn)
+    menu(conn)
 
 except KeyboardInterrupt:
     print("\nEncerrando sistema...")
