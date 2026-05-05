@@ -12,23 +12,22 @@ def votacao(conn):
     os.system('cls')
     ascii.votacaoASCII()
     
-    print('''
-        Digite o valor da opção desejada:
+    if statusMesario.status_global() == 0:
 
-        1. Menu da Urna
-        2. Resultados
-        3. Auditoria
-        4. Voltar
-    ''')
-    try:
-        n = int(input("-> "))
-    
+        print('''
+            Digite o valor da opção desejada:
+
+            1. Menu da Urna
+            2. Resultados
+            3. Auditoria
+            4. Voltar
+        ''')
+        try:
+            n = int(input("-> "))
         
-        if (n == 1):
-            def menu_urna(conn):
-                os.system('cls')
-
-                if statusMesario.status_global() == 0:
+            if (n == 1):
+                def menu_urna(conn):
+                    os.system('cls')
                     print('''
                             Menu da Urna
 
@@ -83,7 +82,7 @@ def votacao(conn):
                                         os.system('cls')
                                         statusMesario.abrirMesario()
                                         input("Pressione ENTER para voltar.")
-                                        return menu_urna(conn)
+                                        return votacao(conn)
 
 
                                 elif (n == 2):
@@ -97,7 +96,7 @@ def votacao(conn):
                                         os.system('cls')
                                         statusMesario.fecharMesario()
                                         input("Pressione ENTER para voltar.")
-                                        return menu_urna(conn)
+                                        return votacao(conn)
 
                                 elif (n == 3):
                                     return menu_urna(conn)
@@ -122,9 +121,103 @@ def votacao(conn):
                     except ValueError:
                         print("\nOpção inválida. Tente novamente.")
                         return menu_urna(conn)
+                menu_urna(conn)
+            
+            elif (n == 2):
+                def resultados_votacao(conn):
+                    os.system('cls')
+                    n = 0
+                    while n!= 1 and n!= 2 and n!= 3 and n!= 4:
+                        print('''
+                        Resultados
 
+                        1. Boletim de Urna
+                        2. Estatísticas
+                        3. Votos por Partido
+                        4. Validação de Integridade
+                        5. Voltar
+                        ''')
+                        n = int(input("-> "))
+                        if n!= 1 and n!= 2 and n!= 3 and n!= 4 and n!= 5:
+                            print("Opção inválida. Tente novamente.")
 
-                elif statusMesario.status_global() == 1:
+                        elif (n == 1):
+                            print('Em produção...')
+
+                        elif (n == 2):
+                            print('Em produção...')
+
+                        elif (n == 3):
+                            print('Em produção...')
+
+                        elif (n == 4):
+                            print('Em produção...')
+
+                        elif (n == 5):
+                            os.system('cls')
+                            return votacao(conn)
+
+                resultados_votacao(conn)
+
+            elif (n == 3):
+                def auditoria_votacao(conn):
+                    os.system('cls')
+                    n = 0
+                    while n!= 1 and n!= 2 and n!= 3:
+                        print('''
+                        Auditoria
+
+                        1. Ver Logs
+                        2. Ver Protocolos
+                        3. Voltar
+                        ''')
+                        n = int(input("-> "))
+                        if n!= 1 and n!= 2 and n!= 3:
+                            print("Opção inválida. Tente novamente.")
+
+                        elif (n == 1):
+                            print('Em produção...')
+
+                        elif (n == 2):
+                            print('Em produção...')
+
+                        elif (n == 3):
+                            os.system('cls')
+                            return votacao(conn)
+
+                auditoria_votacao(conn)
+            
+            elif (n == 4):
+                os.system('cls')
+                return menu.menu(conn)
+                
+            else:
+                print("Opção inválida. Tente novamente.")
+                input("\nPressione ENTER para continuar.")
+                return votacao(conn)  
+            
+        except ValueError:
+            print("Opção inválida. Tente novamente.")
+            input("\nPressione ENTER para continuar.")
+            return votacao(conn)
+        
+    elif statusMesario.status_global() == 1:
+
+        print('''
+            Digite o valor da opção desejada:
+
+            1. Menu da Urna
+            2. Auditoria
+            3. Voltar
+        ''')
+        try:
+            n = int(input("-> "))
+        
+            
+            if (n == 1):
+                def menu_urna(conn):
+                    os.system('cls')
+
                     print('''
                             Menu da Urna
 
@@ -164,7 +257,7 @@ def votacao(conn):
                         elif (n == 3):
                             os.system('cls')
                             while not verificarMesario(conn):
-                                print("Chave de acesso inválida. Tente novamente.")
+                                print("CPF, Chave de acesso ou Título inválidos. Tente novamente.")
                                 input("Pressione ENTER para voltar")
                                 return votacao(conn)                  
 
@@ -193,7 +286,7 @@ def votacao(conn):
                                         os.system('cls')
                                         statusMesario.abrirMesario()
                                         input("Pressione ENTER para voltar.")
-                                        return menu_urna(conn)
+                                        return votacao(conn)
 
 
                                 elif (n == 2):
@@ -207,7 +300,7 @@ def votacao(conn):
                                         os.system('cls')
                                         statusMesario.fecharMesario()
                                         input("Pressione ENTER para voltar.")
-                                        return menu_urna(conn)
+                                        return votacao(conn)
 
                                 elif (n == 3):
                                     return menu_urna(conn)
@@ -231,82 +324,49 @@ def votacao(conn):
 
                     except ValueError:
                         print("\nOpção inválida. Tente novamente.")
-                        return menu_urna(conn)
-            menu_urna(conn)
-        
-        elif (n == 2):
-            def resultados_votacao(conn):
-                os.system('cls')
-                n = 0
-                while n!= 1 and n!= 2 and n!= 3 and n!= 4:
-                    print('''
-                    Resultados
+                return menu_urna(conn)
 
-                    1. Boletim de Urna
-                    2. Estatísticas
-                    3. Votos por Partido
-                    4. Voltar
-                    ''')
-                    n = int(input("-> "))
-                    if n!= 1 and n!= 2 and n!= 3 and n!= 4:
-                        print("Opção inválida. Tente novamente.")
+            elif (n == 2):
+                def auditoria_votacao(conn):
+                    os.system('cls')
+                    n = 0
+                    while n!= 1 and n!= 2 and n!= 3:
+                        print('''
+                        Auditoria
 
-                    elif (n == 1):
-                        print('Em produção...')
+                        1. Ver Logs
+                        2. Ver Protocolos
+                        3. Voltar
+                        ''')
+                        n = int(input("-> "))
+                        if n!= 1 and n!= 2 and n!= 3:
+                            print("Opção inválida. Tente novamente.")
 
-                    elif (n == 2):
-                        print('Em produção...')
+                        elif (n == 1):
+                            print('Em produção...')
 
-                    elif (n == 3):
-                        print('Em produção...')
+                        elif (n == 2):
+                            print('Em produção...')
 
-                    elif (n == 4):
-                        os.system('cls')
-                        return votacao(conn)
+                        elif (n == 3):
+                            os.system('cls')
+                            return votacao(conn)
 
-            resultados_votacao(conn)
-
-        elif (n == 3):
-            def auditoria_votacao(conn):
-                os.system('cls')
-                n = 0
-                while n!= 1 and n!= 2 and n!= 3:
-                    print('''
-                    Auditoria
-
-                    1. Ver Logs
-                    2. Ver Protocolos
-                    3. Voltar
-                    ''')
-                    n = int(input("-> "))
-                    if n!= 1 and n!= 2 and n!= 3:
-                     print("Opção inválida. Tente novamente.")
-
-                    elif (n == 1):
-                        print('Em produção...')
-
-                    elif (n == 2):
-                        print('Em produção...')
-
-                    elif (n == 3):
-                        os.system('cls')
-                        return votacao(conn)
-
-            auditoria_votacao(conn)
-        
-        elif (n == 4):
-            os.system('cls')
-            return menu.menu(conn)
+                auditoria_votacao(conn)
             
-        else:
+            elif (n == 3):
+                os.system('cls')
+                return menu.menu(conn)
+                
+            else:
+                print("Opção inválida. Tente novamente.")
+                input("\nPressione ENTER para continuar.")
+                return votacao(conn)  
+            
+        except ValueError:
             print("Opção inválida. Tente novamente.")
             input("\nPressione ENTER para continuar.")
-            return votacao(conn)  
-            
-    except ValueError:
-        print("Opção inválida. Tente novamente.")
-        input("\nPressione ENTER para continuar.")
-        return votacao(conn)
+            return votacao(conn)
 
 def verificarMesario(conn):
     ascii.mesarioASCII()
