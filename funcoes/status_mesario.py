@@ -1,8 +1,10 @@
+from funcoes.zerezima import zerezima
 status_mesario = 0
 
-def abrirMesario():
+def abrirMesario(conn):
     global status_mesario
     status_mesario = 1
+    zerezima(conn)
 
     print("A urna foi aberta.")
 
