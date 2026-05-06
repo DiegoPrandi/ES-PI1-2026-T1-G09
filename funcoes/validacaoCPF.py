@@ -14,15 +14,17 @@ def primeiros_quatro_digitos(cpf):
         raise ValueError("Entrada inválida. Forneça um número inteiro.")
 
 #------------------------------------------------------------------------
-def validar_cpf(cpf):
-    # Remove qualquer caractere que não seja número
+def limpar_cpf(cpf):
     cpf_limpo = ""
-    i = 0
-    while i < len(cpf):
-        # Verifica se o caractere atual é um dígito de 0 a 9
-        if cpf[i] >= '0' and cpf[i] <= '9':
-            cpf_limpo += cpf[i]
-        i += 1
+
+    for i in cpf:
+        if i.isdigit():
+            cpf_limpo += i
+
+    return cpf_limpo
+
+def validar_cpf(cpf):
+    cpf_limpo = limpar_cpf(cpf)
 
     # CPF válido deve ter exatamente 11 dígitos
     if len(cpf_limpo) != 11:
