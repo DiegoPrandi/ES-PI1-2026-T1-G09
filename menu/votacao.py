@@ -7,6 +7,7 @@ from sistema.voto import login
 from sistema.voto import verificar_voto
 from sistema.voto import adicionar_voto
 from funcoes.validacaoCPF import validar_cpf, limpar_cpf
+import funcoes.resultado as resultado
 
 def votacao(conn):
     os.system('cls')
@@ -119,16 +120,24 @@ def votacao(conn):
                             print("Opção inválida. Tente novamente.")
 
                         elif (n == 1):
-                            print('Em produção...')
+                            resultado.boletim_urna(conn)
+                            input("\nPressione ENTER para voltar.")
+                            return votacao(conn)
 
                         elif (n == 2):
-                            print('Em produção...')
+                            resultado.estatistica_comparecimento(conn)  
+                            input("\nPressione ENTER para voltar.")
+                            return votacao(conn)
 
                         elif (n == 3):
-                            print('Em produção...')
+                            resultado.votos_por_partido(conn)
+                            input("\nPressione ENTER para voltar.")
+                            return votacao(conn)
 
                         elif (n == 4):
-                            print('Em produção...')
+                            resultado.validacao_integridade(conn)
+                            input("\nPressione ENTER para voltar.")
+                            return votacao(conn)
 
                         elif (n == 5):
                             os.system('cls')

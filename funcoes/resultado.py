@@ -5,11 +5,11 @@ def boletim_urna(conn):  # funcao que gera o boletim com os votos de todos os ca
 
     # consulta que busca todos os candidatos com seus respectivos votos (inclusive quem não recebeu votos)
     cursor.execute("""
-        SELECT c.nome, c.numero_votacao, c.partido, COUNT(v.id_candidato) as total
+        SELECT c.nome_completo, c.numero_votacao, c.nome_partido, COUNT(v.id_candidato) as total
         FROM candidatos c
         LEFT JOIN tabela_votos v ON c.id = v.id_candidato
         GROUP BY c.id
-        ORDER BY c.nome ASC
+        ORDER BY c.nome_completo ASC
     """)
 
     resultados = cursor.fetchall()  # armazena todos os resultados da consulta
@@ -21,7 +21,7 @@ def boletim_urna(conn):  # funcao que gera o boletim com os votos de todos os ca
 
     # consulta para obter apenas o candidato com maior número de votos (vencedor)
     cursor.execute("""
-        SELECT c.nome, c.numero_votacao, c.partido, COUNT(v.id_candidato) as total
+        SELECT c.nome_completo, c.numero_votacao, c.nome_partido, COUNT(v.id_candidato) as total
         FROM candidatos c
         LEFT JOIN tabela_votos v ON c.id = v.id_candidato
         GROUP BY c.id
@@ -73,10 +73,10 @@ def votos_por_partido(conn):  # funcao que mostra a quantidade total de votos ag
 
     # consulta que agrupa os votos por partido
     cursor.execute("""
-        SELECT c.partido, COUNT(v.id_candidato) as total
+        SELECT c.nome_partido, COUNT(v.id_candidato) as total
         FROM candidatos c
         LEFT JOIN tabela_votos v ON c.id = v.id_candidato
-        GROUP BY c.partido
+        GROUP BY c.nome_partido
     """)
 
     resultados = cursor.fetchall()
@@ -104,6 +104,8 @@ def validacao_integridade(conn):  # funcao que verifica se a quantidade de votos
 
     # compara os valores para verificar consistência dos dados
     if total_votos == total_eleitor_voto:
+        print(f"O total de votos é {total_votos}")
+        print(f"O total de eleitores que votaram é {total_eleitor_voto}")
         print("Integridade OK")
     else:
         print("Erro de integridade")
