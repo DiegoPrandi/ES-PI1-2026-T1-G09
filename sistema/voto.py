@@ -7,7 +7,7 @@ from funcoes.descriptografia import descriptografia
 from funcoes.validacaoCPF import validar_cpf, limpar_cpf, primeiros_quatro_digitos
 import mysql.connector
 from datetime import datetime
-from funcoes import registrar_log   
+from funcoes.log_ocorrencia import registrar_log  
 
 
 '''

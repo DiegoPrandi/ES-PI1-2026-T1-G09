@@ -8,7 +8,8 @@ from sistema.voto import verificar_voto
 from sistema.voto import adicionar_voto
 from funcoes.validacaoCPF import validar_cpf, limpar_cpf
 import funcoes.resultado as resultado
-from funcoes import registrar_log
+from funcoes.log_ocorrencia import registrar_log
+from funcoes.descriptografia import descriptografia
 
 def votacao(conn):
     os.system('cls')
@@ -168,10 +169,39 @@ def votacao(conn):
                             print("Opção inválida. Tente novamente.")
 
                         elif (n == 1):
-                            print('Em produção...')
+                            os.system('cls')
+                            try:
+                                with open('log_ocorrencias.txt', 'r', encoding='utf-8') as arquivo:
+                                    conteudo = arquivo.read()
+                                    print(conteudo)
+                            except FileNotFoundError:
+                                print("Arquivo de logs não encontrado.")
+                            input("\nPressione ENTER para voltar.")
+                            return auditoria_votacao(conn)
 
                         elif (n == 2):
-                            print('Em produção...')
+                            os.system('cls')
+                            try:
+                                cursor = conn.cursor()
+                                cursor.execute('SELECT protocolo_criptografado FROM tabela_votos')
+                                protocolos = cursor.fetchall()
+                                cursor.close()
+
+                                if protocolos:
+                                    print("Protocolos:")
+                                    print("-" * 50)
+                                    for protocolo in protocolos:
+                                        print(f"- {descriptografia(protocolo[0])}")
+                                    print("-" * 50)
+                                    print(f"Total de protocolos: {len(protocolos)}")
+                                else:
+                                    print("Nenhum protocolo encontrado")
+
+                            except Exception as e:
+                                print(f"Erro ao consultar protocolos: {e}")
+
+                            input("\nPressione ENTER para voltar.")
+                            return auditoria_votacao(conn)
 
                         elif (n == 3):
                             os.system('cls')
@@ -316,10 +346,39 @@ def votacao(conn):
                             print("Opção inválida. Tente novamente.")
 
                         elif (n == 1):
-                            print('Em produção...')
+                            os.system('cls')
+                            try:
+                                with open('log_ocorrencias.txt', 'r', encoding='utf-8') as arquivo:
+                                    conteudo = arquivo.read()
+                                    print(conteudo)
+                            except FileNotFoundError:
+                                print("Arquivo de logs não encontrado.")
+                            input("\nPressione ENTER para voltar.")
+                            return auditoria_votacao(conn)
 
                         elif (n == 2):
-                            print('Em produção...')
+                            os.system('cls')
+                            try:
+                                cursor = conn.cursor()
+                                cursor.execute('SELECT protocolo_criptografado FROM tabela_votos')
+                                protocolos = cursor.fetchall()
+                                cursor.close()
+
+                                if protocolos:
+                                    print("Protocolos:")
+                                    print("-" * 50)
+                                    for protocolo in protocolos:
+                                        print(f"- {descriptografia(protocolo[0])}")
+                                    print("-" * 50)
+                                    print(f"Total de protocolos: {len(protocolos)}")
+                                else:
+                                    print("Nenhum protocolo encontrado")
+
+                            except Exception as e:
+                                print(f"Erro ao consultar protocolos: {e}")
+
+                            input("\nPressione ENTER para voltar.")
+                            return auditoria_votacao(conn)
 
                         elif (n == 3):
                             os.system('cls')

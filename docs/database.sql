@@ -1,3 +1,4 @@
+-- Active: 1772753672825@@127.0.0.1@3306@projetopi
 CREATE DATABASE IF NOT EXISTS projetoPI;
 --USE projeto_teste;
 --show DATABASES;
@@ -21,6 +22,10 @@ CREATE TABLE candidatos (
     nome_partido VARCHAR(20),
     foto_ascii VARCHAR(255)
 );
+
+UPDATE candidatos
+SET foto_ascii = 'ascii/ascii_candidato10.txt'
+WHERE numero_votacao = 10;
 
 CREATE TABLE registro_logs (
 	id_log INT PRIMARY KEY AUTO_INCREMENT,

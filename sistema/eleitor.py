@@ -10,7 +10,6 @@ import mysql.connector
 from funcoes.criptografia import criptografia
 from funcoes.validacaoCPF import validar_cpf, limpar_cpf
 from funcoes.validacao_TituloEleitor import validar_titulo_eleitor
-from funcoes import registrar_log
 
 conexao = conectar()
 cursor = conexao.cursor()
@@ -202,7 +201,7 @@ def gestao_eleitores(conn):
                         print("\nEleitores encontrados:\n")
                         print('-' * 150)
                         for eleitor in result:
-                            print(f"Nome: {eleitor[2]} |", f"Chave de acesso: {eleitor[1]} |", f"Título de eleitor: {eleitor[3]} |", f"CPF Criptografado: {eleitor[4]} |", f"Mesário: {eleitor[5]} |", f"Status do voto: {eleitor[6]}")
+                            print(f"Nome: {eleitor[2]} |", f"Chave de acesso: {descriptografia(eleitor[1])} |", f"Título de eleitor: {descriptografia(eleitor[3])} |", f"CPF: {descriptografia(eleitor[4])} |", f"Mesário: {eleitor[5]} |", f"Status do voto: {eleitor[6]}")
                         print('-' * 150)
                         
                     buscar_eleitores(conn)

@@ -1,5 +1,5 @@
 from funcoes.zerezima import zerezima
-from funcoes import registrar_log
+from funcoes.log_ocorrencia import registrar_log
 status_mesario = 0
 
 def abrirMesario(conn):

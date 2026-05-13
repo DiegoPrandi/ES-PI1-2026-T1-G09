@@ -1,0 +1,28 @@
+[2026-05-13 08:26:14] ABERTURA: A urna foi aberta
+[2026-05-13 08:26:14] ABERTURA: Votação iniciada com sucesso. Total de votos zerado.
+[2026-05-13 08:27:01] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 08:33:29] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 08:35:21] ABERTURA: A urna foi aberta
+[2026-05-13 08:35:21] ABERTURA: Votação iniciada com sucesso. Total de votos zerado.
+[2026-05-13 08:36:29] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 08:38:16] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 08:39:59] ABERTURA: A urna foi aberta
+[2026-05-13 08:39:59] ABERTURA: Votação iniciada com sucesso. Total de votos zerado.
+[2026-05-13 08:40:40] SUCESSO: Eleitor com ID 2 votou com o protocolo VFT262220316
+[2026-05-13 08:41:11] ALERTA: Eleitor tentou votar novamente
+[2026-05-13 08:41:30] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 08:41:50] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 08:43:09] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 08:52:35] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 08:56:24] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 08:58:39] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 09:09:45] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 09:11:29] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 09:12:51] ABERTURA: A urna foi aberta
+[2026-05-13 09:12:51] ABERTURA: Votação iniciada com sucesso. Total de votos zerado.
+[2026-05-13 09:12:57] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 09:15:27] ENCERRAMENTO: A urna foi fechada
+[2026-05-13 09:17:24] ABERTURA: A urna foi aberta
+[2026-05-13 09:17:24] ABERTURA: Votação iniciada com sucesso. Total de votos zerado.
+[2026-05-13 09:18:31] SUCESSO: Eleitor com ID 1 votou com o protocolo VVQ26792763
+[2026-05-13 09:18:47] ENCERRAMENTO: A urna foi fechada
