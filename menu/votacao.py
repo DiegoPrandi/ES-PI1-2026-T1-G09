@@ -53,7 +53,8 @@ def votacao(conn):
 
                         elif (n == 2):
                             os.system('cls')
-                            while not verificarMesario(conn):
+                            ascii.mesarioASCII()
+                            while not login(conn):
                                 registrar_log("ALERTA", "Tentativa de acesso negado")
                                 print("CPF, Chave de acesso ou Título inválidos. Tente novamente.")
                                 input("Pressione ENTER para voltar")
@@ -251,7 +252,16 @@ def votacao(conn):
                     try:
                         
                         if (n == 1):
+                                os.system('cls')
+                                ascii.votacaoASCII()
                                 id_eleitor = login(conn) # Guardando o valor de retorno da função login
+                                while not id_eleitor:
+                                    print("CPF, TÍTULO ou CHAVE inválidos. Tente novamente.")
+                                    registrar_log("ALERTA", "Tentativa de acesso negado")
+                                    input("Aperte ENTER para tentar novamente.")
+                                    os.system('cls')
+                                    ascii.votacaoASCII()
+                                    id_eleitor = login(conn)
                                 status_voto = verificar_voto(id_eleitor, conn) #Guardando o valor de retorno da função verificar_voto e utilizando o parâmetro da variável acima
                                 if status_voto == 1: # Verifica se o status de voto do eleitor é igual a 1
                                     registrar_log("ALERTA", "Tentativa de voto duplo") # Registra no log a tentativa de voto novamente
@@ -276,7 +286,8 @@ def votacao(conn):
 
                         elif (n == 3):
                             os.system('cls')
-                            while not verificarMesario(conn):
+                            ascii.mesarioASCII()
+                            while not login(conn):
                                 registrar_log("ALERTA", "Tentativa de acesso negado")
                                 print("CPF, Chave de acesso ou Título inválidos. Tente novamente.")
                                 input("Pressione ENTER para voltar")
@@ -415,29 +426,6 @@ def votacao(conn):
             print("Opção inválida. Tente novamente.")
             input("\nPressione ENTER para continuar.")
             return votacao(conn)
-
-def verificarMesario(conn):
-    ascii.mesarioASCII()
-
-    cpf_crip = str(input("Digite seu CPF: "))
-    while not validar_cpf(cpf_crip):
-                registrar_log("ALERTA", "Tentativa de acesso negado") # Registra no log a tentativa de acesso negado
-                print("CPF inválido. Tente novamente.")
-                cpf_crip = str(input("Digite seu CPF: "))
-    cpf_crip = limpar_cpf(cpf_crip)
-    cpf_crip = criptografia(cpf_crip) # Criptografa o cpf
-
-    titulo = str(input("Digite seu título de eleitor: "))
-
-    chaveDeAcesso = input('Digite a chave de acesso do mesário: ')
-    chaveDeAcesso_Criptografada = criptografia(chaveDeAcesso)
-    
-    cursor = conn.cursor()
-    cursor.execute('SELECT mesario FROM eleitores WHERE chave_acesso = %s AND cpf_criptografado = %s AND titulo_eleitor = %s', (chaveDeAcesso_Criptografada, cpf_crip, titulo))
-    resultado = cursor.fetchone()
-    cursor.close() 
-    
-    return resultado[0] if resultado else None
 
 def ConfirmarChaveMesario(conn):
     chave = input("Digite novamente a chave de acesso do mesário: ")
