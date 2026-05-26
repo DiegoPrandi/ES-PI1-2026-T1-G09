@@ -201,7 +201,11 @@ def gestao_eleitores(conn):
                         print("\nEleitores encontrados:\n")
                         print('-' * 150)
                         for eleitor in result:
-                            print(f"Nome: {eleitor[2]} |", f"Chave de acesso: {descriptografia(eleitor[1])} |", f"Título de eleitor: {descriptografia(eleitor[3])} |", f"CPF: {descriptografia(eleitor[4])} |", f"Mesário: {eleitor[5]} |", f"Status do voto: {eleitor[6]}")
+                            cpf_descriptografado = (descriptografia(str(eleitor[4])))
+                            chave_descriptografada = (descriptografia(str(eleitor[1])))
+                            cpf_descriptografado = cpf_descriptografado[:11]
+                            chave_descriptografada = chave_descriptografada[:7]
+                            print(f"Nome: {eleitor[2]} |", f"Chave de acesso: {chave_descriptografada} |", f"Título de eleitor: {descriptografia(eleitor[3])} |", f"CPF: {cpf_descriptografado} |", f"Mesário: {eleitor[5]} |", f"Status do voto: {eleitor[6]}")
                         print('-' * 150)
                         
                     buscar_eleitores(conn)
@@ -223,11 +227,11 @@ def gestao_eleitores(conn):
                         print("Lista de eleitores:")
                         print('-' * 150)
                         for eleitor in result:
-                            cpf_A = str(eleitor[4])
-                            chaveA = str(eleitor[1])
-                            cpf_descriptografado = (descriptografia(cpf_A))
-                            chave_descriptografada = (descriptografia(chaveA))
-                            print(f"Nome Completo: {eleitor[2]} | Chave de Acesso: {chave_descriptografada} | Título de Eleitor: {eleitor[3]} | CPF Criptografado: {cpf_descriptografado} | Mesário: {eleitor[5]} | Status do Voto: {eleitor[6]}")
+                            cpf_descriptografado = (descriptografia(str(eleitor[4])))
+                            chave_descriptografada = (descriptografia(str(eleitor[1])))
+                            cpf_descriptografado = cpf_descriptografado[:11]
+                            chave_descriptografada = chave_descriptografada[:7]
+                            print(f"Nome Completo: {eleitor[2]} | Chave de Acesso: {chave_descriptografada} | Título de Eleitor: {eleitor[3]} | CPF: {cpf_descriptografado} | Mesário: {eleitor[5]} | Status do Voto: {eleitor[6]}")
                         print('-' * 150)
 
                     listar_eleitores(conn)

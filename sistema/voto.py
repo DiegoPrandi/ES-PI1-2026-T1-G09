@@ -19,8 +19,6 @@ from funcoes.log_ocorrencia import registrar_log
 
 def login(conn):
     try:
-        os.system('cls')
-        ascii.votacaoASCII()
         cursor = conn.cursor() # Cria um cursor pra fazer as mudanças
 
         cpf = str(input("Digite os 4 primeiros dígitos do CPF: "))
@@ -46,10 +44,6 @@ def login(conn):
             cpf_descriptografado = descriptografia(eleitor[1])
             if primeiros_quatro_digitos(cpf_descriptografado) == cpf:
                 return eleitor[0]  # id do eleitor
-           
-        print("CPF, TÍTULO ou CHAVE inválidos. Tente novamente.") # Se retornar nada, significa que o CPF, TÍTULO ou CHAVE estão invalidas
-        registrar_log("ALERTA", "Tentativa de acesso negado") # Registra no log a tentativa de acesso negado
-        return login(conn) # Retorna pra função novamente
 
     except ValueError:
         print("Erro. Tente novamente.")
@@ -162,7 +156,7 @@ def adicionar_voto(eleitor_id, conn): # Criação de uma função com um parâme
 
             print("Voto registrado com sucesso!")
             print("Protocolo de votação:", protocolo) # Mostra o protocolo de votação para o eleitor
-            registrar_log("SUCESSO: Voto registrado com sucesso!") # Registra no log o sucesso do voto
+            registrar_log("SUCESSO", "Voto registrado com sucesso!") # Registra no log o sucesso do voto
 
             cursor.execute('''
                 UPDATE eleitores SET status_voto = %s WHERE id = %s
