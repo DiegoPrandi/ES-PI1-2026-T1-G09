@@ -8,7 +8,7 @@ from sistema.voto import verificar_voto
 from sistema.voto import adicionar_voto
 from funcoes.validacaoCPF import validar_cpf, limpar_cpf
 import funcoes.resultado as resultado
-from funcoes.log_ocorrencia import registrar_log
+from funcoes.log_ocorrencia import registrar_log, exibir_logs
 from funcoes.descriptografia import descriptografia
 
 def votacao(conn):
@@ -170,12 +170,9 @@ def votacao(conn):
 
                         elif (n == 1):
                             os.system('cls')
-                            try:
-                                with open('log_ocorrencias.txt', 'r', encoding='utf-8') as arquivo:
-                                    conteudo = arquivo.read()
-                                    print(conteudo)
-                            except FileNotFoundError:
-                                print("Arquivo de logs não encontrado.")
+                        
+                            exibir_logs()
+                            
                             input("\nPressione ENTER para voltar.")
                             return auditoria_votacao(conn)
 
@@ -367,11 +364,11 @@ def votacao(conn):
                         elif (n == 1):
                             os.system('cls')
                             try:
-                                with open('log_ocorrencias.txt', 'r', encoding='utf-8') as arquivo:
-                                    conteudo = arquivo.read()
-                                    print(conteudo)
-                            except FileNotFoundError:
-                                print("Arquivo de logs não encontrado.")
+                                exibir_logs()
+
+                            except Exception as e:
+                                print(f"Erro ao exibir logs: {e}")
+                                
                             input("\nPressione ENTER para voltar.")
                             return auditoria_votacao(conn)
 

@@ -1,4 +1,15 @@
 from datetime import datetime
+import os
+
+# -- Cria uma pasta chamada "logs", ao qual irá armazenar todos os arquivos de log de ocorrência, caso ela já exista, o código não criará uma nova pasta.
+
+os.makedirs("logs", exist_ok=True)
+
+# -- Define o nome do arquivo de log de ocorrência, utilizando a data e hora atual para garantir que cada arquivo seja único.
+
+arquivo_log = datetime.now().strftime(
+    "logs/log_ocorrencias_%Y-%m-%d_%H-%M-%S.txt"
+)
 
 # -- Registra um evento no arquivo de log de ocorrência.
 #
@@ -6,13 +17,13 @@ from datetime import datetime
 #           - Tipo do evento (string): Registra o tipo do evento (ABERTURA, ENCERRAMENTO, ALERTA, SUCESSO ... etc)
 #           - Mensagem (string): Registra a descrição do log de evento ocorrido
 
-def registrar_log(tipo_evento,mensagem):
+def registrar_log(tipo_evento, mensagem):
 
     data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     linha_terminal = f"[{data_hora}] {tipo_evento}: {mensagem}\n"
 
-    with open("log_ocorrencias.txt", "a", encoding="utf-8") as arq:
+    with open(arquivo_log, "a", encoding="utf-8") as arq:
         arq.write(linha_terminal)
 
 # -- Exibe todos os logs que ocorreram durante o processo de eleição.
@@ -23,7 +34,8 @@ def registrar_log(tipo_evento,mensagem):
 def exibir_logs():
 
     try:
-        with open("log_ocorrencias.txt","r", encoding="utf-8") as arq:
+        with open(arquivo_log, "r", encoding="utf-8") as arq:
+            print("\n========== LOG DE OCORRÊNCIAS ==========\n")
             print(arq.read())
     
     except FileNotFoundError:
