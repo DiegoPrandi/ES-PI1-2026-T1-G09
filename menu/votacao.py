@@ -124,16 +124,20 @@ def menu_urnaFechada(conn):
             try:
                 
                 if (n == 1):
-
                     os.system('cls')
-                    statusMesario.abrirMesario(conn)
-
-                    registrar_log( 
+                    if login(conn):
+                        statusMesario.abrirMesario(conn)
+                        registrar_log( 
                             "ABERTURA",        
                             "Votação iniciada com sucesso. Total de votos zerado.")
-                    input("Pressione ENTER para voltar.")
-                    return votacao(conn)
-
+                        input("Pressione ENTER para voltar.")
+                        return votacao(conn)
+                    else:
+                        registrar_log("ALERTA", "Tentativa de acesso negado")
+                        print("Chave de acesso invalida! Tente novamente.")
+                        input("Pressione ENTER para voltar")
+                        return menu_urnaFechada(conn)
+                    
                 elif (n == 2):
                     return menu_urnaFechada(conn)
 
@@ -322,7 +326,6 @@ def menu_urnaAberta(conn):
                 try:
                     
                     if (n == 1):
-
                         os.system('cls')
                         confirmacao = input("Tem certeza que deseja fechar a urna? (s/n): ")
                         if confirmacao.lower() == 'n':
