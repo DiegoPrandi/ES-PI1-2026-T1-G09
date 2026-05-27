@@ -135,9 +135,6 @@ def menu_urnaFechada(conn):
                         print("Dupla confirmação: Digite novamente sua chave de acesso para abrir a urna.")
                         if ConfirmarChaveMesario(conn):
                             statusMesario.abrirMesario(conn)
-                            registrar_log( 
-                                "ABERTURA",        
-                                "Votação iniciada com sucesso. Total de votos zerado.")
                             input("Pressione ENTER para voltar.")
                             return votacao(conn)
 
@@ -350,7 +347,6 @@ def menu_urnaAberta(conn):
                             print("Dupla confirmação: Digite novamente sua chave de acesso para fechar a urna.")
                             if ConfirmarChaveMesario(conn):
                                 statusMesario.fecharMesario()
-                                registrar_log("ENCERRAMENTO", "Votação finalizada com sucesso.")
                                 input("Pressione ENTER para voltar.")
                                 return votacao(conn)
                             else:

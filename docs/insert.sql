@@ -13,10 +13,6 @@ VALUES
 ('Matheus Sabor Japones', 17, 'Takamassa Nomuro');
 SELECT * FROM candidatos;
 
-INSERT INTO registro_logs (data_hora_log, tipo, descricao) 
-VALUES(NOW(), 'INFO', 'LOG EXEMPLO');
-SELECT * FROM registro_logs;
-
 INSERT INTO tabela_votos (id_candidato, data_hora_voto, protocolo_criptografado) 
 VALUES (1, NOW(), '123ABC');
 SELECT * FROM tabela_votos;
