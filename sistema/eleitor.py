@@ -1,4 +1,5 @@
 import os
+import time
 import menu.gerenciamento as gerenciamento
 from funcoes.chaveDeAcesso import gerar_chave_acesso
 import funcoes.criptografia as criptografia
@@ -15,48 +16,50 @@ conexao = conectar()
 cursor = conexao.cursor()
 
 def gestao_eleitores(conn):
+    os.system('cls')
+    time.sleep(0.5)
+    
+    print('''
+        Digite o número da opção desejada:
+
+        1. Cadastrar Eleitor
+        2. Editar Eleitor
+        3. Buscar Eleitor
+        4. Listar Eleitores
+        5. Voltar
+    ''')
+    try:
+        n = int(input("-> "))
+        
+        if (n == 1):
+            cadastrar_eleitor(conn)
+        elif (n == 2):
+            editar_remover_eleitor(conn)
+        elif (n == 3):
+            buscar_eleitores(conn)
+            input("\nPressione ENTER para voltar.")
+            gestao_eleitores(conn)
+        elif (n == 4):
+            listar_eleitores(conn)
+            input("\nPressione ENTER para voltar.")
+            gestao_eleitores(conn)
+
+        elif (n == 5):
             os.system('cls')
+            gerenciamento.gerenciamento(conn)
+        else:
+            print("Opção inválida. Tente novamente.")
+            input("\nPressione ENTER para continuar.")
+            gestao_eleitores(conn)
             
-            print('''
-                Digite o número da opção desejada:
-
-                1. Cadastrar Eleitor
-                2. Editar Eleitor
-                3. Buscar Eleitor
-                4. Listar Eleitores
-                5. Voltar
-            ''')
-            try:
-                n = int(input("-> "))
-             
-                if (n == 1):
-                    cadastrar_eleitor(conn)
-                elif (n == 2):
-                    editar_remover_eleitor(conn)
-                elif (n == 3):
-                    buscar_eleitores(conn)
-                    input("\nPressione ENTER para voltar.")
-                    gestao_eleitores(conn)
-                elif (n == 4):
-                    listar_eleitores(conn)
-                    input("\nPressione ENTER para voltar.")
-                    gestao_eleitores(conn)
-
-                elif (n == 5):
-                    os.system('cls')
-                    gerenciamento.gerenciamento(conn)
-                else:
-                    print("Opção inválida. Tente novamente.")
-                    input("\nPressione ENTER para continuar.")
-                    gestao_eleitores(conn)
-                    
-            except ValueError:
-                print("Opção inválida. Tente novamente.")
-                input("\nPressione ENTER para continuar.")
-                gestao_eleitores(conn)
+    except ValueError:
+        print("Opção inválida. Tente novamente.")
+        input("\nPressione ENTER para continuar.")
+        gestao_eleitores(conn)
 
 def cadastrar_eleitor(conn):
     os.system('cls')
+    time.sleep(0.5)
     nome_completo = str(input("Digite seu nome completo: "))
 
     cpf = str(input("Digite seu CPF: "))
@@ -152,6 +155,8 @@ def cadastrar_eleitor(conn):
 
     status_voto = 0
     chave_normal = gerar_chave_acesso(nome_completo)
+    print('Cadastrando eleitor, aguarde...')
+    time.sleep(1.7)
     print(f"Chave de acesso gerada: {chave_normal}")
 
     cpf_criptografado = criptografia(cpf)
@@ -166,7 +171,8 @@ def cadastrar_eleitor(conn):
             VALUES (%s, %s, %s, %s, %s, %s)
         ''', (chave_acesso, nome_completo, titulo_eleitor, cpf_criptografado, mesario, status_voto))
         conn.commit()
-        print("eleitor cadastrado com sucesso")
+        
+        print("Eleitor cadastrado com sucesso")
     except mysql.connector.IntegrityError as e:
         print(f"\nErro ao cadastrar: {e}")
     finally:
@@ -175,6 +181,8 @@ def cadastrar_eleitor(conn):
         gestao_eleitores(conn)
 
 def editar_remover_eleitor(conn):
+    os.system('cls')
+    time.sleep(0.5)
     cursor = conn.cursor()
     nome = str(input("Digite o nome completo do eleitor que deseja editar: "))
     sql = 'SELECT * FROM eleitores'
@@ -196,7 +204,9 @@ def editar_remover_eleitor(conn):
             cursor.execute(sql, values)
             conn.commit()
 
-            n = input("\nEleitor alterado com sucesso. Pressione ENTER para voltar.\n")
+            print('Alterando eleitor, aguarde...')
+            time.sleep(1.7)
+            input("\nEleitor alterado com sucesso. Pressione ENTER para voltar.\n")
             gestao_eleitores(conn)
             break
 
@@ -206,13 +216,15 @@ def editar_remover_eleitor(conn):
 
 def buscar_eleitores(conn):
     os.system('cls')
+    time.sleep(0.5)
     cursor = conn.cursor()
     
     nome = str(input("\nDigite o nome do eleitor: ")).strip()
     sql = "SELECT * FROM eleitores WHERE LOWER(nome_completo) LIKE %s"
     cursor.execute(sql, ('%' + nome.lower() + '%',))
     result = cursor.fetchall()
-    
+    print('Buscando eleitores, aguarde...')
+    time.sleep(1.7)
     print("\nEleitores encontrados:\n")
     print('-' * 150)
     for eleitor in result:
@@ -225,13 +237,14 @@ def buscar_eleitores(conn):
 
 def listar_eleitores(conn):
     os.system('cls')
+    time.sleep(0.5)
     cursor = conn.cursor()
-    
-    input("\nPressione ENTER para listar todos os eleitores.")
     sql = "SELECT * FROM eleitores"
     cursor.execute(sql)
     result = cursor.fetchall()
 
+    print('Listando eleitores, aguarde...')
+    time.sleep(1.7)
     print("Lista de eleitores:")
     print('-' * 150)
     for eleitor in result:

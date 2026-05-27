@@ -1,12 +1,14 @@
 import os
+import time
 import sistema.candidato as candidato
 import sistema.eleitor as eleitor
 import menu.menu_principal as menu
 from funcoes import ascii
 
+
 def gerenciamento(conn):
     os.system('cls')
-    
+    time.sleep(0.5)
     ascii.gerenciamentoASCII()
     n = 0
     #Adiciondo while que impede a digitação de opção inválida.

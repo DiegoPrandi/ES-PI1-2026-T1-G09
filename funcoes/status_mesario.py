@@ -1,3 +1,4 @@
+import time
 from funcoes.zerezima import zerezima
 from funcoes.log_ocorrencia import registrar_log
 status_mesario = 0
@@ -6,7 +7,9 @@ def abrirMesario(conn):
     global status_mesario
     status_mesario = 1
     zerezima(conn)
-
+    
+    print('Abrindo urna, aguarde...')
+    time.sleep(1.7)
     print("A urna foi aberta.")
     registrar_log("ABERTURA", "Votação iniciada com sucesso. Total de votos zerados.") # Registra no log a abertura da urna
 
@@ -14,6 +17,8 @@ def fecharMesario():
     global status_mesario
     status_mesario = 0
 
+    print('Fechando urna, aguarde...')
+    time.sleep(1.7)
     print("A urna foi fechada.")
     registrar_log("ENCERRAMENTO", "Votação finalizada com sucesso.") # Registra no log o encerramento da urna
 

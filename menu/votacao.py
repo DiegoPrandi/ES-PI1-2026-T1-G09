@@ -1,4 +1,5 @@
 import os
+import time
 import menu.menu_principal as menu
 import funcoes.ascii as ascii
 import funcoes.status_mesario as statusMesario
@@ -12,6 +13,7 @@ from funcoes.descriptografia import descriptografia
 
 def votacao(conn):
     os.system('cls')
+    time.sleep(0.5)
     ascii.votacaoASCII()
     
     # MENU URNA FECHADA

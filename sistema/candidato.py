@@ -1,9 +1,11 @@
 import os
+import time
 import menu.menu_principal as menu
 import menu.gerenciamento as gerenciamento
 
 def gestao_candidatos(conn):
             os.system('cls')
+            time.sleep(0.5)
             print('''
             \nDigite o número da opção desejada.
 
@@ -48,6 +50,7 @@ def cadastrar_candidato(conn):
     try:
         cursor = conn.cursor()
         os.system('cls')
+        time.sleep(0.5)
         name = str(input('Digite o nome do candidato: '))
         number = int(input('Digite o número do candidato: '))
         partido = str(input('Digite o partido do candidato: '))
@@ -149,6 +152,7 @@ def cadastrar_candidato(conn):
 
 def editar_candidato(conn):
     try:
+        time.sleep(0.5)
         cursor = conn.cursor()
         nome = str(input("Digite o nome do candidato que deseja alterar: "))
         sql = 'SELECT * FROM candidatos'
@@ -200,6 +204,7 @@ def editar_candidato(conn):
 
 def buscar_candidato(conn):
     try:
+        time.sleep(0.5)
         cursor = conn.cursor()
         numeroPartido = int(input("\nDigite o numero do partido do candidato: "))
         sql = 'SELECT * FROM candidatos'
@@ -235,11 +240,14 @@ def buscar_candidato(conn):
 
 def listar_candidatos(conn):
     try:
+        time.sleep(0.5)
         cursor = conn.cursor()
         sql = 'SELECT * FROM candidatos'
         cursor.execute(sql)
         result = cursor.fetchall()
 
+        print('Cadastrando candidato, aguarde...')
+        time.sleep(1.7)
         print("\nCandidatos cadastrados:\n")
         print('-' * 120)
         for candidato in result:

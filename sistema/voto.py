@@ -1,10 +1,11 @@
 import os
 import random
 import string
+import time
 from funcoes import ascii
 from funcoes.criptografia import criptografia
 from funcoes.descriptografia import descriptografia
-from funcoes.validacaoCPF import validar_cpf, limpar_cpf, primeiros_quatro_digitos
+from funcoes.validacaoCPF import limpar_cpf, primeiros_quatro_digitos
 import mysql.connector
 from datetime import datetime
 from funcoes.log_ocorrencia import registrar_log  
@@ -19,6 +20,7 @@ from funcoes.log_ocorrencia import registrar_log
 
 def login(conn):
     try:
+        time.sleep(0.5)
         cursor = conn.cursor() # Cria um cursor pra fazer as mudanças
 
         cpf = str(input("Digite os 4 primeiros dígitos do CPF: "))
@@ -72,8 +74,8 @@ def verificar_voto(eleitor_id, conn): # Criação de uma função com um parâme
         cursor.close()
 
 def adicionar_voto(eleitor_id, conn): # Criação de uma função com um parâmetro do id do eleitor
-
     try:
+        time.sleep(0.5)
         cursor = conn.cursor() # Cria um cursor para modificação no banco
         id_candidato = None
 

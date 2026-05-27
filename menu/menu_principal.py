@@ -2,9 +2,11 @@ import os
 import menu.gerenciamento as gerenciamento
 from funcoes import ascii
 import menu.votacao as votacao
+import time
 
 def menu(conn):
     os.system('cls')
+    time.sleep(0.5)
     ascii.menuASCII()
 #Adicionado while que evita a digitação de opção inválida!
     n = 0
