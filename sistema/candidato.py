@@ -219,81 +219,86 @@ def editar_candidato(conn):
 
     try:
         time.sleep(0.5)
-        nome = str(input("Digite o nome do candidato que deseja alterar: "))
-        sql = 'SELECT * FROM candidatos WHERE nome_completo = %s'
-        cursor.execute(sql, (nome,))
-        result = cursor.fetchall()
+        numero = int(input("Digite o NÚMERO do candidato que deseja alterar: "))
+        sql = 'SELECT * FROM candidatos WHERE numero_votacao = %s'
+        cursor.execute(sql, (numero,))
+        candidato = cursor.fetchone()
+        
 
-        '''
-                na nossa tabela candidatos tem os campos
-                id    nome   numero   partido
-                0      1       2        3
-                entao os indice no for fica assim
-                id e o indice 0, nome e o indice 1, numero e o indice 2 e partido e o indice 3
-                por isso do candidato[1]
-                pq ele percorre todos os candidatos
-                se algum cadidato tiver o nome igual ele vai pro if
+        if candidato:
+            if candidato[4]:
+                try:
+                    with open(candidato[4], 'r', encoding='utf-8') as f:
+                        print(f.read())
+                except:
+                    print('Erro ao carregar ASCII')
+            else:
+                print('Sem Imagem')
+            print(f"\nCandidato encontrado: {candidato[1]} | Número: {candidato[2]} | Partido: {candidato[3]}\n")
 
-                resumindo, o for faz o seguinte
-                
-                para cada candidato na tabela candidatos (ele pega todos os candidatos)
-                se o nome digitado for igual ao nome do candidato (candidato[1])
-                fecho acho o homi  
-        '''
+            if verificar_voto_candidato(conn, candidato[0]):
+                print("Este candidato possui votos registrados. Editar ou remover este candidato pode afetar a integridade dos dados eleitorais.")
+                input("Pressione ENTER para voltar.")
+                gestao_candidatos(conn)
+                return
 
-        encontrado = False
-        for candidato in result:
-            if nome == candidato[1]:
-                encontrado = True
+            n = str(input("Deseja editá-lo ou removê-lo? (e/r): ")).lower()
 
-                print(f"\nCandidato encontrado: {candidato[1]} | Número: {candidato[2]} | Partido: {candidato[3]}\n")
-
-                if verificar_voto_candidato(conn, candidato[0]):
-                    print("Este candidato possui votos registrados. Editar ou remover este candidato pode afetar a integridade dos dados eleitorais.")
-                    input("Pressione ENTER para voltar.")
-                    gestao_candidatos(conn)
-                    return
-
+            while n not in ('e', 'r'):
+                print("Opção inválida. Digite 'e' para editar ou 'r' para remover.")
                 n = str(input("Deseja editá-lo ou removê-lo? (e/r): ")).lower()
 
-                while n not in ('e', 'r'):
-                    print("Opção inválida. Digite 'e' para editar ou 'r' para remover.")
-                    n = str(input("Deseja editá-lo ou removê-lo? (e/r): ")).lower()
+            if n == 'e':
 
-                if n == 'e':
+                name = str(input("Digite um novo nome para o candidato: "))
+                number = int(input("Digite o número do partido: "))
+                if candidato[2] == number:
+                    pass
+                else: 
+                    if verificarNumCadidato(conn, number):
+                        print('Voltando, aguarde...')
+                        time.sleep(2.2)
+                        gestao_candidatos(conn)
+                
+                partido = str(input("Digite o nome do partido: "))
 
-                    name = str(input("Digite um novo nome para o candidato: "))
-                    number = int(input("Digite o número do partido: "))
-                    partido = str(input("Digite o nome do partido: "))
+                sql = 'UPDATE candidatos SET nome_completo=%s, numero_votacao=%s, nome_partido=%s WHERE id=%s'
+                values = (name, number, partido, candidato[0])
 
-                    sql = 'UPDATE candidatos SET nome_completo=%s, numero_votacao=%s, nome_partido=%s WHERE id=%s'
-                    values = (name, number, partido, candidato[0])
+                cursor.execute(sql, values)
+                conn.commit()
 
-                    cursor.execute(sql, values)
-                    conn.commit()
+                print("\nCandidato alterado!")
+                input("\nPressione ENTER para voltar.")
+                gestao_candidatos(conn)
+                return
 
-                    print("\nCandidato alterado!")
-                    input("\nPressione ENTER para voltar.")
+            elif n == 'r':
+                confirmar = str(input("Tem certeza que deseja remover este candidato? (s/n): ")).lower()
+                while confirmar not in ('s', 'n'):
+                    print("Opção inválida. Digite 's' para sim ou 'n' para não.")
+                    confirmar = str(input(f"Tem certeza que deseja remover este {candidato[1]}? (s/n): ")).lower()
+                    
+                if confirmar != 's':
+                    print("\nRemoção CANCELADA. Voltando, aguarde...")
+                    time.sleep(2.2)
                     gestao_candidatos(conn)
-                    break #Serve para sair do for, para nao ficar editando o mesmo candidato varias vezes, caso haja mais de um com o mesmo nome
                     return
+                sql = 'DELETE FROM candidatos WHERE id=%s'
+                value = (candidato[0],)
 
-                elif n == 'r':
+                cursor.execute(sql, value)
+                conn.commit()
 
-                    sql = 'DELETE FROM candidatos WHERE id=%s'
-                    value = (candidato[0],)
-
-                    cursor.execute(sql, value)
-                    conn.commit()
-
-                    print("\nCandidato removido!")
-                    input("\nPressione ENTER para voltar.")
-                    gestao_candidatos(conn)
-                    break #Serve para sair do for, para nao ficar editando o mesmo candidato varias vezes, caso haja mais de um com o mesmo nome
-                    return
+                print('\nRemovendo candidato, aguarde...')
+                time.sleep(1.7)
+                print("Candidato removido!")
+                input("\nPressione ENTER para voltar.")
+                gestao_candidatos(conn)
+                return
                     
         
-        if not encontrado:
+        if not candidato:
             print("\nCandidato não encontrado.\n")
             input("Pressione ENTER para voltar.")
             gestao_candidatos(conn)

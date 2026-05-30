@@ -100,7 +100,7 @@ def loginMesario(conn):
             
     except ValueError:
         print("Erro. Tente novamente.")
-        return login(conn) # Em caso de erro, retorna pra função novamente
+        return loginMesario(conn) # Em caso de erro, retorna pra função novamente
     
     finally: # Quando tudo acima terminar
         cursor.close() # Fecha o cursor

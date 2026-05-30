@@ -23,10 +23,6 @@ CREATE TABLE candidatos (
     foto_ascii VARCHAR(255)
 );
 
-UPDATE candidatos
-SET foto_ascii = 'ascii/ascii_candidato10.txt'
-WHERE numero_votacao = 10;
-
 CREATE TABLE registro_logs (
 	id_log INT PRIMARY KEY AUTO_INCREMENT,
     data_hora_log DATETIME NOT NULL,
