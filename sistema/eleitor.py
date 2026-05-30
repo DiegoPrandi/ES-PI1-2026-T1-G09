@@ -237,6 +237,7 @@ def editarEleitor(conn):
                                 sql = 'UPDATE eleitores SET nome_completo = %s WHERE id = %s'
                                 values = (nome, eleitor[0])
                                 cursor.execute(sql, values)
+                                conn.commit()
                             
                             case 2:
                                 cpf = str(input("\nDigite o novo CPF para o eleitor: "))
@@ -255,7 +256,7 @@ def editarEleitor(conn):
                                     values = (criptografia(cpf), eleitor[0])
                                     sql = 'UPDATE eleitores SET cpf_criptografado = %s WHERE id = %s'
                                     cursor.execute(sql, values)
-
+                                    conn.commit()
                             case 3:
                                 tituloDeEleitor = str(input("\nDigite o novo TITULO DE ELEITOR para o eleitor: "))
                                 while validar_titulo_eleitor(tituloDeEleitor) == False:
@@ -271,7 +272,7 @@ def editarEleitor(conn):
                                     values = (tituloDeEleitor, eleitor[0])
                                     sql = 'UPDATE eleitores SET titulo_eleitor = %s WHERE id = %s'
                                     cursor.execute(sql, values)
-                                    
+                                    conn.commit()
                             
                             case 4:
                                 if eleitor[5] == 0:
@@ -287,6 +288,7 @@ def editarEleitor(conn):
                                 if opcao in ('s', 'sim'):
                                     novo_status = 1 if eleitor[5] == 0 else 0
                                     cursor.execute('UPDATE eleitores SET mesario = %s WHERE id = %s', (novo_status, eleitor[0]))
+                                    conn.commit()
                                 else:
                                     print('Alteração de status de mesario CANCELADA')
                                     print('Voltando, aguarde...')
@@ -296,6 +298,11 @@ def editarEleitor(conn):
 
                             case 5:
                                 gestao_eleitores(conn)
+                                return
+                            
+                            case _:
+                                print("Opção inválida. Tente novamente.")
+                                editarEleitor(conn)
                                 return
 
                     elif n == 'r':

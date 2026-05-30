@@ -275,6 +275,7 @@ def editar_candidato(conn):
                     print("\nCandidato alterado!")
                     input("\nPressione ENTER para voltar.")
                     gestao_candidatos(conn)
+                    break #Serve para sair do for, para nao ficar editando o mesmo candidato varias vezes, caso haja mais de um com o mesmo nome
                     return
 
                 elif n == 'r':
@@ -288,7 +289,9 @@ def editar_candidato(conn):
                     print("\nCandidato removido!")
                     input("\nPressione ENTER para voltar.")
                     gestao_candidatos(conn)
+                    break #Serve para sair do for, para nao ficar editando o mesmo candidato varias vezes, caso haja mais de um com o mesmo nome
                     return
+                    
         
         if not encontrado:
             print("\nCandidato não encontrado.\n")
