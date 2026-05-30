@@ -137,6 +137,36 @@ def verificar_voto(eleitor_id, conn): # Criação de uma função com um parâme
     finally: # Quando tudo acima tiver feito fecha o cursor e a conexão com o banco
         cursor.close()
 
+def verificar_voto_candidato(conn, id_candidato): # Criação de uma função para verificar o voto no candidato
+
+    """
+    Esta função verifica se um candidato específico recebeu votos em um sistema eleitoral. 
+    Ela consulta o banco de dados para determinar se há registros de votos associados ao ID do candidato fornecido.
+
+    Args:
+        conn (mysql.connector.connection_cext.CMySQLConnection): Conexão ativa com o banco de dados MySQL.
+        id_candidato (int): O ID do candidato para o qual se deseja verificar se recebeu votos. 
+
+    Returns:
+        boolean: Retorna True se o candidato recebeu votos, ou seja, se houver registros de votos associados ao ID do candidato no banco de dados e
+        retorna False se o candidato não recebeu votos..
+        
+    """
+
+    cursor = conn.cursor()
+
+    sql = 'SELECT id_voto FROM tabela_votos WHERE id_candidato = %s LIMIT 1'
+    value = (id_candidato,)
+    cursor.execute(sql, value)
+
+    resultado = cursor.fetchone()
+    cursor.close()
+
+    if resultado is not None:
+        return True
+    else:
+        return False
+
 def adicionar_voto(eleitor_id, conn): # Criação de uma função com um parâmetro do id do eleitor
     """
     Esta função permite a um eleitor adicionar um voto para um candidato específico em um sistema eleitoral.

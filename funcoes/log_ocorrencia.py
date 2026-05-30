@@ -28,8 +28,7 @@ def registrar_log(tipo_evento, mensagem):
 
 # -- Exibe todos os logs que ocorreram durante o processo de eleição.
 #       
-#       O loop tenta ler o arquivo log_ocorrencias.txt, se houver algum log sequer, a função printa ela,
-#       se não houver, printa erro.
+#       O loop tenta ler o arquivo "arquivo_log", se houver algum log sequer, a função printa ela, se não houver, printa erro.
 
 def exibir_logs():
 

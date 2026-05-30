@@ -7,6 +7,7 @@ from funcoes import ascii as ascii
 from funcoes.criptografia import criptografia
 from funcoes.descriptografia import descriptografia
 from funcoes.chaveDeAcesso import gerar_chave_acesso
+from sistema.voto import verificar_voto
 from funcoes.validacaoCPF import (
     validar_cpf,
     limpar_cpf,
@@ -161,9 +162,9 @@ def cadastrar_eleitor(conn):
 
 def editarEleitor(conn):
     """
-    Esta função permite editar as informações de um eleitor existente no sistema. O usuário é solicitado a fornecer o nome completo do eleitor que deseja editar,
-    e a função consulta o banco de dados MySQL para encontrar um eleitor com o nome correspondente. 
-    Se o eleitor for encontrado, o usuário pode inserir um novo nome para o eleitor, e a função atualiza o registro no banco de dados com o novo nome fornecido.
+    Esta função permite editar as informações de um eleitor existente no sistema. O usuário é solicitado a fornecer o CPF do eleitor que deseja editar,
+    e a função consulta o banco de dados MySQL para encontrar um eleitor com o CPF correspondente. 
+    Se o eleitor for encontrado, o usuário pode inserir as novas informações, e a função atualiza o registro no banco de dados com as novas informações fornecidas.
 
     Args:
         conn (mysql.connector.connection_cext.CMySQLConnection): Conexão ativa com o banco de dados MySQL.
@@ -172,124 +173,178 @@ def editarEleitor(conn):
         None: A função não retorna nenhum valor, apenas exibe os resultados e interage com o usuário por meio do console.
 
     """
-    os.system('cls')
-    time.sleep(0.5)
+
     cursor = conn.cursor()
-    cpf = str(input("\nDigite o CPF do eleitor: ")).strip()
-    
 
-    while not validar_cpf(cpf):
-        print("CPF inválido. Tente novamente.")
-        cpf = str(input("Digite o CPF do eleitor: "))
-    cpf = limpar_cpf(cpf)
-    cpf_criptografado = criptografia(cpf)
-    
-    cursor.execute('''SELECT * 
-            FROM eleitores
-            WHERE cpf_criptografado = %s
-            ''', (cpf_criptografado,))
-    result = cursor.fetchall()
-    
-    print('Buscando eleitor, aguarde...')
-    time.sleep(1.7)
+    try:
+        os.system('cls')
+        time.sleep(0.5)
+        cpf = str(input("\nDigite o CPF do eleitor: ")).strip()
+        
 
-    encontrado = False
+        while not validar_cpf(cpf):
+            print("CPF inválido. Tente novamente.")
+            cpf = str(input("Digite o CPF do eleitor: "))
+        cpf = limpar_cpf(cpf)
+        cpf_criptografado = criptografia(cpf)
+        
+        cursor.execute('''SELECT * 
+                FROM eleitores
+                WHERE cpf_criptografado = %s
+                ''', (cpf_criptografado,))
+        result = cursor.fetchall()
+        
+        print('Buscando eleitor, aguarde...')
+        time.sleep(1.7)
 
-    for eleitor in result:
-        if cpf_criptografado == eleitor[4]:
-            encontrado = True
-            
-            print("\nEleitor encontrado!")
-            cpf_descriptografado = (descriptografia(str(eleitor[4])))
-            chave_descriptografada = (descriptografia(str(eleitor[1])))
-            cpf_descriptografado = cpf_descriptografado[:11]
-            chave_descriptografada = chave_descriptografada[:7]
-            print(f"Nome: {eleitor[2]} |", f"Chave de acesso: {chave_descriptografada} |", f"Título de eleitor: {eleitor[3]} |", f"CPF: {cpf_descriptografado} |", f"Mesário: {eleitor[5]}")
+        encontrado = False
 
-            print('''
-                    Qual informação deseja alterar:\n
-                        1. NOME
-                        2. CPF
-                        3. TITULO DE ELEITOR
-                        4. STATUS MESARIO
-                        5. VOLTAR
-                ''')
-            opcao = int(input('-> '))
-            
-            match opcao:
-                case 1:
-                    nome = str(input("\nDigite o novo NOME para o eleitor: "))
-                    sql = 'UPDATE eleitores SET nome_completo = %s WHERE id = %s'
-                    values = (nome, eleitor[0])
-                    cursor.execute(sql, values)
+        for eleitor in result:
+            if cpf_criptografado == eleitor[4]:
+                encontrado = True
+
+
+                if eleitor[6] == 0:
                 
-                case 2:
-                    cpf = str(input("\nDigite o novo CPF para o eleitor: "))
-                    
-                    while not validar_cpf(cpf):
-                        print("CPF inválido. Tente novamente.")
-                        cpf = str(input("Digite o novo CPF para o eleitor: "))
-                    cpf = limpar_cpf(cpf)
+                    print("\nEleitor encontrado!")
+                    cpf_descriptografado = (descriptografia(str(eleitor[4])))
+                    chave_descriptografada = (descriptografia(str(eleitor[1])))
+                    cpf_descriptografado = cpf_descriptografado[:11]
+                    chave_descriptografada = chave_descriptografada[:7]
+                    print(f"Nome: {eleitor[2]} |", f"Chave de acesso: {chave_descriptografada} |", f"Título de eleitor: {eleitor[3]} |", f"CPF: {cpf_descriptografado} |", f"Mesário: {eleitor[5]}")
 
-                    if verificarCpfDuplicado(conn, cpf):
-                        print('Voltando, aguarde...')
-                        time.sleep(1.7)
-                        gestao_eleitores(conn)
-                    else:
-                        values = (criptografia(cpf), eleitor[0])
-                        sql = 'UPDATE eleitores SET cpf_criptografado = %s WHERE id = %s'
-                        cursor.execute(sql, values)
-                        cursor.close()
+                    n = str(input("\nDeseja editá-lo ou removê-lo? (e/r) ")).lower()
 
-                case 3:
-                    tituloDeEleitor = str(input("\nDigite o novo TITULO DE ELEITOR para o eleitor: "))
-                    while validar_titulo_eleitor(tituloDeEleitor) == False:
-                        print("Título de eleitor inválido. Tente novamente:")
-                        tituloDeEleitor = str(input("Digite o novo TITULO DE ELEITOR para o eleitor: "))
+                    while n not in ('e', 'r'):
+                        print("Opção inválida. Digite 'e' para editar ou 'r' para remover.")
+                        n = str(input("\nDeseja editá-lo ou removê-lo? (e/r) ")).lower()
 
-                    if verificarTituloDeEleitorDuplicado(conn, tituloDeEleitor):
-                        print('Voltando, aguarde...')
-                        time.sleep(1.7)
-                        gestao_eleitores(conn)
-                    else:
-                        values = (tituloDeEleitor, eleitor[0])
-                        sql = 'UPDATE eleitores SET titulo_eleitor = %s WHERE id = %s'
-                        cursor.execute(sql, values)
-                        cursor.close()
+                    if n == 'e':
+
+                        print('''
+                                Qual informação deseja alterar:\n
+                                    1. NOME
+                                    2. CPF
+                                    3. TITULO DE ELEITOR
+                                    4. STATUS MESARIO
+                                    5. VOLTAR
+                            ''')
+                        opcao = int(input('-> '))
                         
-                
-                case 4:
-                    if eleitor[5] == 0:
-                        print(f'\nDeseja COLOCAR {eleitor[2]} como MESÁRIO? (s/n)')
-                    else:
-                        print(f'\nDeseja REMOVER {eleitor[2]} como MESÁRIO? (s/n)')
+                        match opcao:
+                            case 1:
+                                nome = str(input("\nDigite o novo NOME para o eleitor: "))
+                                sql = 'UPDATE eleitores SET nome_completo = %s WHERE id = %s'
+                                values = (nome, eleitor[0])
+                                cursor.execute(sql, values)
+                            
+                            case 2:
+                                cpf = str(input("\nDigite o novo CPF para o eleitor: "))
+                                
+                                while not validar_cpf(cpf):
+                                    print("CPF inválido. Tente novamente.")
+                                    cpf = str(input("Digite o novo CPF para o eleitor: "))
+                                cpf = limpar_cpf(cpf)
 
-                    opcao = str(input('-> ')).strip().lower()
-                    while opcao not in ('s', 'sim', 'n', 'não', 'nao'):
-                        print('Digite somente SIM ou NAO')
-                        opcao = str(input('-> ')).strip().lower()
+                                if verificarCpfDuplicado(conn, cpf):
+                                    print('Voltando, aguarde...')
+                                    time.sleep(1.7)
+                                    gestao_eleitores(conn)
+                                    return
+                                else:
+                                    values = (criptografia(cpf), eleitor[0])
+                                    sql = 'UPDATE eleitores SET cpf_criptografado = %s WHERE id = %s'
+                                    cursor.execute(sql, values)
 
-                    if opcao in ('s', 'sim'):
-                        novo_status = 1 if eleitor[5] == 0 else 0
-                        cursor.execute('UPDATE eleitores SET mesario = %s WHERE id = %s', (novo_status, eleitor[0]))
-                    else:
-                        print('Alteração de status de mesario CANCELADA')
-                        print('Voltando, aguarde...')
-                        time.sleep(2.2)
-                        gestao_eleitores(conn)
-                    
-                    
-            conn.commit()
+                            case 3:
+                                tituloDeEleitor = str(input("\nDigite o novo TITULO DE ELEITOR para o eleitor: "))
+                                while validar_titulo_eleitor(tituloDeEleitor) == False:
+                                    print("Título de eleitor inválido. Tente novamente:")
+                                    tituloDeEleitor = str(input("Digite o novo TITULO DE ELEITOR para o eleitor: "))
 
-            print('Alterando eleitor, aguarde...')
-            time.sleep(1.7)
-            input("\nEleitor alterado com sucesso. Pressione ENTER para voltar.\n")
+                                if verificarTituloDeEleitorDuplicado(conn, tituloDeEleitor):
+                                    print('Voltando, aguarde...')
+                                    time.sleep(1.7)
+                                    gestao_eleitores(conn)
+                                    return
+                                else:
+                                    values = (tituloDeEleitor, eleitor[0])
+                                    sql = 'UPDATE eleitores SET titulo_eleitor = %s WHERE id = %s'
+                                    cursor.execute(sql, values)
+                                    
+                            
+                            case 4:
+                                if eleitor[5] == 0:
+                                    print(f'\nDeseja COLOCAR {eleitor[2]} como MESÁRIO? (s/n)')
+                                else:
+                                    print(f'\nDeseja REMOVER {eleitor[2]} como MESÁRIO? (s/n)')
+
+                                opcao = str(input('-> ')).strip().lower()
+                                while opcao not in ('s', 'sim', 'n', 'não', 'nao'):
+                                    print('Digite somente SIM ou NAO')
+                                    opcao = str(input('-> ')).strip().lower()
+
+                                if opcao in ('s', 'sim'):
+                                    novo_status = 1 if eleitor[5] == 0 else 0
+                                    cursor.execute('UPDATE eleitores SET mesario = %s WHERE id = %s', (novo_status, eleitor[0]))
+                                else:
+                                    print('Alteração de status de mesario CANCELADA')
+                                    print('Voltando, aguarde...')
+                                    time.sleep(2.2)
+                                    gestao_eleitores(conn)
+                                    return
+
+                            case 5:
+                                gestao_eleitores(conn)
+                                return
+
+                    elif n == 'r':
+                        confirmacao = str(input(f"\nTem certeza que deseja remover o eleitor {eleitor[2]}? (s/n) ")).lower()
+                        while confirmacao not in ('s', 'sim', 'n', 'não', 'nao'):
+                            print('Digite somente SIM ou NAO')
+                            confirmacao = str(input('-> ')).lower()
+
+                        if confirmacao in ('s', 'sim'):
+
+                            sql = 'DELETE FROM eleitores WHERE id = %s'
+                            values = (eleitor[0],)
+
+                            cursor.execute(sql, values)
+                            conn.commit()
+
+                            print('Removendo eleitor, aguarde...')
+                            time.sleep(1.7)
+                            input("\nEleitor removido com sucesso. Pressione ENTER para voltar.\n")
+                            gestao_eleitores(conn)
+                            return
+
+                        else:
+                            print('Remoção CANCELADA')
+                            print('Voltando, aguarde...')
+                            time.sleep(2.2)
+                            gestao_eleitores(conn)
+                            return
+
+                elif eleitor[6] == 1:
+                    print("\nEleitor encontrado, porém ele já votou, não é possível editar as informações.")
+                    input("\nPressione ENTER para voltar.")
+                    gestao_eleitores(conn)
+                    return        
+                        
+                conn.commit()
+
+                print('Alterando eleitor, aguarde...')
+                time.sleep(1.7)
+                input("\nEleitor alterado com sucesso. Pressione ENTER para voltar.\n")
+                gestao_eleitores(conn)
+                return
+
+        if not encontrado:
+            n = input("\nEleitor não encontrado. Pressione ENTER para voltar.\n")
             gestao_eleitores(conn)
-            break
-
-    if not encontrado:
-        n = input("\nEleitor não encontrado. Pressione ENTER para voltar.\n")
-        gestao_eleitores(conn)
+            return
+    finally:
+        cursor.close()
 
 def buscar_eleitores(conn):
     """
@@ -354,6 +409,7 @@ def buscar_eleitores(conn):
     
     elif n ==3:
         gestao_eleitores(conn)
+        return
     
     # ---           --- #
     

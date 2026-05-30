@@ -2,6 +2,7 @@ import os
 import time
 import menu.menu_principal as menu
 import menu.gerenciamento as gerenciamento
+from sistema.voto import verificar_voto_candidato
 
 def gestao_candidatos(conn):
             """
@@ -213,12 +214,14 @@ def editar_candidato(conn):
         None: A função não retorna nenhum valor, apenas exibe os resultados e interage com o usuário por meio do console.  
 
     """
+    
+    cursor = conn.cursor()
+
     try:
         time.sleep(0.5)
-        cursor = conn.cursor()
         nome = str(input("Digite o nome do candidato que deseja alterar: "))
-        sql = 'SELECT * FROM candidatos'
-        cursor.execute(sql)
+        sql = 'SELECT * FROM candidatos WHERE nome_completo = %s'
+        cursor.execute(sql, (nome,))
         result = cursor.fetchall()
 
         '''
@@ -237,25 +240,55 @@ def editar_candidato(conn):
                 se o nome digitado for igual ao nome do candidato (candidato[1])
                 fecho acho o homi  
         '''
+
         encontrado = False
         for candidato in result:
             if nome == candidato[1]:
                 encontrado = True
+
                 print(f"\nCandidato encontrado: {candidato[1]} | Número: {candidato[2]} | Partido: {candidato[3]}\n")
-                name = str(input("Digite um novo nome para o candidato: "))
-                number = int(input("Digite o número do partido: "))
-                partido = str(input("Digite o nome do partido: "))
 
-                sql = 'UPDATE candidatos SET nome_completo=%s, numero_votacao=%s, nome_partido=%s WHERE id=%s'
-                values = (name, number, partido, candidato[0])
+                if verificar_voto_candidato(conn, candidato[0]):
+                    print("Este candidato possui votos registrados. Editar ou remover este candidato pode afetar a integridade dos dados eleitorais.")
+                    input("Pressione ENTER para voltar.")
+                    gestao_candidatos(conn)
+                    return
 
-                cursor.execute(sql, values)
-                conn.commit()
+                n = str(input("Deseja editá-lo ou removê-lo? (e/r): ")).lower()
 
-                print("\nCandidato alterado!")
-                input("\nPressione ENTER para voltar.")
-                gestao_candidatos(conn)
-                break
+                while n not in ('e', 'r'):
+                    print("Opção inválida. Digite 'e' para editar ou 'r' para remover.")
+                    n = str(input("Deseja editá-lo ou removê-lo? (e/r): ")).lower()
+
+                if n == 'e':
+
+                    name = str(input("Digite um novo nome para o candidato: "))
+                    number = int(input("Digite o número do partido: "))
+                    partido = str(input("Digite o nome do partido: "))
+
+                    sql = 'UPDATE candidatos SET nome_completo=%s, numero_votacao=%s, nome_partido=%s WHERE id=%s'
+                    values = (name, number, partido, candidato[0])
+
+                    cursor.execute(sql, values)
+                    conn.commit()
+
+                    print("\nCandidato alterado!")
+                    input("\nPressione ENTER para voltar.")
+                    gestao_candidatos(conn)
+                    return
+
+                elif n == 'r':
+
+                    sql = 'DELETE FROM candidatos WHERE id=%s'
+                    value = (candidato[0],)
+
+                    cursor.execute(sql, value)
+                    conn.commit()
+
+                    print("\nCandidato removido!")
+                    input("\nPressione ENTER para voltar.")
+                    gestao_candidatos(conn)
+                    return
         
         if not encontrado:
             print("\nCandidato não encontrado.\n")
