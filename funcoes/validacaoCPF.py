@@ -3,6 +3,15 @@ from funcoes.criptografia import criptografia
 #---------- Função para se obter os 4 primeiros dígitos do CPF ----------
 
 def primeiros_quatro_digitos(cpf):
+    """
+    Esta função retorna os 4 primeiros digítos do CPF informado.
+
+    Args:
+        cpf (str): Número do cpf.
+
+    Returns:
+        str: Os 4 primeiros dígitos do CPF.
+    """
 
     try:
         # Converte para string e remove sinal negativo
@@ -17,6 +26,15 @@ def primeiros_quatro_digitos(cpf):
 
 #------------------------------------------------------------------------
 def limpar_cpf(cpf):
+    """
+    Esta função retorna o CPF apenas com os números.
+
+    Args:
+        cpf (str): Número do cpf.
+
+    Returns:
+        str: Os CPF apenas com os números.
+    """
     cpf_limpo = ""
 
     for i in cpf:
@@ -26,6 +44,15 @@ def limpar_cpf(cpf):
     return cpf_limpo
 
 def validar_cpf(cpf):
+    """
+    Esta função faz a validação um CPF de acordo com suas regras de formação, retornando se ele é válido ou não.
+
+    Args:
+        cpf (str): Número do cpf.
+
+    Returns:
+        bool: True se o CPF for válido, caso contrário False.
+    """
     cpf_limpo = limpar_cpf(cpf)
 
     # CPF válido deve ter exatamente 11 dígitos
@@ -99,6 +126,16 @@ def validar_cpf(cpf):
     return True
 
 def verificarCpfDuplicado(conn ,cpf):
+    """
+    Esta função verifica se um CPF já está ou não cadastrado no banco de dados.
+
+    Args:
+        conn (mysql.connector): Conexão ativa com o banco de dados MySQL.
+        cpf (str): Número do CPF a ser verificado.
+
+    Returns:
+        bool: True se o CPF já foi cadastrado, caso contrário False.
+    """
     cursor = conn.cursor()
     cpfCriptografado = criptografia(cpf)
     cursor.execute("SELECT COUNT(*) FROM eleitores WHERE cpf_criptografado = %s", (cpfCriptografado,))

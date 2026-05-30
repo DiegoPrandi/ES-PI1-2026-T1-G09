@@ -2,6 +2,16 @@ import time
 
 
 def zerezima(conn):
+    """
+    Esta função realiza a zerézima do sistema eleitoral, removendo todos os votos registrados, redefinindo o contador automático da tabela de votos 
+    e atualizando o status dos eleitores, garantindo que o sistema esteja pronto para uma nova votação.
+
+    Args:
+        conn (mysql.connector): Conexão ativa com o banco de dados MySQL.
+
+    Returns:
+        None: A função não retorna valores, apenas executa operações no banco de dados e exibe o resultado da zerézima no console.
+    """
     cursor = conn.cursor()
     cursor.execute('DELETE FROM tabela_votos') # apaga tudao da tabela voto
     cursor.execute('ALTER TABLE tabela_votos AUTO_INCREMENT = 1') 
