@@ -48,14 +48,14 @@ Para rodar o projeto corretamente, siga os passos abaixo:
    Certifique-se de ter o Python instalado e execute:
 
    ```bash
-   pip install mysql-connector-python python-dotenv
+   pip install mysql-connector-python
    ```
 
 4. **Configure o banco de dados**
 
    * Crie um banco de dados no MySQL
-   * Execute os scripts SQL disponíveis no projeto (Docs -> database.sql)
-   * Crie um arquivo .env na raíz do projeto e ajuste as configurações de conexão no código (host, usuário, senha e nome do banco)
+   * Execute os scripts SQL disponíveis no projeto (docs -> database.sql)
+   * Alterar os campos de conexao do arquivo conexao.py (database -> conexao.py) para o seu banco  de dados
 
 5. **Execute o sistema**
 
