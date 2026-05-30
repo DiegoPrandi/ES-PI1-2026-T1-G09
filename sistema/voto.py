@@ -66,6 +66,16 @@ def login(conn):
         cursor.close() # Fecha o cursor
 
 def loginMesario(conn):
+    """
+    Esta função realiza o processo de login para um eleitor mesário em um sistema eleitoral, solicitando informações de identificação
+    e verificando-as contra os registros armazenados em um banco de dados MySQL.
+
+    Args:
+        conn (mysql.connector): Conexão ativa com o banco de dados MySQL.
+
+    Returns:
+        int: ID do eleitor autenticado, caso o login seja bem-sucedido.
+    """
     try:
         time.sleep(0.5)
         

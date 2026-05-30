@@ -18,6 +18,16 @@ arquivo_log = datetime.now().strftime(
 #           - Mensagem (string): Registra a descrição do log de evento ocorrido
 
 def registrar_log(tipo_evento, mensagem):
+    """
+    Esta função é responsável por registrar logs de ocorrência em um arquivo texto (.txt).
+
+    Args:
+        tipo_evento (str): O tipo de evento do log.
+        mensagem (str): A mensagem que deverá ser escrita no arquivo de texto (.txt).
+
+    Returns:
+        None: A função não retorna valores, apenas registra informações no arquivo de log.
+    """
 
     data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -31,7 +41,15 @@ def registrar_log(tipo_evento, mensagem):
 #       O loop tenta ler o arquivo "arquivo_log", se houver algum log sequer, a função printa ela, se não houver, printa erro.
 
 def exibir_logs():
+    """
+    Esta função é responsável por exibir o arquivo de texto (.txt) dos logs.
 
+    Args:
+        None.
+
+    Returns:
+        None: A função não retorna valores, apenas printa as informações do arquivo de texto.
+    """
     try:
         with open(arquivo_log, "r", encoding="utf-8") as arq:
             print("\n========== LOG DE OCORRÊNCIAS ==========\n")
