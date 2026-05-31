@@ -17,8 +17,8 @@ def conectar():
             host='localhost',
             user='root',
             port=3306,
-            password='root123@',
-            database='projetopi',
+            password='10100',
+            database='projetoPI',
         )
 
         return conexao # se der tudo certinho retorna a conexão

@@ -28,7 +28,11 @@ def menu(conn):
         2. Votação
         3. Sair
         ''')
-        n = int(input("-> "))
+        try:
+            n = int(input("-> "))
+        except ValueError:
+            print("Opção inválida. Digite apenas números!")
+            continue
         if n !=1 and n !=2 and n!=3:
             print("Digite uma opção válida!")
     if n == 1:

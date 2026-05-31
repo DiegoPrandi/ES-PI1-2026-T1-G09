@@ -41,7 +41,12 @@ def votacao(conn):
             4. Voltar
         ''')
         try:
-            n = int(input("-> "))
+            try:
+                n = int(input("-> "))
+            except ValueError:
+                print("Opção inválida. Digite apenas números!")
+                input("\nPressione ENTER para continuar.")
+                return votacao(conn)
         
             if (n == 1):
                 menu_urnaFechada(conn)
@@ -72,7 +77,12 @@ def votacao(conn):
             3. Voltar
         ''')
         try:
-            n = int(input("-> "))
+            try:
+                n = int(input("-> "))
+            except ValueError:
+                print("Opção inválida. Digite apenas números!")
+                input("\nPressione ENTER para continuar.")
+                return votacao(conn)
         
             
             if (n == 1):
@@ -115,7 +125,12 @@ def menu_urnaFechada(conn):
     
         ''')
 
-    n = int(input("-> "))
+    try:
+        n = int(input("-> "))
+    except ValueError:
+        print("Opção inválida. Digite apenas números!")
+        input("\nPressione ENTER para continuar.")
+        return menu_urnaFechada(conn)
     try:
 
         if (n == 1):
@@ -144,7 +159,12 @@ def menu_urnaFechada(conn):
 
             ''')
 
-            n = int(input("-> "))
+            try:
+                n = int(input("-> "))
+            except ValueError:
+                print("Opção inválida. Digite apenas números!")
+                input("\nPressione ENTER para continuar.")
+                return menu_urnaFechada(conn)
 
             try:
                 
@@ -222,7 +242,12 @@ def menu_urnaAberta(conn):
     
         ''')
 
-    n = int(input("-> "))
+    try:
+        n = int(input("-> "))
+    except ValueError:
+        print("Opção inválida. Digite apenas números!")
+        input("\nPressione ENTER para continuar.")
+        return menu_urnaAberta(conn)
     try:
         
         if (n == 1):
@@ -276,7 +301,12 @@ def menu_urnaAberta(conn):
 
             ''')
 
-            n = int(input("-> "))
+            try:
+                n = int(input("-> "))
+            except ValueError:
+                print("Opção inválida. Digite apenas números!")
+                input("\nPressione ENTER para continuar.")
+                return menu_urnaAberta(conn)
 
             try:
                 
@@ -352,7 +382,12 @@ def resultados_votacao(conn):
         4. Validação de Integridade
         5. Voltar
         ''')
-        n = int(input("-> "))
+        try:
+            n = int(input("-> "))
+        except ValueError:
+            print("Opção inválida. Digite apenas números!")
+            input("\nPressione ENTER para continuar.")
+            return votacao(conn)
         if n!= 1 and n!= 2 and n!= 3 and n!= 4 and n!= 5:
             print("Opção inválida. Tente novamente.")
 
@@ -403,7 +438,12 @@ def auditoria_votacao(conn):
         2. Ver Protocolos
         3. Voltar
         ''')
-        n = int(input("-> "))
+        try:
+            n = int(input("-> "))
+        except ValueError:
+            print("Opção inválida. Digite apenas números!")
+            input("\nPressione ENTER para continuar.")
+            return auditoria_votacao(conn)
         if n!= 1 and n!= 2 and n!= 3:
             print("Opção inválida. Tente novamente.")
 
@@ -457,7 +497,7 @@ def ConfirmarChaveMesario(conn):
         int: retorna o valor do campo mesario caso a chave seja valida
         ou None caso nao encontre nenhum registro
     '''
-    chave = input("Digite novamente a chave de acesso do mesário: ")
+    chave = input("Digite novamente a chave de acesso do mesário: ").strip()
     chave_criptografada = criptografia(chave)
 
     cursor = conn.cursor()

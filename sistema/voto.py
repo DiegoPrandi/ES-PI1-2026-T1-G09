@@ -43,7 +43,7 @@ def login(conn):
 
         titulo = str(input("Digite seu título de eleitor: "))
 
-        chave = str(input("Digite a chave de acesso: "))
+        chave = str(input("Digite a chave de acesso: ")).strip()
         chave = criptografia(chave) # Criptografa a chave
 
         cursor.execute('''
@@ -90,7 +90,7 @@ def loginMesario(conn):
 
         titulo = str(input("Digite seu título de eleitor: "))
 
-        chave = str(input("Digite a chave de acesso: "))
+        chave = str(input("Digite a chave de acesso: ")).strip()
         chave = criptografia(chave) # Criptografa a chave
 
         cursor.execute('''
@@ -203,7 +203,14 @@ def adicionar_voto(eleitor_id, conn): # Criação de uma função com um parâme
         while not id_candidato:
             os.system('cls')
             ascii.votacaoASCII()
-            voto = int(input("Digite o número de seu candidato: "))
+
+            try:
+                voto = int(input("Digite o número de seu candidato: "))
+            except ValueError:
+                print("Entrada inválida! Digite apenas números.")
+                time.sleep(1.5)
+                continue  # volta pro início do while
+
             cursor.execute('''
                 SELECT id FROM candidatos WHERE numero_votacao = %s
                         ''', (voto,)) # Seleciona o id do candidato em base do seu numero de voto
