@@ -121,7 +121,12 @@ def cadastrar_eleitor(conn):
         1. Sim
         2. Não
             ''')
-        n = int(input("-> "))
+        try:
+            n = int(input("-> "))
+        except ValueError:
+            print("Opção inválida. Digite apenas números!")
+            input("\nPressione ENTER para continuar.")
+            continue
         if n!=1 and n!=2:
             print("Digite uma opção válida!")
 
@@ -377,7 +382,12 @@ def buscar_eleitores(conn):
             3. Voltar
           ''')
     
-    n = int(input("-> "))
+    try:
+        n = int(input("-> "))
+    except ValueError:
+        print("Opção inválida. Digite apenas números!")
+        input("\nPressione ENTER para continuar.")
+        return buscar_eleitores(conn)
     
     while n!=1 and n!=2 and n!=3:
         print('''\nOpção inválida. Digite:\n
@@ -393,6 +403,7 @@ def buscar_eleitores(conn):
         while not validar_cpf(cpf):
             print("CPF inválido. Tente novamente.")
             cpf = str(input("Digite o CPF do eleitor: "))
+        cpf = limpar_cpf(cpf)
         cpf_criptografado = criptografia(cpf)
         
         cursor.execute('''SELECT * 
@@ -402,11 +413,11 @@ def buscar_eleitores(conn):
         result = cursor.fetchall()
     
     elif n == 2:
-        titulo = str(input('\nDigite o Titulo de eleitor: '))
+        titulo = input('\nDigite o Titulo de eleitor: ')
         
         while not validar_titulo_eleitor(titulo):
             print('Titulo de eleitor invalido. Tente novamente')
-            titulo = int(input('Digite o Titulo de eleitor: '))
+            titulo = (input('Digite o Titulo de eleitor: '))
         
         cursor.execute('''SELECT * 
                 FROM eleitores
